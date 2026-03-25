@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/dist/css/custom.css">
   <link rel="stylesheet" href="<?= base_url() ?>/dist/css/sweetalert2.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/plugins/select2/css/select2.min.css">
   <style>
     #loader-wrapper {
 	display: flex;

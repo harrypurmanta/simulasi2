@@ -13,3 +13,4 @@
 <!-- AdminLTE App -->
 <script src="<?= base_url() ?>/dist/dist/js/adminlte.min.js"></script>
 <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
+<script src="<?= base_url() ?>/plugins/select2/js/select2.full.min.js"></script>

@@ -59,7 +59,7 @@
     <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
     <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
     <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
+
 </body>
 
 </html>

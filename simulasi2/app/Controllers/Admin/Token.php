@@ -33,33 +33,57 @@ class Token extends BaseController
             $user_id = $this->request->getUri()->getSegment(3);
             $data = [           
                 "token" => $this->tokenmodel->getAll()->getResult(),
-                'materi' => $this->soalmodel->getjawAllJMateri()->getResult()
+                'materi' => $this->soalmodel->getjawAllJMateri()->getResult(),
+                'user' => $this->usermodel->getBySiswa()->getResult()
             ];
 
             return view('admin/token',$data);
         }
     }
 
+    public function getUserAjax()
+    {
+        $search = $this->request->getPost('search');
+
+        $data = $this->usermodel->getBySiswa()->getResult();
+
+        $result = [];
+
+        foreach ($data as $row) {
+            $result[] = [
+                "id" => $row->user_id,
+                "text" => $row->person_nm // sesuaikan field nama
+            ];
+        }
+
+        return $this->response->setJSON($result);
+    }
+
     public function loadDataToken() {
         $start_date = $this->request->getPost('start_date');
         $end_date = $this->request->getPost('end_date');
         $group_id = $this->request->getPost('group_id');
-
+        
         $retToken = $this->tokenmodel->getTokeByDate($start_date,$end_date,$group_id)->getResult();
 
         echo json_encode($retToken);
     }
+
     public function simpantoken() {
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
             $token = $this->request->getPost('token');
+            $token_user = $this->request->getPost('token_user');
+            $user_tambah = $this->request->getPost('user_tambah');
             $start_date = $this->request->getPost('start_date');
             $end_date = $this->request->getPost('end_date');
             $group_id = $this->request->getPost('group_id');
 
             $data = [           
                 "token" => $token,
+                "tokenuser" => $token_user,
+                "user_id" => $user_tambah,
                 "start_date" => $start_date,
                 "end_date" => $end_date,
                 "group_id" => $group_id

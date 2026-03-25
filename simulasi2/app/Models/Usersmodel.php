@@ -42,6 +42,15 @@ class Usersmodel extends Model
                         ->get();
     }
 
+    public function getBySiswa() {
+        return $this->db->table('person a')
+                        ->select('*')
+                        ->join('users b', 'b.person_id = a.person_id','left')
+                        ->where('a.status_cd', 'normal')
+                        ->where('b.user_group', 'siswa')
+                        ->get();
+    }
+
     public function getbyId($id){
         return $this->db->table('person a')
                  ->select('*')

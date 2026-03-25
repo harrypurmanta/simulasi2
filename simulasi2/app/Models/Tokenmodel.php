@@ -18,24 +18,27 @@ class Tokenmodel extends Model
         if ($group_id == "all") {
             return $this->db->table('token a')
                         ->select('*')
-                        ->join('group_soal b','b.group_soal_id = a.group_id','LEFT')
-                        ->where('a.start_date >=',$start_date)
-                        ->where('a.end_date >=',$start_date)
-                        ->where('a.start_date <=',$end_date)
-                        ->where('a.end_date <=',$end_date)
+                        ->join('materi b','b.materi_id = a.group_id','LEFT')
+                        ->join('users c','c.user_id = a.user_id','LEFT')
+                        ->join('person d','d.person_id = c.person_id','LEFT')
+                        ->where('a.start_date >=', $start_date)
+                        ->where('a.end_date >=', $start_date)
+                        ->where('a.start_date <=', $end_date)
+                        ->where('a.end_date <=', $end_date)
                         ->get();
         } else {
             return $this->db->table('token a')
                         ->select('*')
-                        ->join('group_soal b','b.group_soal_id = a.group_id')
-                        ->where('a.start_date >=',$start_date)
-                        ->where('a.end_date >=',$start_date)
-                        ->where('a.start_date <=',$end_date)
-                        ->where('a.end_date >=',$end_date)
-                        ->where('a.group_id',$group_id)
+                        ->join('materi b','b.materi_id = a.group_id')
+                        ->join('users c','c.user_id = a.user_id','LEFT')
+                        ->join('person d','d.person_id = c.person_id','LEFT')
+                        ->where('a.start_date >=', $start_date)
+                        ->where('a.end_date >=', $start_date)
+                        ->where('a.start_date <=', $end_date)
+                        ->where('a.end_date <=', $end_date)
+                        ->where('a.group_id', $group_id)
                         ->get();
         }
-        
     }
 
     public function simpantoken($data) {
@@ -50,14 +53,18 @@ class Tokenmodel extends Model
                         ->update();
     }
 
-    public function checktoken($token,$group_id) {
+    public function checktoken($token, $group_id, $materi_id, $tokenuser, $user_id) {
         $date = date("Y-m-d");
         return $this->db->table('token')
                         ->select('*')
-                        ->where('token',$token)
-                        ->where('start_date <=',$date)
-                        ->where('end_date >=',$date)
-                        ->where('group_id',$group_id)
+                        ->where('token', $token)
+                        ->where('tokenuser', $tokenuser)
+                        ->where('start_date >=', $date)
+                        ->where('end_date <=', $date)
+                        ->where('group_id', $materi_id)
+                        // ->where('materi_id',$materi_id)
+                        ->where('tokenuser', $tokenuser)
+                        ->where('user_id', $user_id)
                         ->get();
     }
 }

@@ -55,11 +55,10 @@
                                                         <select class="form-control" name="group_id" id="group_id">
                                                             <option value="all">Semua</option>
                                                             <?php
-                                                                foreach ($group as $key) {
+                                                                foreach ($materi as $key) {
                                                             ?>
-                                                            <option value="<?= $key->group_soal_id ?>"><?= $key->group_nm ?></option>
+                                                            <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
                                                             <?php } ?>
-                                                            <option value="99">RH</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -85,8 +84,10 @@
                                         <thead>
                                             <tr>
                                                 <th style="text-align:center;">No.</th>
-                                                <th style="text-align:center;">Token</th>
+                                                <th style="text-align:center;">Token Materi</th>
+                                                <th style="text-align:center;">Token User</th>
                                                 <th style="text-align:center;">Tanggal</th>
+                                                <th style="text-align:center;">Peserta</th>
                                                 <th style="text-align:center;">Materi</th>
                                                 <th style="text-align:center;">Aksi</th>
                                             </tr>
@@ -120,8 +121,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="token">Token</label>
+                                        <label for="token">Token Materi</label>
                                         <input class="form-control" type="text" name="token_tambah" id="token_tambah" maxlength="6" minlength="6">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">Token User</label>
+                                        <input class="form-control" type="text" name="token_tambah_user" id="token_tambah_user" maxlength="6" minlength="6">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -130,11 +137,18 @@
                                         <select class="form-control" name="group_id_tambah" id="group_id_tambah">
                                             <option value="0" disabled>Pilih Materi</option>
                                             <?php
-                                                foreach ($group as $key) {
+                                                foreach ($materi as $key) {
                                             ?>
-                                            <option value="<?= $key->group_soal_id ?>"><?= $key->group_nm ?></option>
+                                            <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
                                             <?php } ?>
-                                            <option value="99">RH</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">User</label>
+                                        <select class="form-control" name="user_tambah" id="user_tambah" style="width: 100%;">
+                                            <option value="">Pilih User</option>
                                         </select>
                                     </div>
                                 </div>
@@ -189,11 +203,10 @@
                                         <select class="form-control" name="group_id_edit" id="group_id_edit">
                                             <option value="0" disabled>Pilih Materi</option>
                                             <?php
-                                                foreach ($group as $key) {
+                                                foreach ($materi as $key) {
                                             ?>
-                                            <option value="<?= $key->group_soal_id ?>"><?= $key->group_nm ?></option>
+                                            <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
                                             <?php } ?>
-                                            <option value="99">RH</option>
                                         </select>
                                     </div>
                                 </div>
@@ -252,6 +265,30 @@
         $("#token_tambah").val("");
         $("#group_id_tambah").val("");
         $("#modal-tambah").modal("show");
+
+        // INIT SELECT2 USER (AJAX)
+        $('#user_tambah').select2({
+            dropdownParent: $('#modal-tambah'),
+            placeholder: "Pilih User",
+            ajax: {
+                url: "<?= base_url('admin/token/getUserAjax') ?>",
+                type: "POST",
+                dataType: "json",
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term // keyword pencarian
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        
     }
 
     function clearFormTambah() {
@@ -263,6 +300,8 @@
 
     function simpantoken() {
       var token = $("#token_tambah").val()
+      var token_user = $("#token_tambah_user").val()
+      var user_tambah = $("#user_tambah").val()
       var start_dttm = $("#start_dttm_tambah").val()
       var end_dttm = $("#end_dttm_tambah").val()
       var group_id = $("#group_id_tambah").val()
@@ -288,6 +327,8 @@
         dataType: "json",
         data: {
           "token": token,
+          "token_user": token_user,
+          "user_tambah": user_tambah,
           "start_date": start_dttm,
           "end_date": end_dttm,
           "group_id": group_id
@@ -449,11 +490,19 @@
                         className: "text-center"
                     },
                     {
+                        data: "tokenuser",
+                        className: "text-center"
+                    },
+                    {
                         data: null,
                         className: "text-center",
                         render: function(data) {
                             return `${data.start_date} s/d ${data.end_date}`;
                         }
+                    },
+                    {
+                        data: "person_nm",
+                        className: "text-center"
                     },
                     {
                         data: null,
@@ -462,7 +511,7 @@
                             if (data.group_id == 99) {
                                 return `RH`;
                             } else {
-                                return `${data.group_nm}`;
+                                return `${data.materi_nm}`;
                             }
                             
                         }
