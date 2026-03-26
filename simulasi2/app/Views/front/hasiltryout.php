@@ -51,6 +51,11 @@
                                         </body>
                                     </table>
                                 </div>
+                                <div class="col-md-12">
+                                    <a href="<?= base_url() ?>/pembahasan/ujian/<?= $materi_id ?>/2" type="button" class="btn btn-primary" style="color:black;">
+                                        Mulai Pembahasan <i class="fa fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

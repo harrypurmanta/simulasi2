@@ -42,19 +42,11 @@
 
                                     $query = $db->query("SELECT * FROM respon WHERE materi = $key->materi_id AND created_user_id = $user_id AND status_cd = 'normal'")->getResultArray();
                                     if (count($query)>0) {
-                                        if ($key->group_id != 5) {
-                                            $click = "";
-                                            $class_bg = "bg-green";
-                                            $a_bg = "bg-green";
-                                            $icon= "fa-check";
-                                            $text= "Selesai";
-                                        } else {
-                                            $click = "onclick='showtoken(".$group_id.",".$key->materi_id.")'";
-                                            $class_bg = "bg-gray";
-                                            $a_bg = "bg-blue";
-                                            $icon= "fa-arrow-circle-right";
-                                            $text= "Mulai";
-                                        }
+                                        $click = base_url()."/materi/hasiltryout/".$key->materi_id;
+                                        $class_bg = "bg-green";
+                                        $a_bg = "bg-green";
+                                        $icon= "fa-check";
+                                        $text= "Selesai";
                                     } else {
                                         $click = "onclick='showtoken(".$group_id.",".$key->materi_id.")'";
                                         $class_bg = "bg-gray";
@@ -62,13 +54,6 @@
                                         $icon= "fa-arrow-circle-right";
                                         $text= "Mulai";
                                     }
-                                    // if (count($query)>0) {
-                                    //     $click = base_url()."/materi/hasiltryout/".$key->materi_id;
-                                    //     $class_bg = "bg-green";
-                                    // } else {
-                                    //     $click = base_url()."/materi/pilihanMateri/".$key->materi_id."/".$group_id;
-                                    //     $class_bg = "bg-gray";
-                                    // }
                             ?>
                             <div class="col-lg-3" style="border-radius:10px;">
                                 <div class="small-box <?= $class_bg ?>" style="border-radius:10px;">

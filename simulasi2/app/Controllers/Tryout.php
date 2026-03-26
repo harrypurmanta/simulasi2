@@ -7,6 +7,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 class Tryout extends BaseController
 {
     protected $soalmodel;
+    protected $session;
+    
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
@@ -491,6 +493,8 @@ class Tryout extends BaseController
                     $data['total_skor'] = $persen_sk + $persen_kep + $persen_kec;
                 }
             }
+
+        $data['materi_id'] = $materi_id;
         return view('front/hasiltryout',$data);
     }
 
