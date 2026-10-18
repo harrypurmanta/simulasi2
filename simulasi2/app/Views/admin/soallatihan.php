@@ -21,34 +21,34 @@
   <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
   <style>
     #loader-wrapper {
-	display: flex;
-	position: fixed;
-	z-index: 1060;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding: 0.625em;
-	overflow-x: hidden;
-	transition: background-color 0.1s;
-	background-color: rgb(253 253 253 / 58%);
-	-webkit-overflow-scrolling: touch;
-}
+      display: flex;
+      position: fixed;
+      z-index: 1060;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 0.625em;
+      overflow-x: hidden;
+      transition: background-color 0.1s;
+      background-color: rgb(253 253 253 / 58%);
+      -webkit-overflow-scrolling: touch;
+    }
 
-.loader {
-	border: 10px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 10px solid #3af3f5;
-	border-bottom: 10px solid #3abcec;
-	width: 50px;
-	height: 50px;
-	-webkit-animation: spin 2s linear infinite;
-	animation: spin 2s linear infinite;
-	margin: 1.75rem auto;
-}
+    .loader {
+      border: 10px solid #f3f3f3;
+      border-radius: 50%;
+      border-top: 10px solid #3af3f5;
+      border-bottom: 10px solid #3abcec;
+      width: 50px;
+      height: 50px;
+      -webkit-animation: spin 2s linear infinite;
+      animation: spin 2s linear infinite;
+      margin: 1.75rem auto;
+    }
 
 	
 
@@ -118,11 +118,8 @@
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
- <!-- Navbar -->
- 
-
+  
  <?= $this->include('admin/navbar') ?>
-  <!-- /.navbar -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->

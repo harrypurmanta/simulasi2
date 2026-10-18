@@ -33,9 +33,10 @@
                                     } else if ($group[0]->group_soal_id == 2) {
                                         echo "<p style='text-align:center;font-size:20px;margin:20px;'>Jawablah pertanyaan di bawah ini dengan memilih pilihan jawaban yang paling  tepat!</p>";
                                     } else if ($group[0]->group_soal_id == 3) {
-                                        echo "<p style='text-align:center;font-size:20px;margin:20px;'>Soal terdiri dari 10 kolom, dimana setiap kolom ada batas waktu 1 menit. Pilihlah (angka,huruf,symbol) yang hilang dari soal. Gunakan waktu sebaik mungkin dalam pengerjaannya.</p>";
-                                    } else if ($group[0]->group_soal_id == 4) {
                                         echo "<p style='text-align:center;font-size:20px;margin:20px;'>Perhatikan gambar dibawah ini, kemudian pilihlah karakter jawaban yang paling tepat dari beberapa pilihan jawaban yang tersedia.</p>";
+                                    } else if ($group[0]->group_soal_id == 4) {
+                                        echo "<p style='text-align:center;font-size:20px;margin:20px;'>Soal terdiri dari 10 kolom, dimana setiap kolom ada batas waktu 1 menit. Pilihlah (angka,huruf,symbol) yang hilang dari soal. Gunakan waktu sebaik mungkin dalam pengerjaannya.
+                                        </p>";
                                     }
                                 ?>
                                 <p>Saat anda klik tombol <b><i>Mulai</i></b>, Maka akan langsung masuk ke Pengerjaan soal Selamat Mengerjakan</p>

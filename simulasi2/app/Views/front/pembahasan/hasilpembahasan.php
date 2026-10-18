@@ -51,11 +51,6 @@
                                         </body>
                                     </table>
                                 </div>
-                                <div class="col-md-12">
-                                    <a href="<?= base_url() ?>/sikapkerja/ujian/<?= $materi_id ?>" type="button" class="btn btn-primary" style="color:black;">
-                                        Mulai Tes Sikap Kerja <i class="fa fa-arrow-circle-right"></i>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>

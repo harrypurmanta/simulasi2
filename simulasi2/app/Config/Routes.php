@@ -146,6 +146,11 @@ $routes->get('soallatihan/updatesoal', '\App\Controllers\Admin\Soallatihan::upda
 $routes->post('soallatihan/updatesoal', '\App\Controllers\Admin\Soallatihan::updatesoal');
 $routes->get('soallatihan/hapussoal', '\App\Controllers\Admin\Soallatihan::hapussoal');
 $routes->post('soallatihan/hapussoal', '\App\Controllers\Admin\Soallatihan::hapussoal');
+$routes->get('soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
+$routes->post('soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
+$routes->get('admin/soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
+$routes->post('admin/soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
+$routes->post('admin/soallatihan/setSessionLevel', '\App\Controllers\Admin\Soallatihan::setSessionLevel');
 
 $routes->get('jawabanlatihan/showjawaban', '\App\Controllers\Admin\Jawabanlatihan::showjawaban');
 $routes->post('jawabanlatihan/showjawaban', '\App\Controllers\Admin\Jawabanlatihan::showjawaban');

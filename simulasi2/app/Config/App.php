@@ -24,7 +24,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'https://simulasi2.test:8443//';
+    public $baseURL = 'https://simulasi2.test:8443/';
 
     /**
      * --------------------------------------------------------------------------

@@ -35,9 +35,9 @@ class Token extends BaseController
             $materi_id = $this->request->getPost('materi_id');
             $tokenuser = $this->request->getPost('tokenuser');
             $user_id = $this->session->user_id;
-            // echo json_encode($user_id);exit;
+            // 
             $check = $this->tokenmodel->checktoken($token, $group_id, $materi_id, $tokenuser, $user_id)->getResult();
-            
+            // echo json_encode($check);exit;
             if (count($check)>0) {
                 $ret = "sukses";
             } else {

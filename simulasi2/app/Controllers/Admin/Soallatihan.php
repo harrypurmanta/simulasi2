@@ -42,11 +42,32 @@ class Soallatihan extends BaseController
 
         $jenis_id = $this->request->getPost('jenis_id');
         $this->session->set('jenis_id', $jenis_id);
+
+        $level_id = $this->request->getPost('level_id');
+        if ($level_id !== null) {
+            $this->session->set('level_id', $level_id);
+        }
+
+        echo json_encode(['group_id' => $group_id, 'jenis_id' => $jenis_id, 'level_id' => $level_id]);
     }
+
+    public function setSessionLevel()
+    {
+        $level_id = $this->request->getPost('level_id');
+        $this->session->set('level_id', $level_id);
+        echo json_encode(['level_id' => $level_id]);
+    }
+
     public function getJenis() {
-        $group_id       = $this->request->getPost('group_id');
+        $group_id = $this->request->getPost('group_id');
         $this->session->set('group_id', $group_id);
         $res = $this->latihanmodel->getJenisByGroupId($group_id)->getResult();
+        echo json_encode($res);
+    }
+
+    public function getLevel() {
+        $jenis_id = $this->request->getPost('jenis_id');
+        $res = $this->latihanmodel->getLevelByJenisId($jenis_id)->getResult();
         echo json_encode($res);
     }
 
@@ -66,16 +87,23 @@ class Soallatihan extends BaseController
                 $group_id = $this->session->group_id;
             }
 
+            $level = [];
+            $level_id = $this->session->level_id;
+            if ($group_id == 2) {
+                $level = $this->latihanmodel->getLevelByJenisId($jenis_id)->getResult();
+                if (empty($level_id) && count($level) > 0) {
+                    $level_id = $level[0]->level_id;
+                }
+            }
+
             $data = [
-                'no_soal' => $this->latihanmodel->getNoSoal($jenis_id, $group_id)->getResult(),
+                'no_soal' => $this->latihanmodel->getNoSoal($jenis_id, $group_id, $level_id)->getResult(),
                 'jenis_soal' => $this->latihanmodel->getJenisByGroupId($group_id)->getResult(),
                 'group' => $this->soalmodel->getGroupLatihan()->getResult(),
+                'level' => $level,
+                'level_id' => $level_id,
                 'soal' => $this->showsoal()
             ];
-            // echo '<pre>';
-            // var_dump($group_id);
-            // echo '</pre>';
-            // exit;
             return view('admin/soallatihan/tambahsoal',$data);
         }
     }
@@ -85,7 +113,8 @@ class Soallatihan extends BaseController
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
-
+            $soal = $this->latihanmodel->getSoalByid($soal_id)->getResult();
+            
             if ($this->session->jenis_id == "") {
                 $jenis_id = 1;
             } else {
@@ -98,15 +127,25 @@ class Soallatihan extends BaseController
                 $group_id = $this->session->group_id;
             }
 
+            $cur_group_id = count($soal) > 0 ? $soal[0]->group_id : $group_id;
+            $cur_jenis_id = count($soal) > 0 ? $soal[0]->jenis_id : $jenis_id;
+            $cur_level_id = count($soal) > 0 ? $soal[0]->level_id : null;
+
+            $level = [];
+            if ($cur_group_id == 2) {
+                $level = $this->latihanmodel->getLevelByJenisId($cur_jenis_id)->getResult();
+            }
+
             $data = [
-                'no_soal' => $this->latihanmodel->getNoSoal($jenis_id,$group_id)->getResult(),
-                'jenis_soal' => $this->latihanmodel->getJenisByGroupId($group_id)->getResult(),
+                'no_soal' => $this->latihanmodel->getNoSoal($cur_jenis_id, $cur_group_id, $cur_level_id)->getResult(),
+                'jenis_soal' => $this->latihanmodel->getJenisByGroupId($cur_group_id)->getResult(),
                 'group' => $this->soalmodel->getGroupLatihan()->getResult(),
-                'soal' => $this->latihanmodel->getSoalByid($soal_id)->getResult(),
+                'level' => $level,
+                'level_id' => $cur_level_id,
+                'soal' => $soal,
                 'jawaban' => $this->latihanmodel->getJawabanBySoalId($soal_id)->getResult(),
-                'soal_id' => $this->request->getUri()->getSegment(4)
+                'soal_id' => $soal_id
             ];
-            // echo json_encode($data);exit;
             return view('admin/soallatihan/editsoal',$data);
         }
     }
@@ -114,9 +153,10 @@ class Soallatihan extends BaseController
     public function getNoSoal() {
         $group_id       = $this->request->getPost('group_id');
         $jenis_id      = $this->request->getPost('jenis_id');
+        $level_id      = $this->request->getPost('level_id');
         $no_soal = 1;
         if (isset($group_id) && isset($jenis_id)) {
-            $res_soal = $this->latihanmodel->getNoSoal($jenis_id, $group_id)->getResult();
+            $res_soal = $this->latihanmodel->getNoSoal($jenis_id, $group_id, $level_id)->getResult();
             if ($res_soal[0]->no_soal == null) {
                 $no_soal = 1;
             } else {
@@ -129,7 +169,8 @@ class Soallatihan extends BaseController
     public function showsoal() {
         $group_id   = $this->request->getPost('group_id');
         $jenis_id   = $this->request->getPost('jenis_id');
-        $res        = $this->latihanmodel->getSoalBygrJns($group_id, $jenis_id)->getResult();
+        $level_id   = $this->request->getPost('level_id');
+        $res        = $this->latihanmodel->getSoalBygrJns($group_id, $jenis_id, $level_id)->getResult();
         echo json_encode($res);
     }
 
@@ -189,6 +230,10 @@ class Soallatihan extends BaseController
         $group_id = $this->request->getPost('group_id');
         $no_soal = $this->request->getPost('no_soal');
         $pembahasan_nm = $this->request->getPost('pembahasan_nm');
+        $level_id = $this->request->getPost('level_id');
+        if ($group_id != 2 || empty($level_id)) {
+            $level_id = null;
+        }
 
         $jawaban_nm_A = $this->request->getPost('jawaban_nm_A');
         $jawaban_nm_B = $this->request->getPost('jawaban_nm_B');
@@ -198,6 +243,9 @@ class Soallatihan extends BaseController
 
         $this->session->set("group_id",$group_id);
         $this->session->set("jenis_id",$jenis_id);
+        if ($level_id !== null) {
+            $this->session->set("level_id", $level_id);
+        }
         $imagefile = $this->request->getFiles();
 
         $newName = "";
@@ -224,7 +272,7 @@ class Soallatihan extends BaseController
                     }
                     
                      $imgs->move("../public/images/pembahasan_latihan/$group_id/$jenis_id", $pembahasan_img);
-                    //  $imgs->move("../public/images/pembahasan/materi/$materi_id/besar/level/$level_nm", $pembahasan_img);
+                     //  $imgs->move("../public/images/pembahasan/materi/$materi_id/besar/level/$level_nm", $pembahasan_img);
                     }
               }
         }
@@ -237,6 +285,7 @@ class Soallatihan extends BaseController
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'soal_img' => $newName,
                 'pembahasan_img' => $pembahasan_img,
                 'pembahasan' => $pembahasan_nm,
@@ -250,6 +299,7 @@ class Soallatihan extends BaseController
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 // 'soal_img' => $newName,
                 'pembahasan_img' => $pembahasan_img,
                 'pembahasan' => $pembahasan_nm,
@@ -263,6 +313,7 @@ class Soallatihan extends BaseController
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'soal_img' => $newName,
                 // 'pembahasan_img' => $pembahasan_img,
                 'pembahasan' => $pembahasan_nm,
@@ -276,6 +327,7 @@ class Soallatihan extends BaseController
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 // 'soal_img' => $newName,
                 // 'pembahasan_img' => $pembahasan_img,
                 'pembahasan' => $pembahasan_nm,
@@ -451,12 +503,17 @@ class Soallatihan extends BaseController
         $group_id = $this->request->getPost('group_id');
         $no_soal = $this->request->getPost('no_soal');
         $pembahasan_nm = $this->request->getPost('pembahasan_nm');
-        // $resLevel = $this->levelmodel->getlevelById($level_id)->getResult();
+        $level_id = $this->request->getPost('level_id');
+        if ($group_id != 2 || empty($level_id)) {
+            $level_id = null;
+        }
         $imagefile = $this->request->getFiles();
 
-        // $level_nm = $resLevel[0]->level_nm;
         $this->session->set("group_id",$group_id);
         $this->session->set("jenis_id",$jenis_id);
+        if ($level_id !== null) {
+            $this->session->set("level_id", $level_id);
+        }
 
         $jawaban_id_A = $this->request->getPost('jawaban_id_A');
         $jawaban_id_B = $this->request->getPost('jawaban_id_B');
@@ -493,6 +550,7 @@ class Soallatihan extends BaseController
             $data = [
                 'soal_nm' => $soal_nm,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'no_soal' => $no_soal,
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
@@ -505,6 +563,7 @@ class Soallatihan extends BaseController
             $data = [
                 'soal_nm' => $soal_nm,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'no_soal' => $no_soal,
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
@@ -517,6 +576,7 @@ class Soallatihan extends BaseController
             $data = [
                 'soal_nm' => $soal_nm,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'no_soal' => $no_soal,
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,
@@ -529,6 +589,7 @@ class Soallatihan extends BaseController
             $data = [
                 'soal_nm' => $soal_nm,
                 'group_id' => $group_id,
+                'level_id' => $level_id,
                 'no_soal' => $no_soal,
                 'kunci' => $kunci,
                 'jenis_id' => $jenis_id,

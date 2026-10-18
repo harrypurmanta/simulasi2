@@ -42,7 +42,7 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Pilih Group</label>
-                                        <select name="group_id" id="group_id" class="form-control" onchange="getJenis()">
+                                        <select name="group_id" id="group_id" class="form-control" onchange="handleGroupChange()">
                                             <option value="" disabled <?= ($this->session->group_id == null ? "" : "selected") ?>>Pilih Group Soal</option>
                                             <?php
                                                 foreach ($group as $key) {
@@ -57,7 +57,7 @@
                                 <div class="col-sm-2">
                                     <div class="form-group">
                                         <label>Pilih Jenis</label>
-                                        <select name="jenis_id" id="jenis_id" class="form-control" onchange="getNoSoal()">
+                                        <select name="jenis_id" id="jenis_id" class="form-control" onchange="handleJenisChange()">
                                             <option value="" disabled <?= ($this->session->jenis_id == null ? "selected" : "") ?>>Pilih Jenis Soal</option>
                                             <?php
                                             
@@ -70,10 +70,29 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-sm-2" id="col_level" style="<?= ($this->session->group_id == 2 ? "" : "display: none;") ?>">
+                                    <div class="form-group">
+                                        <label>Pilih Level</label>
+                                        <select name="level_id" id="level_id" class="form-control" onchange="getNoSoal()">
+                                            <option value="" disabled <?= ($level_id == null ? "selected" : "") ?>>Pilih Level Soal</option>
+                                            <?php
+                                                if (!empty($level)) {
+                                                    foreach ($level as $key) {
+                                            ?>
+                                            <option value="<?= $key->level_id ?>"
+                                                <?= ($level_id == $key->level_id ? "selected" : "") ?>>
+                                                <?= $key->level_nm ?></option>
+                                            <?php 
+                                                    }
+                                                }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-sm-1">
                                     <label>No. Soal</label>
                                     <div class="form-group">
-                                        <input class="form-control" type="number" name="no_soal" id="no_soal" value="<?= $no_soal[0]->no_soal+1 ?>" style="text-align: center;">
+                                        <input class="form-control" type="number" name="no_soal" id="no_soal" value="<?= (isset($no_soal[0]->no_soal) && $no_soal[0]->no_soal != null) ? $no_soal[0]->no_soal+1 : 1 ?>" style="text-align: center;">
                                     </div>
                                 </div>
                                 <div class="col-sm-1">
@@ -88,14 +107,14 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <label>Soal Image</label>
                                     <div class="form-group">
                                         <input class="form-control" type="file" name="soal_img" id="soal_img"
                                             value="">
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2">
                                     <label>Pembahasan Image</label>
                                     <div class="form-group">
                                         <input class="form-control" type="file" name="pembahasan_img"
@@ -250,6 +269,55 @@
 <?= $this->include('admin/template/scriptjs') ?>
 <!-- Page specific script -->
 <script>
+    function handleGroupChange() {
+        var group_id = $('#group_id').val();
+        if (group_id == 2) {
+            $('#col_level').show();
+        } else {
+            $('#col_level').hide();
+            $('#level_id').empty();
+        }
+        getJenis();
+    }
+
+    function handleJenisChange() {
+        var group_id = $('#group_id').val();
+        if (group_id == 2) {
+            getLevel();
+        } else {
+            getNoSoal();
+        }
+    }
+
+    function getLevel() {
+        var jenis_id = $('#jenis_id').val();
+        $.ajax({
+            url: "<?= base_url('admin/soallatihan/getLevel') ?>",
+            type: "post",
+            dataType: 'json',
+            data: {
+                "jenis_id": jenis_id
+            },
+            beforeSend: function() {
+                $("#loader-wrapper").removeClass("d-none");
+            },
+            success: function(data) {
+                $('#level_id').empty();
+                $.each(data, function(index, item) {
+                    $('#level_id').append(
+                        `<option value="${item.level_id}">${item.level_nm}</option>`
+                    );
+                });
+                $("#loader-wrapper").addClass("d-none");
+                getNoSoal();
+            },
+            error: function(xhr, status, error) {
+                $("#loader-wrapper").addClass("d-none");
+                console.error('Gagal mengambil level:', error);
+            }
+        });
+    }
+
     function getJenis() {
         var group_id = $('#group_id').val();
         $.ajax({
@@ -265,27 +333,36 @@
             success: function(data) {
                 $('#jenis_id').empty();
                 $.each(data, function(index, item) {
-                $('#jenis_id').append(
-                    `<option value="${item.jenis_id}">${item.jenis_nm}</option>`
-                );
+                    $('#jenis_id').append(
+                        `<option value="${item.jenis_id}">${item.jenis_nm}</option>`
+                    );
                 });
+                $("#loader-wrapper").addClass("d-none");
+                if (group_id == 2) {
+                    getLevel();
+                } else {
+                    getNoSoal();
+                }
             },
             error: function(xhr, status, error) {
+                $("#loader-wrapper").addClass("d-none");
                 console.error('Gagal mengambil data:', error);
             }
-            });
+        });
     }
     
     function getNoSoal() {
         var jenis_id = $("#jenis_id").val();
         var group_id = $("#group_id").val();
+        var level_id = group_id == 2 ? $("#level_id").val() : null;
         $.ajax({
             url: "<?= base_url('admin/soallatihan/getNoSoal') ?>",
             type: "post",
             dataType: "json",
             data: {
                 "jenis_id": jenis_id,
-                "group_id": group_id
+                "group_id": group_id,
+                "level_id": level_id
             },
             beforeSend: function() {
                 $("#loader-wrapper").removeClass("d-none")
@@ -305,6 +382,7 @@
         let formData = new FormData();
         let jenis_id = $("#jenis_id").val();
         let group_id = $("#group_id").val();
+        let level_id = group_id == 2 ? $("#level_id").val() : null;
         let no_soal = $("#no_soal").val();
         let kunci = $("#kunci").val();
         let soal_nm = $("#summernote_soal").val();
@@ -350,6 +428,9 @@
         formData.append('pembahasan_nm', pembahasan_nm);
         formData.append('jenis_id', jenis_id);
         formData.append('group_id', group_id);
+        if (level_id) {
+            formData.append('level_id', level_id);
+        }
 
         formData.append('jawaban_nm_A', jawaban_nm_A);
         formData.append('jawaban_nm_B', jawaban_nm_B);

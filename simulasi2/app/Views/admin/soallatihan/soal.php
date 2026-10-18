@@ -37,12 +37,12 @@
                       <div class="form-group row">
                         <label for="group_id" class="col-sm-2 col-form-label">Group Soal</label>
                         <div class="col-sm-10">
-                          <select name="group_id" id="group_id" class="form-control" onchange="getJenis()">
+                          <select name="group_id" id="group_id" class="form-control" onchange="handleGroupChange()">
                               <option value="" disabled <?= ($this->session->group_id == null ? "" : "selected") ?>>Pilih Materi Soal</option>
                               <?php
                                   foreach ($group as $key) {
                               ?>
-                              <option value="<?= $key->group_soal_id ?>">
+                              <option value="<?= $key->group_soal_id ?>" <?= ($this->session->group_id == $key->group_soal_id ? "selected" : "") ?>>
                                   <?= $key->group_nm ?>
                               </option>
                               <?php } ?>
@@ -52,7 +52,15 @@
                       <div class="form-group row">
                         <label for="jenis_id" class="col-sm-2 col-form-label">Jenis Soal</label>
                         <div class="col-sm-10">
-                          <select name="jenis_id" id="jenis_id" class="form-control" onchange="setSessionJenis()">
+                          <select name="jenis_id" id="jenis_id" class="form-control" onchange="handleJenisChange()">
+                             
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group row" id="row_level" style="<?= ($this->session->group_id == 2 ? '' : 'display: none;') ?>">
+                        <label for="level_id" class="col-sm-2 col-form-label">Level Soal</label>
+                        <div class="col-sm-10">
+                          <select name="level_id" id="level_id" class="form-control" onchange="setSessionLevel()">
                              
                           </select>
                         </div>
@@ -78,6 +86,7 @@
                       <tr>
                         <th class="text-center" width="25">No.</th>
                         <th class="text-center" width="55">No. Soal</th>
+                        <th class="text-center" width="90">Level</th>
                         <th class="text-center">Soal</th>
                         <th class="text-center">Kunci</th>
                         <th class="text-center" width="100">Aksi</th>
@@ -106,7 +115,12 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    getJenis();
+    var initialGroup = $('#group_id').val();
+    var sessionJenis = "<?= $this->session->jenis_id ?? '' ?>";
+    var sessionLevel = "<?= $this->session->level_id ?? '' ?>";
+
+    getJenis(sessionJenis, sessionLevel, true);
+
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -122,16 +136,39 @@
     })
   });
 
+  function handleGroupChange() {
+    var group_id = $('#group_id').val();
+    if (group_id == 2) {
+      $('#row_level').show();
+    } else {
+      $('#row_level').hide();
+      $('#level_id').empty();
+    }
+    getJenis(null, null, true);
+  }
+
+  function handleJenisChange() {
+    setSessionJenis();
+    var group_id = $('#group_id').val();
+    if (group_id == 2) {
+      getLevel(null, true);
+    } else {
+      tampilkansoal();
+    }
+  }
+
   function setSessionJenis() {
       var group_id = $('#group_id').val();
       var jenis_id = $('#jenis_id').val();
+      var level_id = group_id == 2 ? $('#level_id').val() : null;
       $.ajax({
           url: "<?= base_url('admin/soallatihan/setSessionJenis') ?>",
           type: "post",
           dataType: 'json',
           data: {
             "group_id" : group_id,
-            "jenis_id" : jenis_id
+            "jenis_id" : jenis_id,
+            "level_id" : level_id
           },
           beforeSend: function() {
             $("#loader-wrapper").removeClass("d-none")
@@ -140,48 +177,131 @@
            $("#loader-wrapper").addClass("d-none");
           },
           error: function(xhr, status, error) {
+            $("#loader-wrapper").addClass("d-none");
             console.error('Gagal mengambil data:', error);
           }
       });
   }
 
-  function getJenis() {
-    var group_id = $('#group_id').val();
+  function setSessionLevel() {
+      var level_id = $('#level_id').val();
       $.ajax({
-          url: "<?= base_url('admin/soallatihan/getJenis') ?>",
+          url: "<?= base_url('admin/soallatihan/setSessionLevel') ?>",
           type: "post",
           dataType: 'json',
           data: {
-            "group_id" : group_id
+            "level_id" : level_id
           },
           beforeSend: function() {
             $("#loader-wrapper").removeClass("d-none")
           },
           success: function(data) {
-            $('#jenis_id').empty();
-            $.each(data, function(index, item) {
-              $('#jenis_id').append(
-                `<option value="${item.jenis_id}">${item.jenis_nm}</option>`
-              );
-            });
             $("#loader-wrapper").addClass("d-none");
+            tampilkansoal();
           },
           error: function(xhr, status, error) {
+            $("#loader-wrapper").addClass("d-none");
             console.error('Gagal mengambil data:', error);
           }
-        });
+      });
+  }
+
+  function getJenis(selectedJenis, selectedLevel, autoLoad) {
+    var group_id = $('#group_id').val();
+    if (group_id == 2) {
+      $('#row_level').show();
+    } else {
+      $('#row_level').hide();
+      $('#level_id').empty();
+    }
+    $.ajax({
+        url: "<?= base_url('admin/soallatihan/getJenis') ?>",
+        type: "post",
+        dataType: 'json',
+        data: {
+          "group_id" : group_id
+        },
+        beforeSend: function() {
+          $("#loader-wrapper").removeClass("d-none")
+        },
+        success: function(data) {
+          $('#jenis_id').empty();
+          $.each(data, function(index, item) {
+            $('#jenis_id').append(
+              `<option value="${item.jenis_id}">${item.jenis_nm}</option>`
+            );
+          });
+          if (selectedJenis) {
+            $('#jenis_id').val(selectedJenis);
+          }
+          $("#loader-wrapper").addClass("d-none");
+          if (group_id == 2) {
+            getLevel(selectedLevel, autoLoad);
+          } else {
+            if (autoLoad) {
+              tampilkansoal();
+            }
+          }
+        },
+        error: function(xhr, status, error) {
+          $("#loader-wrapper").addClass("d-none");
+          console.error('Gagal mengambil data:', error);
+        }
+      });
+  }
+
+  function getLevel(selectedLevel, autoLoad) {
+    var jenis_id = $('#jenis_id').val();
+    if (!jenis_id) {
+        $('#level_id').html('<option value="">Semua Level</option>');
+        return;
+    }
+    $.ajax({
+        url: "<?= base_url('admin/soallatihan/getLevel') ?>",
+        type: "post",
+        dataType: 'json',
+        data: {
+            "jenis_id": jenis_id
+        },
+        beforeSend: function() {
+            $("#loader-wrapper").removeClass("d-none");
+        },
+        success: function(data) {
+            $('#level_id').empty();
+            $('#level_id').append('<option value="">Semua Level</option>');
+            $.each(data, function(index, item) {
+                var isSelected = (selectedLevel && selectedLevel == item.level_id) ? 'selected' : '';
+                $('#level_id').append(
+                    `<option value="${item.level_id}" ${isSelected}>${item.level_nm}</option>`
+                );
+            });
+            if (selectedLevel) {
+                $('#level_id').val(selectedLevel);
+            }
+            $("#loader-wrapper").addClass("d-none");
+            if (autoLoad) {
+                tampilkansoal();
+            }
+        },
+        error: function(xhr, status, error) {
+            $("#loader-wrapper").addClass("d-none");
+            console.error('Gagal mengambil level:', error);
+        }
+    });
   }
 
   tampilkansoal = () => {
     var group_id = $("#group_id").val();
     var jenis_id = $("#jenis_id").val();
+    var level_id = group_id == 2 ? $("#level_id").val() : null;
     $("#tbl_soal").DataTable({
         ajax: {
             url: "<?= base_url('admin/soallatihan/showsoal') ?>",
             type: "POST",
             data: function(d) {
-                d.jenis_id = jenis_id,
-                d.group_id = group_id
+                d.jenis_id = jenis_id;
+                d.group_id = group_id;
+                d.level_id = level_id;
             },
             dataSrc: function(json) {
                 let nomor = 1
@@ -207,6 +327,13 @@
             {
                 data: "no_soal",
                 className: "text-center"
+            },
+            {
+                data: "level_nm",
+                className: "text-center",
+                render: function(data) {
+                    return data ? data : '-';
+                }
             },
             {
                 data: "soal_nm",

@@ -14,9 +14,17 @@ simulasi2/writable/debugbar/*
 simulasi2/writable/session/*
 simulasi2/writable/uploads/*
 
-# === User Uploads (optional) ===
-simulasi2/public/uploads/*
-!/public/uploads/.gitkeep
+# === Images & User Uploads ===
+images/
+simulasi2/public/images/
+simulasi2/public/uploads/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.bmp
+!favicon.ico
 
 # === OS & Editor ===
 .DS_Store

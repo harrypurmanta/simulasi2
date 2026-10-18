@@ -6,7 +6,7 @@ class Latihanmodel extends Model
 {
     protected $table      = 'soal_latihan';
     protected $primaryKey = 'soal_id';
-    protected $allowedFields = ['soal_id','no_soal','soal_nm','soal_img','kunci','status_cd','group_id','materi'];
+    protected $allowedFields = ['soal_id','no_soal','soal_nm','soal_img','kunci','status_cd','group_id','materi','level_id'];
 
     public function hapusgambarsoal($soal_id) {
         return $this->db->table('soal_latihan')
@@ -32,12 +32,31 @@ class Latihanmodel extends Model
         return $this->db->table('jawaban_latihan')
                  ->insert($data);
     }
-    public function getNoSoal($jenis_id, $group_id) {
-        return $this->db->table('soal_latihan')
+    public function getNoSoal($jenis_id, $group_id, $level_id = null) {
+        $builder = $this->db->table('soal_latihan')
                         ->select('max(no_soal) as no_soal')
-                        ->where('jenis_id',$jenis_id)
-                        ->where('status_cd','normal')
-                        ->get();
+                        ->where('jenis_id', $jenis_id)
+                        ->where('status_cd', 'normal');
+        if ($group_id == 2 && !empty($level_id)) {
+            $builder->where('level_id', $level_id);
+        }
+        return $builder->get();
+    }
+
+    public function getLevelByJenisId($jenis_id) {
+        $builder = $this->db->table('level_soal')
+                            ->select('*')
+                            ->where('status_cd', 'normal');
+        
+        if ($jenis_id == 11) {
+            $builder->where('(jenis_id = 11 OR materi_id = 6)');
+        } else if ($jenis_id == 12) {
+            $builder->where('(jenis_id = 12 OR materi_id = 7)');
+        } else {
+            $builder->where('(jenis_id = ' . (int)$jenis_id . ' OR materi_id = ' . (int)$jenis_id . ')');
+        }
+        
+        return $builder->orderBy('level_id', 'ASC')->get();
     }
 
     public function getJenisSoal() {
@@ -172,13 +191,17 @@ public function getAllSoalSK() {
                         ->orderby('a.kolom_id','ASC')
                         ->get();
     }
-    public function getSoalBygrJns($group_id, $jenis_id) {
-        return $this->db->table('soal_latihan a')
-                        ->select('*')
-                        ->join('jenis_soal b', 'b.jenis_id = a.jenis_id')
+    public function getSoalBygrJns($group_id, $jenis_id, $level_id = null) {
+        $builder = $this->db->table('soal_latihan a')
+                        ->select('a.*, b.jenis_nm, c.level_nm')
+                        ->join('jenis_soal b', 'b.jenis_id = a.jenis_id', 'left')
+                        ->join('level_soal c', 'c.level_id = a.level_id', 'left')
                         ->where('a.status_cd', 'normal')
-                        ->where('a.jenis_id', $jenis_id)
-                        ->get();
+                        ->where('a.jenis_id', $jenis_id);
+        if ($group_id == 2 && !empty($level_id)) {
+            $builder->where('a.level_id', $level_id);
+        }
+        return $builder->orderBy('a.no_soal', 'ASC')->get();
     }
 
     public function getTotalSoal($jenis_id,$materi) {
@@ -239,10 +262,11 @@ public function getAllSoalSK() {
 
     public function getSoalByid($soal_id) {
         return $this->db->table('soal_latihan a')
-                        ->select('*')
-                        ->join('jenis_soal b', 'b.jenis_id = a.jenis_id')
-                        ->join('group_soal c', 'c.group_soal_id = b.group_id')
-                        ->where('a.soal_id',$soal_id)
+                        ->select('a.*, b.jenis_nm, c.group_nm, d.level_nm')
+                        ->join('jenis_soal b', 'b.jenis_id = a.jenis_id', 'left')
+                        ->join('group_soal c', 'c.group_soal_id = a.group_id', 'left')
+                        ->join('level_soal d', 'd.level_id = a.level_id', 'left')
+                        ->where('a.soal_id', $soal_id)
                         ->get();
     }
 

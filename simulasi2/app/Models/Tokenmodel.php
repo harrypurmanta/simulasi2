@@ -54,13 +54,11 @@ class Tokenmodel extends Model
     }
 
     public function checktoken($token, $group_id, $materi_id, $tokenuser, $user_id) {
-        $date = date("Y-m-d");
         return $this->db->table('token')
                         ->select('*')
                         ->where('token', $token)
                         ->where('tokenuser', $tokenuser)
-                        ->where('start_date >=', $date)
-                        ->where('end_date <=', $date)
+                        ->where('CURDATE() BETWEEN start_date AND end_date', null, false)
                         ->where('group_id', $materi_id)
                         // ->where('materi_id',$materi_id)
                         ->where('tokenuser', $tokenuser)
