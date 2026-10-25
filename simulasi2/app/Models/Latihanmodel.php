@@ -214,14 +214,16 @@ public function getAllSoalSK() {
                         ->get();
     }
 
-    public function getTotalSoalLatihan($jenis_id, $group_id) {
-        return $this->db->table('soal_latihan')
+    public function getTotalSoalLatihan($jenis_id, $group_id, $level_id = null) {
+        $builder = $this->db->table('soal_latihan')
                         ->select('*')
                         ->where('jenis_id',$jenis_id)
                         ->where('group_id',$group_id)
-                        ->where('status_cd','normal')
-                        ->orderby('no_soal','asc')
-                        ->get();
+                        ->where('status_cd','normal');
+        if ($group_id == 2 && !empty($level_id)) {
+            $builder->where('level_id', $level_id);
+        }
+        return $builder->orderby('no_soal','asc')->get();
     }
 
     public function updateFinishRespon($materi_id,$jenis_id,$user_id,$used,$data) {
@@ -235,16 +237,19 @@ public function getAllSoalSK() {
                         ->update();
     }
 
-    public function getSoal($no_soal, $jenis_id, $materi, $group_id) {
-        return $this->db->table('soal_latihan a')
+    public function getSoal($no_soal, $jenis_id, $materi, $group_id, $level_id = null) {
+        $builder = $this->db->table('soal_latihan a')
                         ->select('*')
                         ->join('jenis_soal b','b.jenis_id=a.jenis_id','left')
                         ->where('a.group_id',$group_id)
                         ->where('a.no_soal',$no_soal)
                         ->where('a.jenis_id',$jenis_id)
                         ->where('a.materi',$materi)
-                        ->where('a.status_cd','normal')
-                        ->get();
+                        ->where('a.status_cd','normal');
+        if ($group_id == 2 && !empty($level_id)) {
+            $builder->where('a.level_id', $level_id);
+        }
+        return $builder->get();
     }
 
     public function getSoalSK($no_soal,$group_id,$materi,$kolom_id,$sk_group_id) {
@@ -854,5 +859,71 @@ public function getAllSoalSK() {
                         ->where('created_user_id',$user_id)
                         ->where('status_cd','normal')
                         ->update();
+    }
+
+    // ==========================================
+    // DEDICATED METHODS FOR KECERDASAN (GROUP 2)
+    // ==========================================
+
+    public function getTotalSoalKecerdasan($jenis_id, $level_id) {
+        return $this->db->table('soal_latihan')
+                        ->select('*')
+                        ->where('group_id', 2)
+                        ->where('jenis_id', $jenis_id)
+                        ->where('level_id', $level_id)
+                        ->where('status_cd', 'normal')
+                        ->orderBy('no_soal', 'ASC')
+                        ->orderBy('soal_id', 'ASC')
+                        ->get();
+    }
+
+    public function getSoalKecerdasan($no_soal, $jenis_id, $level_id) {
+        return $this->db->table('soal_latihan a')
+                        ->select('a.*, b.jenis_nm')
+                        ->join('jenis_soal b', 'b.jenis_id = a.jenis_id', 'left')
+                        ->where('a.group_id', 2)
+                        ->where('a.jenis_id', $jenis_id)
+                        ->where('a.level_id', $level_id)
+                        ->where('a.no_soal', $no_soal)
+                        ->where('a.status_cd', 'normal')
+                        ->get();
+    }
+
+    public function getLastUsedKecerdasan($user_id, $jenis_id, $level_id) {
+        return $this->db->table('user_exam_latihan')
+                        ->select('used')
+                        ->where('user_id', $user_id)
+                        ->where('group_id', 2)
+                        ->where('jenis_id', $jenis_id)
+                        ->orderBy('user_exam', 'DESC')
+                        ->limit(1)
+                        ->get()
+                        ->getRow();
+    }
+
+    public function getResponCountKecerdasan($jenis_id, $level_id, $user_id, $used) {
+        return $this->db->table('respon_latihan a')
+                        ->join('soal_latihan b', 'b.soal_id = a.soal_id')
+                        ->select('count(a.respon_id) as jumlah_jawab')
+                        ->where('a.jenis_id', $jenis_id)
+                        ->where('b.level_id', $level_id)
+                        ->where('a.created_user_id', $user_id)
+                        ->where('a.used', $used)
+                        ->where('a.group_id', 2)
+                        ->where('a.status_cd', 'normal')
+                        ->get();
+    }
+
+    public function getResponLatihanKecerdasan($jenis_id, $level_id, $user_id, $used) {
+        return $this->db->table('respon_latihan a')
+                        ->select('a.*, a.pilihan_nm as pilihan_respon, b.kunci, b.soal_nm, b.pembahasan')
+                        ->join('soal_latihan b', 'b.soal_id = a.soal_id')
+                        ->where('a.jenis_id', $jenis_id)
+                        ->where('b.level_id', $level_id)
+                        ->where('a.created_user_id', $user_id)
+                        ->where('a.used', $used)
+                        ->where('a.group_id', 2)
+                        ->where('a.status_cd', 'normal')
+                        ->get();
     }
 }

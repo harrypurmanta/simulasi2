@@ -5,6 +5,13 @@ use App\Controllers\BaseController;
 use App\Models\Soalmodel;
 use App\Models\Jawabanmodel;
 use App\Models\Latihanmodel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+
 class Soallatihan extends BaseController
 {
     protected $soalmodel;
@@ -27,8 +34,7 @@ class Soallatihan extends BaseController
 		} else {
             $data = [
                 'materi' => $this->soalmodel->getjawAllJMateri()->getResult(),
-                'group' => $this->soalmodel->getGroupLatihan()->getResult(),
-                'soal' => $this->showsoal()
+                'group' => $this->soalmodel->getGroupLatihan()->getResult()
             ];
             return view('admin/soallatihan/soal',$data);
         }
@@ -777,6 +783,358 @@ class Soallatihan extends BaseController
 
         $update = $this->latihanmodel->updatestatus($jawaban_nm,$kolom_id,$status_cd,$old_status);
         log_message("debug",$status_cd);
+    }
+
+    public function downloadTemplate()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Template Import Soal');
+
+        // Headers
+        $headers = [
+            'A1' => 'No Soal',
+            'B1' => 'Soal',
+            'C1' => 'Pilihan A',
+            'D1' => 'Pilihan B',
+            'E1' => 'Pilihan C',
+            'F1' => 'Pilihan D',
+            'G1' => 'Pilihan E',
+            'H1' => 'Kunci',
+            'I1' => 'Pembahasan',
+            'J1' => 'Level (Khusus Kecerdasan)'
+        ];
+
+        foreach ($headers as $cell => $val) {
+            $sheet->setCellValue($cell, $val);
+        }
+
+        // Style header row
+        $headerStyle = [
+            'font' => [
+                'bold' => true,
+                'color' => ['rgb' => 'FFFFFF'],
+                'size' => 11,
+            ],
+            'fill' => [
+                'fillType' => Fill::FILL_SOLID,
+                'startColor' => ['rgb' => '1B3A57'],
+            ],
+            'alignment' => [
+                'horizontal' => Alignment::HORIZONTAL_CENTER,
+                'vertical' => Alignment::VERTICAL_CENTER,
+                'wrapText' => true,
+            ],
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                    'color' => ['rgb' => '000000'],
+                ],
+            ],
+        ];
+        $sheet->getStyle('A1:J1')->applyFromArray($headerStyle);
+        $sheet->getRowDimension(1)->setRowHeight(30);
+
+        // Sample data
+        $samples = [
+            [
+                'no' => 1,
+                'soal' => 'Apa fungsi utama dari protokol HTTP pada jaringan internet?',
+                'a' => 'Mentransfer halaman web dari server ke browser',
+                'b' => 'Mengirim pesan email antar server',
+                'c' => 'Mengamankan koneksi remote terminal',
+                'd' => 'Mengonversi nama domain menjadi alamat IP',
+                'e' => 'Mengatur alamat fisik kartu jaringan',
+                'kunci' => 'A',
+                'pembahasan' => 'HTTP (Hypertext Transfer Protocol) adalah protokol untuk mentransfer dokumen web.',
+                'level' => '1'
+            ],
+            [
+                'no' => 2,
+                'soal' => 'Perangkat jaringan yang berfungsi menghubungkan dua jaringan yang berbeda segmen disebut...',
+                'a' => 'Switch',
+                'b' => 'Hub',
+                'c' => 'Router',
+                'd' => 'Repeater',
+                'e' => 'Bridge',
+                'kunci' => 'C',
+                'pembahasan' => 'Router menghubungkan beberapa jaringan yang memiliki segmen/subnet berbeda.',
+                'level' => '1'
+            ],
+            [
+                'no' => 1,
+                'soal' => 'Contoh soal level 2: Manakah yang merupakan kepanjangan dari CPU?',
+                'a' => 'Central Processing Unit',
+                'b' => 'Computer Personal Unit',
+                'c' => 'Control Program Unit',
+                'd' => 'Core Processing Utility',
+                'e' => 'Central Power Unit',
+                'kunci' => 'A',
+                'pembahasan' => 'CPU adalah singkatan dari Central Processing Unit.',
+                'level' => '2'
+            ]
+        ];
+
+        $rowIdx = 2;
+        foreach ($samples as $sample) {
+            $sheet->setCellValue('A' . $rowIdx, $sample['no']);
+            $sheet->setCellValue('B' . $rowIdx, $sample['soal']);
+            $sheet->setCellValue('C' . $rowIdx, $sample['a']);
+            $sheet->setCellValue('D' . $rowIdx, $sample['b']);
+            $sheet->setCellValue('E' . $rowIdx, $sample['c']);
+            $sheet->setCellValue('F' . $rowIdx, $sample['d']);
+            $sheet->setCellValue('G' . $rowIdx, $sample['e']);
+            $sheet->setCellValue('H' . $rowIdx, $sample['kunci']);
+            $sheet->setCellValue('I' . $rowIdx, $sample['pembahasan']);
+            $sheet->setCellValue('J' . $rowIdx, $sample['level']);
+
+            $sheet->getStyle("A{$rowIdx}:J{$rowIdx}")->getBorders()->getAllBorders()->setBorderStyle(Border::BORDER_THIN);
+            $sheet->getStyle("A{$rowIdx}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle("H{$rowIdx}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $sheet->getStyle("J{$rowIdx}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $rowIdx++;
+        }
+
+        // Instructions note
+        $noteStart = $rowIdx + 2;
+        $sheet->setCellValue("A{$noteStart}", 'PETUNJUK PENGISIAN TEMPLATE IMPORT SOAL:');
+        $sheet->getStyle("A{$noteStart}")->getFont()->setBold(true)->getColor()->setRGB('D9534F');
+
+        $notes = [
+            '1. Kolom "No Soal" opsional. Jika dikosongkan, nomor soal otomatis dibuat berurutan oleh sistem.',
+            '2. Kolom "Soal" dan pilihan A s.d. D wajib diisi. Pilihan E opsional (boleh dikosongkan).',
+            '3. Kolom "Kunci" wajib diisi salah satu huruf kapital: A, B, C, D, atau E.',
+            '4. Kolom "Pembahasan" bersifat opsional untuk menjelaskan jawaban.',
+            '5. Kolom "Level (Khusus Kecerdasan)": Isi angka 1 - 10 (contoh: 1, 2) atau teks seperti "Level 1".',
+            '   Jika Anda memilih level tertentu pada form modal import, sistem akan memprioritaskan pilihan tersebut atau menggunakan nilai di kolom ini.',
+            '   Untuk group selain Kecerdasan (misal Passhand / Kepribadian), kolom Level boleh dikosongkan.',
+            '6. Simpan file dengan format .xlsx atau .xls, kemudian upload melalui modal Import Soal.'
+        ];
+
+        foreach ($notes as $idx => $note) {
+            $currRow = $noteStart + 1 + $idx;
+            $sheet->setCellValue("A{$currRow}", $note);
+            $sheet->getStyle("A{$currRow}")->getFont()->setItalic(true)->setSize(9);
+        }
+
+        // Auto width
+        foreach (range('A', 'J') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+        $sheet->getColumnDimension('B')->setAutoSize(false)->setWidth(45);
+        $sheet->getColumnDimension('I')->setAutoSize(false)->setWidth(35);
+
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'template_import_soal_latihan.xlsx';
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        exit;
+    }
+
+    public function importsoal()
+    {
+        if ($this->session->get("user_nm") == "") {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Sesi login telah berakhir! Silakan login kembali.']);
+        }
+
+        $group_id = $this->request->getPost('group_id');
+        $jenis_id = $this->request->getPost('jenis_id');
+        $default_level_id = $this->request->getPost('level_id');
+        $mode = $this->request->getPost('mode'); // 'append' or 'replace'
+
+        if (empty($group_id) || empty($jenis_id)) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Group Soal dan Jenis Soal wajib dipilih!']);
+        }
+
+        $file = $this->request->getFile('file_excel');
+        if (!$file || !$file->isValid()) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'File Excel tidak valid atau belum diunggah!']);
+        }
+
+        $ext = strtolower($file->getClientExtension());
+        if (!in_array($ext, ['xlsx', 'xls', 'csv'])) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Format file tidak didukung! Harap unggah file .xlsx, .xls, atau .csv']);
+        }
+
+        try {
+            $spreadsheet = IOFactory::load($file->getTempName());
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray(null, true, true, true);
+        } catch (\Exception $e) {
+            return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal membaca isi file: ' . $e->getMessage()]);
+        }
+
+        // Cache level_soal for Kecerdasan (group_id = 2)
+        $levelMap = [];
+        $levels = [];
+        if ($group_id == 2) {
+            $levels = $this->latihanmodel->getLevelByJenisId($jenis_id)->getResult();
+            foreach ($levels as $lvl) {
+                // map by level_id
+                $levelMap[(int)$lvl->level_id] = $lvl->level_id;
+                // map by lowercase level_nm
+                $cleanNm = strtolower(trim($lvl->level_nm));
+                $levelMap[$cleanNm] = $lvl->level_id;
+                // map by digit only e.g. "1" => level_id
+                preg_match('/\d+/', $cleanNm, $m);
+                if (!empty($m[0])) {
+                    $levelMap[(int)$m[0]] = $lvl->level_id;
+                }
+            }
+        }
+
+        $db = \Config\Database::connect();
+        $db->transStart();
+
+        // If mode == 'replace', delete existing questions for this group + jenis (+ level if selected)
+        if ($mode == 'replace') {
+            $builder = $db->table('soal_latihan')->where('group_id', $group_id)->where('jenis_id', $jenis_id);
+            if ($group_id == 2 && !empty($default_level_id) && is_numeric($default_level_id)) {
+                $builder->where('level_id', $default_level_id);
+            }
+            $existing = $builder->get()->getResult();
+            foreach ($existing as $ex) {
+                $db->table('jawaban_latihan')->where('soal_id', $ex->soal_id)->delete();
+            }
+            $builderDelete = $db->table('soal_latihan')->where('group_id', $group_id)->where('jenis_id', $jenis_id);
+            if ($group_id == 2 && !empty($default_level_id) && is_numeric($default_level_id)) {
+                $builderDelete->where('level_id', $default_level_id);
+            }
+            $builderDelete->delete();
+        }
+
+        $importCount = 0;
+        $maxNoSoalTracker = [];
+
+        foreach ($rows as $rowIndex => $row) {
+            if ($rowIndex == 1) continue; // Skip header
+
+            $soal_nm = trim($row['B'] ?? '');
+            if (empty($soal_nm)) {
+                continue; // Skip empty row
+            }
+
+            // If row contains instructions header, stop
+            if (stripos($soal_nm, 'PETUNJUK') !== false || stripos($soal_nm, 'CATATAN') !== false) {
+                continue;
+            }
+
+            $pilihanA = trim($row['C'] ?? '');
+            $pilihanB = trim($row['D'] ?? '');
+            $pilihanC = trim($row['E'] ?? '');
+            $pilihanD = trim($row['F'] ?? '');
+            $pilihanE = trim($row['G'] ?? '');
+            $kunci = strtoupper(trim($row['H'] ?? 'A'));
+            $pembahasan = trim($row['I'] ?? '');
+            $rawLevel = trim($row['J'] ?? '');
+
+            // Resolve level_id for Kecerdasan
+            $target_level_id = null;
+            if ($group_id == 2) {
+                if (!empty($default_level_id) && is_numeric($default_level_id)) {
+                    $target_level_id = $default_level_id;
+                } else if (!empty($rawLevel)) {
+                    $cleanRaw = strtolower($rawLevel);
+                    preg_match('/\d+/', $cleanRaw, $digitMatch);
+                    $digit = !empty($digitMatch[0]) ? (int)$digitMatch[0] : null;
+
+                    if (isset($levelMap[$cleanRaw])) {
+                        $target_level_id = $levelMap[$cleanRaw];
+                    } else if ($digit !== null && isset($levelMap[$digit])) {
+                        $target_level_id = $levelMap[$digit];
+                    } else if (!empty($levels)) {
+                        $target_level_id = $levels[0]->level_id;
+                    }
+                } else if (!empty($levels)) {
+                    $target_level_id = $levels[0]->level_id;
+                }
+            }
+
+            // Determine no_soal
+            $trackerKey = ($group_id == 2) ? (string)$target_level_id : 'all';
+            if (!isset($maxNoSoalTracker[$trackerKey])) {
+                $cur_max = $this->latihanmodel->getNoSoal($jenis_id, $group_id, $target_level_id)->getRow();
+                $maxNoSoalTracker[$trackerKey] = ($cur_max && $cur_max->no_soal) ? (int)$cur_max->no_soal : 0;
+            }
+
+            $rowNo = trim($row['A'] ?? '');
+            if (!empty($rowNo) && is_numeric($rowNo) && $mode != 'replace') {
+                $no_soal = (int)$rowNo;
+                if ($no_soal > $maxNoSoalTracker[$trackerKey]) {
+                    $maxNoSoalTracker[$trackerKey] = $no_soal;
+                }
+            } else {
+                $maxNoSoalTracker[$trackerKey]++;
+                $no_soal = $maxNoSoalTracker[$trackerKey];
+            }
+
+            // Validate key
+            if (!in_array($kunci, ['A', 'B', 'C', 'D', 'E'])) {
+                $kunci = 'A';
+            }
+
+            $dataSoal = [
+                'soal_nm' => $soal_nm,
+                'materi' => 99,
+                'no_soal' => $no_soal,
+                'kunci' => $kunci,
+                'jenis_id' => $jenis_id,
+                'group_id' => $group_id,
+                'level_id' => $target_level_id,
+                'pembahasan' => $pembahasan,
+                'status_cd' => 'normal'
+            ];
+
+            $soal_id = $this->latihanmodel->simpansoallatihan($dataSoal);
+            if ($soal_id) {
+                $pilihanList = [
+                    'A' => $pilihanA,
+                    'B' => $pilihanB,
+                    'C' => $pilihanC,
+                    'D' => $pilihanD,
+                    'E' => $pilihanE,
+                ];
+
+                foreach ($pilihanList as $pilNm => $pilVal) {
+                    if ($pilNm == 'E' && $pilVal === '') {
+                        continue;
+                    }
+                    $this->latihanmodel->simpanjawaban([
+                        'soal_id' => $soal_id,
+                        'jawaban_nm' => $pilVal,
+                        'pilihan_nm' => $pilNm,
+                        'status_cd' => 'normal'
+                    ]);
+                }
+                $importCount++;
+            }
+        }
+
+        $db->transComplete();
+
+        if ($db->transStatus() === false) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Terjadi kendala saat menyimpan data ke database. Silakan periksa kembali file Anda.'
+            ]);
+        }
+
+        if ($importCount === 0) {
+            return $this->response->setJSON([
+                'status' => 'warning',
+                'message' => 'Tidak ada soal yang berhasil diimpor. Pastikan format kolom file Excel sudah sesuai dengan template.'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => "Alhamdulillah! Berhasil mengimpor {$importCount} soal ke dalam sistem.",
+            'total' => $importCount
+        ]);
     }
 
 }

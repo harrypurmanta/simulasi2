@@ -75,8 +75,10 @@
                     </div>
                   </form>
                 </div>
-              <div class="col-lg-12">
-                <a href="<?= base_url() ?>/admin/soallatihan/viewTambahsoal" class="btn btn-primary">Tambah Soal</a>
+              <div class="col-lg-12 d-flex flex-wrap align-items-center mb-2">
+                <a href="<?= base_url() ?>/admin/soallatihan/viewTambahsoal" class="btn btn-primary mr-2"><i class="fas fa-plus mr-1"></i> Tambah Soal</a>
+                <button type="button" class="btn btn-success mr-2" onclick="openModalImport()"><i class="fas fa-file-excel mr-1"></i> Import Soal</button>
+                <a href="<?= base_url('admin/soallatihan/downloadTemplate') ?>" class="btn btn-outline-success"><i class="fas fa-download mr-1"></i> Download Template Excel</a>
               </div>
               </div>
               <!-- /.card-header -->
@@ -102,6 +104,93 @@
         </div>
       </div>
     </section>
+
+    <!-- Modal Import Soal -->
+    <div class="modal fade" id="modalImportSoal" tabindex="-1" role="dialog" aria-labelledby="modalImportSoalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="modalImportSoalLabel"><i class="fas fa-file-excel mr-2"></i> Import Soal Latihan (Excel / CSV)</h5>
+            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="formImportSoal" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="alert alert-info">
+                <i class="fas fa-info-circle mr-1"></i> Format file harus sesuai dengan template. Jika belum memiliki template, silakan <a href="<?= base_url('admin/soallatihan/downloadTemplate') ?>" class="alert-link font-weight-bold"><i class="fas fa-download"></i> Download Template Excel Di Sini</a>.
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="import_group_id">Group Soal <span class="text-danger">*</span></label>
+                    <select name="group_id" id="import_group_id" class="form-control" onchange="handleImportGroupChange()" required>
+                      <option value="" disabled selected>Pilih Group Soal</option>
+                      <?php foreach ($group as $key) { ?>
+                        <option value="<?= $key->group_soal_id ?>"><?= $key->group_nm ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="import_jenis_id">Jenis Soal <span class="text-danger">*</span></label>
+                    <select name="jenis_id" id="import_jenis_id" class="form-control" onchange="handleImportJenisChange()" required>
+                      <option value="" disabled selected>Pilih Jenis Soal</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" id="import_row_level" style="display: none;">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="import_level_id">Level Soal (Khusus Group Kecerdasan)</label>
+                    <select name="level_id" id="import_level_id" class="form-control">
+                      <option value="">Sesuai Kolom Level di Excel (Otomatis)</option>
+                    </select>
+                    <small class="form-text text-muted">
+                      Pilih <i>"Sesuai Kolom Level di Excel"</i> jika file Anda memuat beberapa level sekaligus (berdasarkan kolom J di Excel). Atau pilih level tertentu jika semua soal yang diimpor diperuntukkan untuk 1 level spesifik.
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="import_file">Pilih File Excel / CSV (.xlsx, .xls, .csv) <span class="text-danger">*</span></label>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="import_file" name="file_excel" accept=".xlsx, .xls, .csv" required onchange="updateFileName(this)">
+                  <label class="custom-file-label" id="import_file_label" for="import_file">Pilih file...</label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="d-block font-weight-bold">Opsi Penanganan Soal yang Sudah Ada:</label>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="mode_append" name="mode" value="append" class="custom-control-input" checked>
+                  <label class="custom-control-label" for="mode_append">Tambahkan ke soal yang sudah ada (Append)</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="mode_replace" name="mode" value="replace" class="custom-control-input">
+                  <label class="custom-control-label text-danger" for="mode_replace"><i class="fas fa-exclamation-triangle"></i> Hapus &amp; timpa soal lama pada kategori ini</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+              <button type="submit" id="btnSubmitImport" class="btn btn-success">
+                <span id="btnImportSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <i class="fas fa-upload mr-1" id="btnImportIcon"></i> Mulai Import
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="d-none" id='loader-wrapper'>
         <div class="loader"></div>
       </div>
@@ -355,6 +444,181 @@
         ]
     })
 }
+
+  function updateFileName(input) {
+    var fileName = input.files[0] ? input.files[0].name : 'Pilih file...';
+    $('#import_file_label').text(fileName);
+  }
+
+  function openModalImport() {
+    var currentGroup = $('#group_id').val();
+    var currentJenis = $('#jenis_id').val();
+    var currentLevel = $('#level_id').val();
+
+    if (currentGroup) {
+      $('#import_group_id').val(currentGroup);
+    }
+    handleImportGroupChange(currentJenis, currentLevel);
+    $('#modalImportSoal').modal('show');
+  }
+
+  function handleImportGroupChange(targetJenis, targetLevel) {
+    var group_id = $('#import_group_id').val();
+    if (group_id == 2) {
+      $('#import_row_level').show();
+    } else {
+      $('#import_row_level').hide();
+      $('#import_level_id').html('<option value="">Sesuai Kolom Level di Excel (Otomatis)</option>');
+    }
+
+    if (!group_id) {
+      $('#import_jenis_id').html('<option value="" disabled selected>Pilih Jenis Soal</option>');
+      return;
+    }
+
+    $.ajax({
+      url: "<?= base_url('admin/soallatihan/getJenis') ?>",
+      type: "post",
+      dataType: 'json',
+      data: { "group_id": group_id },
+      success: function(data) {
+        $('#import_jenis_id').empty();
+        $('#import_jenis_id').append('<option value="" disabled selected>Pilih Jenis Soal</option>');
+        $.each(data, function(index, item) {
+          $('#import_jenis_id').append(`<option value="${item.jenis_id}">${item.jenis_nm}</option>`);
+        });
+
+        if (targetJenis) {
+          $('#import_jenis_id').val(targetJenis);
+        } else if (data.length > 0) {
+          $('#import_jenis_id').val(data[0].jenis_id);
+        }
+
+        if (group_id == 2) {
+          loadImportLevels(targetLevel);
+        }
+      }
+    });
+  }
+
+  function handleImportJenisChange() {
+    var group_id = $('#import_group_id').val();
+    if (group_id == 2) {
+      loadImportLevels();
+    }
+  }
+
+  function loadImportLevels(targetLevel) {
+    var jenis_id = $('#import_jenis_id').val();
+    if (!jenis_id) return;
+
+    $.ajax({
+      url: "<?= base_url('admin/soallatihan/getLevel') ?>",
+      type: "post",
+      dataType: 'json',
+      data: { "jenis_id": jenis_id },
+      success: function(data) {
+        $('#import_level_id').empty();
+        $('#import_level_id').append('<option value="">Sesuai Kolom Level di Excel (Otomatis)</option>');
+        $.each(data, function(index, item) {
+          var isSel = (targetLevel && targetLevel == item.level_id) ? 'selected' : '';
+          $('#import_level_id').append(`<option value="${item.level_id}" ${isSel}>${item.level_nm}</option>`);
+        });
+      }
+    });
+  }
+
+  $(function() {
+    $('#formImportSoal').on('submit', function(e) {
+      e.preventDefault();
+
+      var group_id = $('#import_group_id').val();
+      var jenis_id = $('#import_jenis_id').val();
+      var fileInput = document.getElementById('import_file');
+
+      if (!group_id || !jenis_id) {
+        Swal.fire('Peringatan', 'Harap pilih Group Soal dan Jenis Soal!', 'warning');
+        return;
+      }
+
+      if (!fileInput.files.length) {
+        Swal.fire('Peringatan', 'Harap pilih file Excel / CSV terlebih dahulu!', 'warning');
+        return;
+      }
+
+      var formData = new FormData(this);
+      var mode = $('input[name="mode"]:checked').val();
+
+      var confirmTitle = 'Konfirmasi Import';
+      var confirmText = 'Apakah Anda yakin ingin mengimpor soal dari file ini?';
+      if (mode === 'replace') {
+        confirmTitle = 'Perhatian! Mode Timpa Soal';
+        confirmText = 'Anda memilih mode TIMPA. Seluruh soal lama pada kategori yang dipilih akan dihapus dan digantikan oleh soal di file Excel. Lanjutkan?';
+      }
+
+      Swal.fire({
+        title: confirmTitle,
+        text: confirmText,
+        icon: mode === 'replace' ? 'warning' : 'question',
+        showCancelButton: true,
+        confirmButtonColor: mode === 'replace' ? '#d33' : '#28a745',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Ya, Import Sekarang',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $('#btnSubmitImport').prop('disabled', true);
+          $('#btnImportSpinner').removeClass('d-none');
+          $('#btnImportIcon').addClass('d-none');
+          $("#loader-wrapper").removeClass("d-none");
+
+          $.ajax({
+            url: "<?= base_url('admin/soallatihan/importsoal') ?>",
+            type: "POST",
+            data: formData,
+            dataType: "json",
+            contentType: false,
+            processData: false,
+            cache: false,
+            success: function(res) {
+              $('#btnSubmitImport').prop('disabled', false);
+              $('#btnImportSpinner').addClass('d-none');
+              $('#btnImportIcon').removeClass('d-none');
+              $("#loader-wrapper").addClass("d-none");
+
+              if (res.status === 'success') {
+                Swal.fire({
+                  title: 'Import Berhasil!',
+                  text: res.message,
+                  icon: 'success',
+                  confirmButtonColor: '#3085d6',
+                  confirmButtonText: 'OK'
+                }).then(() => {
+                  $('#modalImportSoal').modal('hide');
+                  $('#formImportSoal')[0].reset();
+                  $('#import_file_label').text('Pilih file...');
+                  // Sync filter with imported category and refresh table
+                  $('#group_id').val(group_id);
+                  getJenis(jenis_id, $('#import_level_id').val(), true);
+                });
+              } else if (res.status === 'warning') {
+                Swal.fire('Perhatian', res.message, 'warning');
+              } else {
+                Swal.fire('Gagal Import', res.message || 'Terjadi kesalahan sistem.', 'error');
+              }
+            },
+            error: function(xhr, status, error) {
+              $('#btnSubmitImport').prop('disabled', false);
+              $('#btnImportSpinner').addClass('d-none');
+              $('#btnImportIcon').removeClass('d-none');
+              $("#loader-wrapper").addClass("d-none");
+              Swal.fire('Gagal', 'Terjadi kesalahan pada server saat mengimpor data.', 'error');
+            }
+          });
+        }
+      });
+    });
+  });
 
   function checkboxenable(jawaban_nm,kolom_id,soal_id) {
     var checkBox = document.getElementById('customSwitch1_'+kolom_id+'_'+soal_id);

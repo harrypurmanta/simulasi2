@@ -151,6 +151,10 @@ $routes->post('soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLe
 $routes->get('admin/soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
 $routes->post('admin/soallatihan/getLevel', '\App\Controllers\Admin\Soallatihan::getLevel');
 $routes->post('admin/soallatihan/setSessionLevel', '\App\Controllers\Admin\Soallatihan::setSessionLevel');
+$routes->get('admin/soallatihan/downloadTemplate', '\App\Controllers\Admin\Soallatihan::downloadTemplate');
+$routes->post('admin/soallatihan/importsoal', '\App\Controllers\Admin\Soallatihan::importsoal');
+$routes->get('soallatihan/downloadTemplate', '\App\Controllers\Admin\Soallatihan::downloadTemplate');
+$routes->post('soallatihan/importsoal', '\App\Controllers\Admin\Soallatihan::importsoal');
 
 $routes->get('jawabanlatihan/showjawaban', '\App\Controllers\Admin\Jawabanlatihan::showjawaban');
 $routes->post('jawabanlatihan/showjawaban', '\App\Controllers\Admin\Jawabanlatihan::showjawaban');

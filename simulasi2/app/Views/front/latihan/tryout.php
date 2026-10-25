@@ -252,6 +252,7 @@ $request = \Config\Services::request();
         let no_soal = $("#inp_no_soal").val();
         let pilihan_nm = $("#inp_pilihan_nm").val();
         let group_id = <?= $group_id ?>;
+        let level_id = <?= !empty($level_id) ? (int)$level_id : ($request->uri->getSegment(5) ? (int)$request->uri->getSegment(5) : 'null') ?>;
         let materi = 99;
         let waktu = document.getElementById('countdown').textContent;
         let used =  $("#used").val();
@@ -263,6 +264,7 @@ $request = \Config\Services::request();
                 "jawaban_id": jawaban_id,
                 "soal_id": soal_id,
                 "jenis_id": jenis_id,
+                "level_id": level_id,
                 "no_soal": no_soal,
                 "pilihan_nm": pilihan_nm,
                 "group_id": group_id,

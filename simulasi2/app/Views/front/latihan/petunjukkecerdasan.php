@@ -23,13 +23,13 @@
                 <section class="content">
                     <div class="row">
                         <div class="col-md-12" style="height: 400px;">
-                            <div class="bg-gray col-md-8 text-center" style="top: 50%;left: 50%;transform: translate(-50%, -50%);height: 300px;">
+                            <div class="bg-gray col-md-8 text-center" style="top: 50%;left: 50%;transform: translate(-50%, -50%);min-height: 300px; border-radius: 12px; padding: 25px 20px;">
                                 <h3 style="padding-top:10px;"><b>Petunjuk Pengerjaan</b></h3>
-                                <h3><b><?= $jenis->jenis_nm ?></b></h3>
-                                <p>
-                                    
+                                <h3><b><?= $jenis->jenis_nm ?><?= !empty($level_nm) ? " <span class='label label-primary' style='font-size:16px; vertical-align: middle; margin-left: 8px;'>".esc($level_nm)."</span>" : "" ?></b></h3>
+                                <p style="margin-top: 15px; margin-bottom: 25px; color: #555;">
+                                    Silakan klik tombol mulai di bawah ini untuk memulai latihan soal.
                                 </p>
-                                <a href="<?= base_url()."/latihan/tryout/".$group_id."/".$jenis_id ?>" class="btn btn-success" style="font-size:18px;">Mulai</a>
+                                <a href="<?= base_url()."/latihan/tryout_kecerdasan/".$jenis_id . (!empty($level_id) ? "/".$level_id : "") ?>" class="btn btn-success" style="font-size:18px; padding: 8px 30px; border-radius: 6px;">Mulai</a>
                             </div>
                         </div>
                     </div>

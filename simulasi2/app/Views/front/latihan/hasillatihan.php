@@ -39,6 +39,7 @@ $request = \Config\Services::request();
                                 </div>
                                 <div class="row" style="padding-bottom: 20px;">
                                     <div class="col-md-12 text-center">
+                                        <a href="<?= base_url('latihan/jenis/2') ?>" class="btn btn-default" style="margin-right: 8px;"><i class="fa fa-arrow-left"></i> Kembali ke Level</a>
                                         <a href="<?=base_url()?>/latihan/pembahasan_latihan/<?= $request->uri->getSegment(3) ?>/<?= $request->uri->getSegment(4) ?>/<?= $request->uri->getSegment(5) ?>/<?= $request->uri->getSegment(6) ?>" class="btn btn-primary">Pembahasan <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
