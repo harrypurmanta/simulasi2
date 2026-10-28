@@ -36,7 +36,7 @@ $title = 'Petunjuk Latihan Passhand - Bintang Timur Prestasi';
                                     <a href="<?= base_url('latihan/jenis/'.$group_id) ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                                         <i class="fas fa-arrow-left me-1"></i> Kembali
                                     </a>
-                                    <a href="<?= base_url()."/latihan/tryout/".$group_id."/".$jenis_id ?>" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">
+                                    <a href="<?= base_url('latihan/tryout/' . $group_id . '/' . $jenis_id) ?>" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">
                                         Mulai Sekarang <i class="fas fa-play ms-1"></i>
                                     </a>
                                 </div>

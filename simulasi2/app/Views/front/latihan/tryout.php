@@ -3,27 +3,42 @@ $request = \Config\Services::request();
 $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
 ?>
 <?= $this->include('front/template/head') ?>
+<head>
+    <style>
+        #p_no_soal {
+            font-size: 15.5px !important;
+            font-weight: 600 !important;
+            padding: 6px 16px !important;
+            letter-spacing: 0.3px;
+        }
+        #inp_soal_nm {
+            font-size: 1.15rem !important;
+            line-height: 1.7 !important;
+            font-weight: 500;
+        }
+    </style>
+</head>
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
-        <div class="content-wrapper">
-            <div class="container py-3">
+        <div class="content-wrapper" style="padding-top: 8px !important; padding-bottom: 20px !important;">
+            <div class="container pt-0 pb-3">
                 <!-- Tahapan Ujian & Waktu Timer -->
-                <div class="row g-3 mb-3">
+                <div class="row g-2 mb-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 bg-white h-100">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
                                 <span class="badge bg-success bg-opacity-10 text-success px-3 py-1 rounded-pill fw-bold">
                                     <i class="fas fa-layer-group me-1"></i> TAHAPAN LATIHAN
                                 </span>
                             </div>
-                            <div class="card bg-success text-white border-0 p-2 rounded-3 text-center shadow-sm" style="max-width: 250px;">
+                            <div class="card bg-success text-white border-0 py-1 px-3 rounded-3 text-center shadow-sm" style="max-width: 250px;">
                                 <div class="fw-bold small"><?= esc($jenis_nm->jenis_nm ?? 'Latihan') ?></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
                             </span>
@@ -33,14 +48,14 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                 </div>
 
                 <!-- Soal & Pilihan Jawaban + Box Nomor Soal -->
-                <div class="row g-3">
+                <div class="row g-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                             <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="badge bg-success rounded-pill px-3 py-1" id="p_no_soal">Soal no. 1</span>
+                                    <span class="badge bg-success rounded-pill px-3 py-1" id="p_no_soal" style="font-size: 15.5px; font-weight: 600; padding: 6px 16px;">Soal no. 1</span>
                                 </div>
-                                <div id="inp_soal_nm" class="fs-6 text-dark mb-2" style="line-height: 1.6;"></div>
+                                <div id="inp_soal_nm" class="text-dark mb-2" style="font-size: 1.15rem; line-height: 1.7; font-weight: 500;"></div>
                                 <div id="dv_img_soal" class="text-center my-2"></div>
                                 <input type="hidden" id="inp_soal_id">
                                 <input type="hidden" value="1" id="inp_no_soal">
@@ -62,7 +77,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                     </div>
 
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 20px; z-index: 10;">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 10px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-success"></i> Navigasi Soal
@@ -168,7 +183,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                                     icon: "success"
                                 });
                                 updateFinishRespon(materi,jenis_id);
-                                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used+"/" +group_id;
+                                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used+"/" +group_id;
                             }
                         });
 
@@ -263,7 +278,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             seconds--;
             $("#countdown").text(convertSeconds(seconds));
             if (seconds === 0) {
-                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + jenis_id;
+                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + jenis_id;
             } else {
                 //Do nothing
             }

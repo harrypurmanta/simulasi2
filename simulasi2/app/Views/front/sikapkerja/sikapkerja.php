@@ -30,7 +30,7 @@ $title = 'Sikap Kerja (Kecermatan) - Bintang Timur Prestasi';
                                     <h4 class="fw-bold text-dark mb-2"><?= esc($key->sk_group_nm) ?></h4>
                                     <p class="text-muted small mb-0">Simulasi kolom angka / huruf / simbol hilang</p>
                                 </div>
-                                <a href="<?= base_url() ?>/sikapkerja/pilihansk/<?= $key->sk_group_id ?>" class="btn btn-warning text-dark w-100 rounded-pill fw-bold py-2">
+                                <a href="<?= base_url('sikapkerja/pilihansk/' . $key->sk_group_id) ?>" class="btn btn-warning text-dark w-100 rounded-pill fw-bold py-2">
                                     Mulai Ujian <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>

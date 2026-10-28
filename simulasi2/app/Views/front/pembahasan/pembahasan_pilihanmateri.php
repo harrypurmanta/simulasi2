@@ -25,9 +25,9 @@ $title = 'Petunjuk Pembahasan - Bintang Timur Prestasi';
                                 </p>
                                 <?php
                                     if ($group[0]->group_soal_id == 4) {
-                                        $url = base_url()."/pembahasan/sikapkerja/".$materi_id."/".$group[0]->group_soal_id;
+                                        $url = base_url('pembahasan/sikapkerja/' . $materi_id . '/' . $group[0]->group_soal_id);
                                     } else {
-                                        $url = base_url()."/pembahasan/ujian/".$materi_id."/".$group[0]->group_soal_id;
+                                        $url = base_url('pembahasan/ujian/' . $materi_id . '/' . $group[0]->group_soal_id);
                                     }
                                 ?>
                                 <div class="d-flex justify-content-center gap-2">

@@ -79,7 +79,7 @@ $title = ($group_id == 2) ? 'Latihan Kecerdasan - Bintang Timur Prestasi' : 'Pil
                                     Pilih Level <i class="fas fa-arrow-circle-right ms-1"></i>
                                 </a>
                             <?php else: ?>
-                                <a href="<?= base_url()."/latihan/petunjuk/".$group_id."/".$key->jenis_id ?>" class="small-box-footer">
+                                <a href="<?= base_url('latihan/petunjuk/' . $group_id . '/' . $key->jenis_id) ?>" class="small-box-footer">
                                     Mulai Latihan <i class="fas fa-arrow-circle-right ms-1"></i>
                                 </a>
                             <?php endif; ?>
@@ -131,7 +131,7 @@ $title = ($group_id == 2) ? 'Latihan Kecerdasan - Bintang Timur Prestasi' : 'Pil
 
     <?= $this->include('front/template/scriptjs') ?>
     <script>
-        var baseUrl = "<?= base_url() ?>";
+        var baseUrl = "<?= rtrim(base_url(), '/') ?>";
         var groupId = "<?= $group_id ?>";
         var preloadedLevels = <?= json_encode($levels ?? []) ?>;
 

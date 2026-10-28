@@ -31,7 +31,7 @@ $title = 'Review Pembahasan Latihan - Bintang Timur Prestasi';
                                     <h4 class="fw-bold text-dark mb-2"><?= esc($key->group_nm) ?></h4>
                                     <p class="text-muted small mb-0">Ulasan pembahasan materi per jenis soal</p>
                                 </div>
-                                <a href="<?= base_url()."/latihan/pembahasan_latihan_jenis/".$key->group_soal_id ?>" class="btn btn-info text-white w-100 rounded-pill fw-semibold py-2">
+                                <a href="<?= base_url('latihan/pembahasan_latihan_jenis/' . $key->group_soal_id) ?>" class="btn btn-info text-white w-100 rounded-pill fw-semibold py-2">
                                     Pilih Jenis Soal <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>

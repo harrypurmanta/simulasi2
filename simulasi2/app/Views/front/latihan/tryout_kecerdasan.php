@@ -255,7 +255,7 @@ $title = 'Latihan Kecerdasan - Bintang Timur Prestasi';
             icon: "success",
             confirmButtonText: "Lihat Hasil"
         }).then(() => {
-            window.location.href = "<?= base_url() ?>/latihan/hasillatihan_kecerdasan/99/" + jenis_id + "/" + level_id + "/" + used;
+            window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan_kecerdasan/99/" + jenis_id + "/" + level_id + "/" + used;
         });
     }
 

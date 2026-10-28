@@ -3,16 +3,31 @@ $request = \Config\Services::request();
 $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
 ?>
 <?= $this->include('front/template/head') ?>
+<head>
+    <style>
+        #p_no_soal {
+            font-size: 15.5px !important;
+            font-weight: 600 !important;
+            padding: 6px 16px !important;
+            letter-spacing: 0.3px;
+        }
+        #inp_soal_nm {
+            font-size: 1.15rem !important;
+            line-height: 1.7 !important;
+            font-weight: 500;
+        }
+    </style>
+</head>
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
-        <div class="content-wrapper">
-            <div class="container py-3">
+        <div class="content-wrapper" style="padding-top: 8px !important; padding-bottom: 20px !important;">
+            <div class="container pt-0 pb-3">
                 <!-- Tahapan Ujian & Waktu Timer -->
-                <div class="row g-3 mb-3">
+                <div class="row g-2 mb-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
-                            <div class="d-flex align-items-center justify-content-between mb-2">
+                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 bg-white h-100">
+                            <div class="d-flex align-items-center justify-content-between mb-1">
                                 <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-bold">
                                     <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
                                 </span>
@@ -22,7 +37,7 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                                 <?php foreach ($group as $key) {
                                     $active = ($request->getUri()->getSegment(4) == $key->group_soal_id);
                                     echo "<div class='col-6 col-sm-4 col-md-3'>
-                                            <div class='card text-center p-2 rounded-3 border transition-hover " . ($active ? 'bg-success text-white border-success shadow-sm' : 'bg-light text-muted border-light-subtle') . "'>
+                                            <div class='card text-center py-1 px-2 rounded-3 border transition-hover " . ($active ? 'bg-success text-white border-success shadow-sm' : 'bg-light text-muted border-light-subtle') . "'>
                                                 <div class='small fw-bold'>" . esc($key->group_nm) . "</div>
                                             </div>
                                           </div>";
@@ -31,7 +46,7 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Ujian
                             </span>
@@ -41,14 +56,14 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                 </div>
 
                 <!-- Soal & Pilihan Jawaban + Box Nomor Soal -->
-                <div class="row g-3">
+                <div class="row g-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
                             <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <span class="badge bg-primary rounded-pill px-3 py-1" id="p_no_soal">Soal no. <?= $soal[0]->no_soal ?></span>
+                                    <span class="badge bg-primary rounded-pill px-3 py-1" id="p_no_soal" style="font-size: 15.5px; font-weight: 600; padding: 6px 16px;">Soal no. <?= $soal[0]->no_soal ?></span>
                                 </div>
-                                <div id="inp_soal_nm" class="fs-6 text-dark mb-2" style="line-height: 1.6;"><?= $soal[0]->soal_nm ?></div>
+                                <div id="inp_soal_nm" class="text-dark mb-2" style="font-size: 1.15rem; line-height: 1.7; font-weight: 500;"><?= $soal[0]->soal_nm ?></div>
                                 <div id="dv_img_soal" class="text-center my-2"></div>
                                 <input type="hidden" value="<?= $soal[0]->soal_id ?>" id="inp_soal_id">
                                 <input type="hidden" value="1" id="inp_no_soal">
@@ -77,7 +92,7 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                     </div>
 
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 20px; z-index: 10;">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 10px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-primary"></i> Navigasi Soal
@@ -121,9 +136,14 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
         for (let index = 0; index < dv.length; index++) {
             dv[index].style.border = "none";
         }
-        $("#inp_jawaban_id").val(jawaban_id);
-        $("#inp_pilihan_nm").val(pilihan_nm);
-        document.getElementById("dv_jawaban_" + jawaban_id).style.border = "thick solid #00a65a";
+        if (jawaban_id && jawaban_id !== "" && jawaban_id !== "null") {
+            $("#inp_jawaban_id").val(jawaban_id);
+            $("#inp_pilihan_nm").val(pilihan_nm);
+            let el = document.getElementById("dv_jawaban_" + jawaban_id);
+            if (el) {
+                el.style.border = "thick solid #00a65a";
+            }
+        }
     }
 
     function setboxsoal(no_soal) {
@@ -163,7 +183,7 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
             success: function(data) {
                 if (data.proc == "selesai") {
                     let grp_id = group_id + 1;
-                    window.location.href = "<?= base_url() ?>/materi/pilihanMateri/" + materi + "/" +
+                    window.location.href = "<?= rtrim(base_url(), '/') ?>/materi/pilihanMateri/" + materi + "/" +
                         grp_id;
                 } else {
                     if (data == "jawaban_kosong") {
@@ -196,7 +216,9 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                         $("#inp_pilihan_nm").val("");
                         $("#dv_img_soal").html(data.img_soal);
                         setTimeout(() => {
-                            selectJawaban(data.jawaban_idx,data.pilihan_nms);
+                            if (data.jawaban_idx && data.jawaban_idx !== "") {
+                                selectJawaban(data.jawaban_idx, data.pilihan_nms);
+                            }
                         }, 10);
                         
                     }
@@ -246,7 +268,7 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
             $("#countdown").text(convertSeconds(seconds));
             if (seconds === 0) {
                 let grp_id = group_id + 1;
-                window.location.href = "<?= base_url() ?>/materi/pilihanMateri/" + materi + "/" + grp_id;
+                window.location.href = "<?= rtrim(base_url(), '/') ?>/materi/pilihanMateri/" + materi + "/" + grp_id;
             } else {
                 //Do nothing
             }

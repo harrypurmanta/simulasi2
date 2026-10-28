@@ -32,7 +32,7 @@ $title = 'Review Jenis Latihan - Bintang Timur Prestasi';
                             <div class="inner">
                                 <h4><?= esc($key->jenis_nm) ?></h4>
                             </div>
-                            <a href="<?= base_url()."/latihan/pembahasan_latihan/".$request->getUri()->getSegment(3)."/".$key->jenis_id ?>" class="small-box-footer bg-info text-white">
+                            <a href="<?= base_url('latihan/pembahasan_latihan/' . $request->getUri()->getSegment(3) . '/' . $key->jenis_id) ?>" class="small-box-footer bg-info text-white">
                                 Buka Pembahasan <i class="fas fa-arrow-circle-right ms-1"></i>
                             </a>
                         </div>

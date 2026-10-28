@@ -45,9 +45,9 @@ $title = 'Petunjuk Pengerjaan Soal - Bintang Timur Prestasi';
                                     </a>
                                     <?php
                                         if ($group[0]->group_soal_id == 4) {
-                                            $url = base_url()."/tryout/sikapkerja/".$materi_id."/".$group[0]->group_soal_id;
+                                            $url = base_url('tryout/sikapkerja/' . $materi_id . '/' . $group[0]->group_soal_id);
                                         } else {
-                                            $url = base_url()."/tryout/ujian/".$materi_id."/".$group[0]->group_soal_id;
+                                            $url = base_url('tryout/ujian/' . $materi_id . '/' . $group[0]->group_soal_id);
                                         }
                                     ?>
                                     <a href="<?= $url ?>" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">

@@ -53,39 +53,44 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
+      <div class="container-fluid px-3 px-lg-4">
+        <div class="row align-items-center mb-2">
           <div class="col-sm-6">
-            <h1>Reset Materi</h1>
+            <h1 class="m-0 fw-bold text-dark d-flex align-items-center">
+              <i class="fas fa-redo-alt text-warning me-2"></i> Reset Respon Materi Ujian
+            </h1>
+            <p class="text-muted small mb-0 mt-1">Reset riwayat pengerjaan paket ujian peserta untuk simulasi ulang</p>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 mt-2 mt-sm-0">
             <ol class="breadcrumb float-sm-end">
-              <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin/users') ?>">Users</a></li>
               <li class="breadcrumb-item active">Reset Materi</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
+      <div class="container-fluid px-3 px-lg-4">
         <div class="row">
           <div class="col-12">
-            <div class="card">
+            <div class="card border-0 shadow-sm rounded-4">
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="table_materi" class="table table-bordered table-hover">
+                <div class="table-responsive">
+                <table id="table_materi" class="table table-bordered table-hover align-middle">
                   <thead>
                   <tr>
-                    <th style="text-align:center;">No.</th>
-                    <th style="text-align:center;">Materi</th>
-                    <th style="text-align:center;">Passhand</th>
-                    <th style="text-align:center;">Kecerdasan</th>
-                    <th style="text-align:center;">Kepribadian</th>
-                    <th style="text-align:center;">Sikap Kerja</th>
-                    <th style="text-align:center;">Semua</th>
+                    <th class="text-center" style="width: 45px;">No.</th>
+                    <th>Nama Paket Materi</th>
+                    <th class="text-center">Passhand</th>
+                    <th class="text-center">Kecerdasan</th>
+                    <th class="text-center">Kepribadian</th>
+                    <th class="text-center">Sikap Kerja</th>
+                    <th class="text-center" style="width: 140px;">Reset Total</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -94,17 +99,17 @@
                         foreach ($materi as $key) {
                     ?>
                   <tr>
-                    <td style="text-align:center;"><?= $no++ ?></td>
-                    <td><?= $key->materi_nm ?></td>
-                    <td style="text-align:center;"><?php if ($key->materi_id == 1) {
-                        echo "<button class='btn btn-primary' onclick='resetrespon($key->materi_id,1)'>Reset</button>";
-                    } ?></td>
-                    <td style="text-align:center;"><button class="btn btn-primary" onclick="resetrespon(<?= $key->materi_id ?>,2)">Reset</button></td>
-                    <td style="text-align:center;"><button class="btn btn-primary" onclick="resetrespon(<?= $key->materi_id ?>,3)">Reset</button></td>
-                    <td style="text-align:center;"><?php if ($key->materi_id == 1) {
-                        echo "<button class='btn btn-primary' onclick='resetrespon($key->materi_id,4)'>Reset</button>";
-                    } ?></td>
-                    <td style="text-align:center;"><button class="btn btn-primary" onclick="resetrespon(<?= $key->materi_id ?>,'semua')">Reset Semua</button></td>
+                    <td class="text-center fw-semibold"><?= $no++ ?></td>
+                    <td class="fw-bold text-dark"><?= esc($key->materi_nm) ?></td>
+                    <td class="text-center"><?php if ($key->materi_id == 1) {
+                        echo "<button class='btn btn-sm btn-outline-danger rounded-pill px-3' onclick='resetrespon($key->materi_id,1)'><i class='fas fa-undo me-1'></i> Reset</button>";
+                    } else { echo "-"; } ?></td>
+                    <td class="text-center"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,2)"><i class="fas fa-undo me-1"></i> Reset</button></td>
+                    <td class="text-center"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,3)"><i class="fas fa-undo me-1"></i> Reset</button></td>
+                    <td class="text-center"><?php if ($key->materi_id == 1) {
+                        echo "<button class='btn btn-sm btn-outline-danger rounded-pill px-3' onclick='resetrespon($key->materi_id,4)'><i class='fas fa-undo me-1'></i> Reset</button>";
+                    } else { echo "-"; } ?></td>
+                    <td class="text-center"><button class="btn btn-sm btn-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,'semua')"><i class="fas fa-trash-alt me-1"></i> Semua</button></td>
                   </tr>
                     <?php
                         }

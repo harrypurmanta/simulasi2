@@ -169,7 +169,7 @@ $title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
                                     icon: "success"
                                 });
                                 updateFinishRespon(materi,jenis_id);
-                                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used;
+                                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used;
                             }
                         });
 
@@ -260,7 +260,7 @@ $title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
             seconds--;
             $("#countdown").text(convertSeconds(seconds));
             if (seconds === 0) {
-                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + jenis_id;
+                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + jenis_id;
             } else {
                 //Do nothing
             }

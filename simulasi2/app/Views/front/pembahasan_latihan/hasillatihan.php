@@ -53,7 +53,7 @@ $persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
                                     <a href="<?= base_url('latihan') ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
                                         <i class="fas fa-arrow-left me-1"></i> Kembali ke Menu Latihan
                                     </a>
-                                    <a href="<?= base_url() ?>/latihan/pembahasan_latihan/<?= $request->getUri()->getSegment(3) ?>/<?= $request->getUri()->getSegment(4) ?>" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                                    <a href="<?= base_url('latihan/pembahasan_latihan/' . $request->getUri()->getSegment(3) . '/' . $request->getUri()->getSegment(4)) ?>" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
                                         Lihat Pembahasan <i class="fas fa-arrow-circle-right ms-1"></i>
                                     </a>
                                 </div>

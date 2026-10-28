@@ -13,24 +13,27 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
+      <div class="container-fluid px-3 px-lg-4">
+        <div class="row align-items-center mb-2">
           <div class="col-sm-6">
-            <h1>Soal Sikap Kerja Latihan</h1>
+            <h1 class="m-0 fw-bold text-dark d-flex align-items-center">
+              <i class="fas fa-stopwatch text-warning me-2"></i> Soal Sikap Kerja Materi
+            </h1>
+            <p class="text-muted small mb-0 mt-1">Pengaturan kolom hilang untuk simulasi CAT Sikap Kerja</p>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 mt-2 mt-sm-0">
             <ol class="breadcrumb float-sm-end">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Soal Sikap Kerja Latihan</li>
+              <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
+              <li class="breadcrumb-item active">SK Materi</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
+      <div class="container-fluid px-3 px-lg-4">
         <div class="row">
           <div class="col-md-12">
             <div class="card">

@@ -37,7 +37,7 @@ $title = 'Kategori Latihan Soal - Bintang Timur Prestasi';
                                     <h4 class="fw-bold text-dark mb-2"><?= esc($key->group_nm) ?></h4>
                                     <p class="text-muted small mb-0">Latihan materi soal terarah sesuai bidang seleksi</p>
                                 </div>
-                                <a href="<?= base_url()."/latihan/jenis/".$key->group_soal_id ?>" class="btn w-100 rounded-pill text-white fw-semibold py-2" style="background: <?= $currentColor ?>;">
+                                <a href="<?= base_url('latihan/jenis/' . $key->group_soal_id) ?>" class="btn w-100 rounded-pill text-white fw-semibold py-2" style="background: <?= $currentColor ?>;">
                                     Pilih Jenis Soal <i class="fas fa-arrow-right ms-1"></i>
                                 </a>
                             </div>

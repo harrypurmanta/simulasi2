@@ -97,7 +97,7 @@ $title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
                     $("#dv_soal").html("");
                     countdown(6,kolom_id,data.ret);
                 } else if (data.ret == "selesai") {
-                    window.location.href = "<?= base_url() ?>/sikapkerja/hasiltryout/" + <?= $request->getUri()->getSegment(3) ?> ;
+                    window.location.href = "<?= rtrim(base_url(), '/') ?>/sikapkerja/hasiltryout/" + <?= $request->getUri()->getSegment(3) ?> ;
                 } else if (data == "soal_tidak_ada") {
                     alert("Soal tidak ada");
                 } else {

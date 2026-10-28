@@ -96,7 +96,7 @@ $title = 'Petunjuk Tes Sikap Kerja - Bintang Timur Prestasi';
                                 </div>
 
                                 <div class="text-center mt-5">
-                                    <a class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow" href="<?= base_url() ?>/sikapkerja/ujian/<?= $request->getUri()->getSegment(3) ?>">
+                                    <a class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow" href="<?= base_url('sikapkerja/ujian/' . $request->getUri()->getSegment(3)) ?>">
                                         Mulai Tes Sekarang <i class="fas fa-play ms-2"></i>
                                     </a>
                                 </div>

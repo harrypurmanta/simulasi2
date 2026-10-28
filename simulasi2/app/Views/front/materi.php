@@ -7,16 +7,13 @@ $title = 'Materi & Tryout - Bintang Timur Prestasi';
         <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container py-4">
-                <div class="text-center mb-5">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">
-                        <i class="fas fa-book-reader me-1"></i> SIMULASI TRYOUT
-                    </span>
-                    <h2 class="fw-bold text-dark">Daftar Paket Materi Soal</h2>
-                    <p class="text-muted small">Pilih paket materi untuk mengikuti simulasi ujian CAT terjadwal</p>
+            <div class="container pt-2 pb-4">
+                <div class="text-center mb-3">
+                    <h2 class="fw-bold text-dark mb-1">Daftar Materi Soal</h2>
+                    <p class="text-muted small mb-0">Pilih paket materi untuk mengikuti simulasi ujian CAT terjadwal</p>
                 </div>
 
-                <div class="row g-4">
+                <div class="row g-3">
                     <?php
                         $this->session = \Config\Services::session();
                         $user_id = $this->session->user_id;
@@ -31,28 +28,29 @@ $title = 'Materi & Tryout - Bintang Timur Prestasi';
                             $query = $db->query("SELECT * FROM respon WHERE materi = $key->materi_id AND created_user_id = $user_id AND status_cd = 'normal'")->getResultArray();
                             $isDone = (count($query) > 0);
                     ?>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover" style="border-top: 4px solid <?= $isDone ? '#10b981' : '#1e3c72' ?> !important;">
-                            <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
-                                <div class="mb-3">
-                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background-color: <?= $isDone ? 'rgba(16, 185, 129, 0.1)' : 'rgba(30, 60, 114, 0.08)' ?>; color: <?= $isDone ? '#10b981' : '#1e3c72' ?>;">
-                                        <i class="fas <?= $isDone ? 'fa-check-circle' : 'fa-file-alt' ?> fa-2x"></i>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover <?= $isDone ? 'text-white' : 'bg-white' ?>" 
+                             style="<?= $isDone ? 'background: linear-gradient(135deg, #15803d 0%, #16a34a 100%) !important;' : '' ?>">
+                            <div class="card-body p-3 text-center d-flex flex-column justify-content-between">
+                                <div class="my-2">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" 
+                                         style="width: 46px; height: 46px; <?= $isDone ? 'background-color: rgba(255, 255, 255, 0.2); color: #ffffff;' : 'background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;' ?>">
+                                        <i class="fas <?= $isDone ? 'fa-check-circle' : 'fa-file-alt' ?> fa-lg"></i>
                                     </div>
-                                    <h4 class="fw-bold text-dark mb-1"><?= esc($key->materi_nm) ?></h4>
-                                    <span class="badge <?= $isDone ? 'bg-success' : 'bg-secondary bg-opacity-25 text-dark' ?> rounded-pill px-3 py-1 small">
-                                        <?= $isDone ? 'Sudah Dikerjakan' : 'Belum Dikerjakan' ?>
-                                    </span>
+                                    <h5 class="fw-bold mb-0 <?= $isDone ? 'text-white' : 'text-dark' ?>"><?= esc($key->materi_nm) ?></h5>
                                 </div>
 
-                                <?php if ($isDone): ?>
-                                    <a href="<?= base_url()."/materi/hasiltryout/".$key->materi_id ?>" class="btn btn-success w-100 rounded-pill fw-semibold py-2">
-                                        Lihat Hasil <i class="fas fa-chart-bar ms-1"></i>
-                                    </a>
-                                <?php else: ?>
-                                    <button type="button" onclick="showtoken(<?= $group_id ?>, <?= $key->materi_id ?>, '<?= esc($key->materi_nm, 'js') ?>')" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
-                                        Mulai Tryout <i class="fas fa-arrow-right ms-1"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <div class="mt-2">
+                                    <?php if ($isDone): ?>
+                                        <a href="<?= base_url('materi/hasiltryout/' . $key->materi_id) ?>" class="btn btn-light text-success fw-bold w-100 rounded-pill py-2 shadow-sm">
+                                            Lihat Hasil <i class="fas fa-chart-bar ms-1"></i>
+                                        </a>
+                                    <?php else: ?>
+                                        <button type="button" onclick="showtoken(<?= $group_id ?>, <?= $key->materi_id ?>, '<?= esc($key->materi_nm, 'js') ?>')" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
+                                            Mulai <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -133,7 +131,7 @@ $title = 'Materi & Tryout - Bintang Timur Prestasi';
                 success: function(data) {
                     if (data == "sukses") {
                         $("#modal-token").modal("hide");
-                        window.location.href = "<?= base_url() ?>/tryout/ujian/" + materi_id + "/" + group_id;
+                        window.location.href = "<?= rtrim(base_url(), '/') ?>/tryout/ujian/" + materi_id + "/" + group_id;
                     } else {
                         alert("Token salah atau tidak aktif. Silakan hubungi administrator.");
                     }
