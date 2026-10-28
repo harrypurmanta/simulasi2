@@ -1,24 +1,7 @@
 <?php 
   $this->session = \Config\Services::session();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin | Soal</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/select2/css/select2.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
+<?= $this->include('admin/template/head') ?>
   <style>
     #loader-wrapper {
 	display: flex;
@@ -131,7 +114,7 @@
             <h1>Jawaban</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Jawaban</li>
             </ol>
@@ -149,7 +132,7 @@
               <div class="card-header">
               <div class="col-lg-12">
                 <div class="col-lg-1" style="display:inline-block;text-align:left;width:100%;">
-                  <button style="margin-bottom:10px;" onclick="tambahjawaban()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah</button>
+                  <button style="margin-bottom:10px;" onclick="tambahjawaban()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">Tambah</button>
                 </div>
                 <div class="col-lg-10" style="display:inline-block;text-align:center;width:100%;">
                   <?php
@@ -182,10 +165,9 @@
     <div class="modal fade" id="modal-lg">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header" style="padding: 0px 10px;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="modal-header">
+            <h5 class="modal-title">Form Jawaban</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div id="modal_body" class="modal-body">
 
@@ -206,21 +188,7 @@
 </div>
 <!-- ./wrapper -->
 
-
-<!-- jQuery -->
-<script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url() ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= base_url() ?>/plugins/select2/js/select2.full.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="<?= base_url() ?>/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<?= base_url() ?>/dist/dist/js/adminlte.min.js"></script>
+<?= $this->include('admin/template/scriptjs') ?>
 <!-- Page specific script -->
 <script>
   $(function () {

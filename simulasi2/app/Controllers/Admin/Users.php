@@ -33,7 +33,7 @@ class Users extends BaseController
 
     public function resetmateri() {
         $request = \Config\Services::request();
-        $user_id = $request->uri->getSegment(4);
+        $user_id = $request->getUri()->getSegment(4);
         $data = [
             'materi' => $this->soalmodel->getjawAllJMateri()->getResult(),
             // 'ps' => $this->soalmodel->get()->getResult(),
@@ -789,7 +789,7 @@ class Users extends BaseController
             if (count($responlatihan)>0) {
                 foreach ($responlatihan as $lat) {
                     $used = $lat->used;
-                    $skused .= "<div style='display:inline-block;border:1px solid black;margin:10px;width: 90px;text-align: center;border-radius:10px;background-color: deepskyblue;cursor:pointer;.'><a target='_blank' href='".base_url()."/admin/users/hasilused/$user_id/$materi/$used' id='dv_used_${used}' style='width: 100%;height:100%;cursor:pointer;color:#000000;'><label for='dv_used_${used}' style='font-size:50px;cursor:pointer;'>".$lat->used."</label><label style='cursor:pointer;' for='dv_used_${used}' style='font-size:14px;'>".$lat->used_dttm."</label></a></div>";
+                    $skused .= "<div style='display:inline-block;border:1px solid black;margin:10px;width: 90px;text-align: center;border-radius:10px;background-color: deepskyblue;cursor:pointer;.'><a target='_blank' href='".base_url()."/admin/users/hasilused/$user_id/$materi/$used' id='dv_used_{$used}' style='width: 100%;height:100%;cursor:pointer;color:#000000;'><label for='dv_used_{$used}' style='font-size:50px;cursor:pointer;'>".$lat->used."</label><label style='cursor:pointer;' for='dv_used_{$used}' style='font-size:14px;'>".$lat->used_dttm."</label></a></div>";
                 }
             } else {
                 $skused = "";

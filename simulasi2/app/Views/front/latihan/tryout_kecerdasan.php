@@ -5,14 +5,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Latihan Kecerdasan - Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/sweetalert2.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.css">
     <style>
         .d-none { display: none !important; }
         #loader-wrapper {
@@ -60,11 +58,9 @@
     </style>
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
             <div class="container" style="max-width: 1200px;">
@@ -161,13 +157,11 @@
         <?= $this->include('front/footer') ?>
     </div>
 
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script src="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
-    <script src="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
 
     <script>
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {

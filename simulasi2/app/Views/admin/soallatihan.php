@@ -130,7 +130,7 @@
             <h1>Soal latihan</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Soal latihan</li>
             </ol>
@@ -148,7 +148,7 @@
               <div class="card-header">
               <div class="col-lg-12">
                 <div class="col-lg-1" style="display:inline-block;text-align:left;width:100%;">
-                  <button style="margin-bottom:10px;" onclick="tambahsoallatihan()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah</button>
+                  <button style="margin-bottom:10px;" onclick="tambahsoallatihan()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">Tambah</button>
                 </div>
                 <div class="col-lg-10" style="display:inline-block;text-align:center;width:100%;">
                   <?php
@@ -178,13 +178,12 @@
       <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-    <div class="modal fade" id="modal-lg">
+    <div class="modal fade" id="modal-lg" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header" style="padding: 0px 10px;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="modal-header">
+            <h5 class="modal-title">Form</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div id="modal_body" class="modal-body">
 

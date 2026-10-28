@@ -7,17 +7,49 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/summernote/summernote-bs4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
+  <!-- Bootstrap 5 -->
+  <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
+  <!-- Theme style AdminLTE v4 -->
+  <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
+  <!-- DataTables BS5 -->
+  <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/dataTables.bootstrap5.min.css">
+  <!-- Summernote BS5 -->
+  <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/summernote-bs5.min.css">
+  <!-- Select2 BS5 -->
+  <link rel="stylesheet" href="<?= base_url() ?>/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/select2-bootstrap-5-theme.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>/dist/css/custom.css">
   <link rel="stylesheet" href="<?= base_url() ?>/dist/css/sweetalert2.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/select2/css/select2.min.css">
   <style>
+    /* Legacy BS3/BS4 to BS5 compatibility bridges */
+    .pull-right, .float-right { float: right !important; }
+    .pull-left, .float-left { float: left !important; }
+    .label {
+      display: inline-block;
+      padding: 0.25em 0.6em;
+      font-size: 75%;
+      font-weight: 700;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 0.25rem;
+    }
+    .label-primary { background-color: #0d6efd; color: #fff; }
+    .label-success { background-color: #198754; color: #fff; }
+    .label-info { background-color: #0dcaf0; color: #000; }
+    .label-warning { background-color: #ffc107; color: #000; }
+    .label-danger { background-color: #dc3545; color: #fff; }
+    .btn-default {
+      color: #212529;
+      background-color: #f8f9fa;
+      border: 1px solid #ced4da;
+    }
+    .btn-default:hover {
+      background-color: #e9ecef;
+      border-color: #adb5bd;
+    }
+
     #loader-wrapper {
 	display: flex;
 	position: fixed;

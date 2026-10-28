@@ -1,27 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin | Users</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
-</head>
+<?= $this->include('admin/template/head') ?>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
- <!-- Navbar -->
- 
-
- <?= $this->include('admin/navbar') ?>
+  <!-- Navbar -->
+  <?= $this->include('admin/navbar') ?>
   <!-- /.navbar -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -33,7 +14,7 @@
             <h1>Data Users</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
               <li class="breadcrumb-item active">Users</li>
             </ol>
@@ -49,7 +30,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-              <button onclick="tambahuser()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah</button>
+              <button onclick="tambahuser()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">Tambah</button>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -84,7 +65,7 @@
                     <td style="text-align:center;"><?= $key->cellphone ?></td>
                     <td><?= $key->addr_txt ?></td>
                     <td><?= $key->user_group ?></td>
-                    <td style="text-align:center;"><button onclick="editperson(<?= $key->person_id ?>)" style="font-size:10px;" class="btn btn-secondary" data-toggle="modal" data-target="#modal-lg"><i class="fa fa-pencil-alt"></i></button> <button onclick="hapusperson(<?= $key->person_id ?>)" style="font-size:10px;" class="btn btn-danger"><i class="fa fa-trash"></i></button> 
+                    <td style="text-align:center;"><button onclick="editperson(<?= $key->person_id ?>)" style="font-size:10px;" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-lg"><i class="fa fa-pencil-alt"></i></button> <button onclick="hapusperson(<?= $key->person_id ?>)" style="font-size:10px;" class="btn btn-danger"><i class="fa fa-trash"></i></button> 
                     <a href="<?= base_url() ?>/admin/hasil/<?= $key->user_id ?>" target="_blank"><button type="button" class="btn btn-primary">Detail</button></a>
                     <a href="<?= base_url() ?>/admin/users/resetmateri/<?= $key->user_id ?>" target="_blank" class="btn btn-warning">Reset</a> 
                    
@@ -112,10 +93,9 @@
     <div class="modal fade" id="modal-lg">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header" style="padding: 0px 10px;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="modal-header">
+            <h5 class="modal-title">Form User</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div id="modal_body" class="modal-body">
 
@@ -129,30 +109,11 @@
 
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
 
 </div>
 <!-- ./wrapper -->
 
-
-<!-- jQuery -->
-<script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url() ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="<?= base_url() ?>/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<?= base_url() ?>/dist/dist/js/adminlte.min.js"></script>
+<?= $this->include('admin/template/scriptjs') ?>
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -257,7 +218,7 @@
           cell5.innerHTML = cellphone;
           cell6.innerHTML = addr_txt;
           cell8.innerHTML = user_group;
-          cell9.innerHTML = "<button data-toggle='modal' data-target='#modal-lg' onclick='editperson("+data.person_id+")' style='font-size:10px;' class='btn btn-secondary'>Edit</button> <button style='font-size:10px;' class='btn btn-danger' onclick='hapuspersom("+data.person_id+")'>Hapus</button>";
+          cell9.innerHTML = "<button data-bs-toggle='modal' data-bs-target='#modal-lg' onclick='editperson("+data.person_id+")' style='font-size:10px;' class='btn btn-secondary'>Edit</button> <button style='font-size:10px;' class='btn btn-danger' onclick='hapuspersom("+data.person_id+")'>Hapus</button>";
         },
         error: function() {
           alert("error");

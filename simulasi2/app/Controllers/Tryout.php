@@ -12,35 +12,34 @@ class Tryout extends BaseController
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
 	}
 
     public function index()
     {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(2);
+        $materi_id = $request->getUri()->getSegment(2);
         $data['group'] = $this->soalmodel->getGroup()->getResult();
         $data['soal'] = $this->soalmodel->getSoal(1,1,$materi_id,0)->getResult();
         $data['jawaban'] = $this->soalmodel->getjawaban($data['soal'][0]->soal_id)->getResult();
-        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->uri->getSegment(2))->getResult();
+        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->getUri()->getSegment(2))->getResult();
         return view('front/tryout',$data);
     }
 
     public function ujian() {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $data['group'] = $this->soalmodel->getGroup()->getResult();
-        if ($request->uri->getSegment(4) == 4) {
+        if ($request->getUri()->getSegment(4) == 4) {
             $kolom_id = 1;
         } else {
             $kolom_id = 0;
         }
         
-        $data['soal'] = $this->soalmodel->getSoal(1,$request->uri->getSegment(4),$materi_id,$kolom_id)->getResult();
+        $data['soal'] = $this->soalmodel->getSoal(1,$request->getUri()->getSegment(4),$materi_id,$kolom_id)->getResult();
         // print_r($data['soal']);exit;
         $data['jawaban'] = $this->soalmodel->getjawaban($data['soal'][0]->soal_id)->getResult();
-        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->uri->getSegment(3))->getResult();
+        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->getUri()->getSegment(3))->getResult();
         return view('front/tryout',$data);
     }
     public function startujian() {
@@ -281,8 +280,8 @@ class Tryout extends BaseController
     public function sikapkerja() {
         $request = \Config\Services::request();
         $data['group'] = $this->soalmodel->getGroup()->getResult();
-        $materi_id = $request->uri->getSegment(3);
-        $group_id = $request->uri->getSegment(4);
+        $materi_id = $request->getUri()->getSegment(3);
+        $group_id = $request->getUri()->getSegment(4);
         return view('front/sikapkerja',$data);
     }
 
@@ -427,7 +426,7 @@ class Tryout extends BaseController
     public function hasiltryout() {
         $request = \Config\Services::request();
         $user_id = $this->session->user_id;
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $benar_kec = 0;
             $salah_kec = 0;
             $benar_keb = 0;

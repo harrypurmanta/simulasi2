@@ -14,7 +14,6 @@ class Sikapkerja extends BaseController
 	public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
         $this->latihanmodel = new Latihanmodel();
 	}
@@ -22,20 +21,20 @@ class Sikapkerja extends BaseController
     public function index()
     {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(2);
+        $materi_id = $request->getUri()->getSegment(2);
         $data['group'] = $this->latihanmodel->getSKgroup()->getResult();
         return view('front/sikapkerja/sikapkerja',$data);
     }
 
     public function pilihansk() {
         $request = \Config\Services::request();
-        $data['sk_group_id'] = $request->uri->getSegment(3);
+        $data['sk_group_id'] = $request->getUri()->getSegment(3);
         return view('front/sikapkerja/petunjuksoal',$data);
     }
 
     public function ujian() {
         $request = \Config\Services::request();
-        $data['sk_group_id'] = $request->uri->getSegment(3);
+        $data['sk_group_id'] = $request->getUri()->getSegment(3);
         return view('front/sikapkerja/ujian',$data);
     }
 
@@ -92,7 +91,7 @@ class Sikapkerja extends BaseController
         } else if ($group_id == 4 && $kolom_id == 11) {
             echo json_encode(array("ret"=>"selesai"));
         } else {
-            // print_r($request->uri->getSegment(2));exit;
+            // print_r($request->getUri()->getSegment(2));exit;
             $res = $this->soalmodel->getSoalSK($no_soal,4,98,$kolom_id,$sk_group_id)->getResult();
             
             if (count($res)>0) {
@@ -181,7 +180,7 @@ class Sikapkerja extends BaseController
     public function hasiltryout() {
         $request = \Config\Services::request();
         $user_id = $this->session->user_id;
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $klm = $this->soalmodel->getKolomSoal()->getResult();
  
                 $data = [

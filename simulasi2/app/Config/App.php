@@ -27,6 +27,13 @@ class App extends BaseConfig
     public $baseURL = 'https://simulasi2.test:8443/';
 
     /**
+     * Allowed Hostnames in addition to baseURL
+     *
+     * @var list<string>
+     */
+    public array $allowedHostnames = [];
+
+    /**
      * --------------------------------------------------------------------------
      * Index File
      * --------------------------------------------------------------------------
@@ -57,6 +64,8 @@ class App extends BaseConfig
      * @var string
      */
     public $uriProtocol = 'REQUEST_URI';
+
+    public string $permittedURIChars = 'a-z 0-9~%.:_\-';
 
     /**
      * --------------------------------------------------------------------------
@@ -343,7 +352,7 @@ class App extends BaseConfig
      *
      * @var string|string[]
      */
-    public $proxyIPs = '';
+    public array $proxyIPs = [];
 
     /**
      * --------------------------------------------------------------------------

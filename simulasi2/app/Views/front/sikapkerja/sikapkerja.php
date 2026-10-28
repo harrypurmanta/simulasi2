@@ -1,61 +1,49 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$title = 'Sikap Kerja (Kecermatan) - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                    <div class="col-md-12" style="display: flex;justify-content: center;margin-bottom:20px;">
-                                <h2><b>SIKAP KERJA</b></h2>
-                            </div>
-                        <div class="col-md-12">
-                            <?php
-                                foreach ($group as $key) {
-                            ?>
-                            <div class="col-lg-3" style="border-radius:10px;">
-                                <div class="small-box bg-gray" style="border-radius:10px;">
-                                    <div class="inner text-center">
-                                        <h4><?= $key->sk_group_nm ?></h4>
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-2 rounded-pill fw-bold mb-2">
+                        <i class="fas fa-stopwatch me-1"></i> SIMULASI TES KECERMATAN
+                    </span>
+                    <h2 class="fw-bold text-dark">Pilih Jenis Sikap Kerja</h2>
+                    <p class="text-muted small">Pilih paket kolom kecermatan di bawah ini untuk memulai tes berbatas waktu</p>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <?php
+                        foreach ($group as $key) {
+                    ?>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover" style="border-top: 4px solid #f59e0b !important;">
+                            <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                                <div class="mb-4">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px; background-color: rgba(245, 158, 11, 0.12); color: #d97706;">
+                                        <i class="fas fa-stopwatch-20 fa-2x"></i>
                                     </div>
-                                    <a href="<?= base_url() ?>/sikapkerja/pilihansk/<?= $key->sk_group_id ?>" class="small-box-footer" style="color:black;">
-                                        More info <i class="fa fa-arrow-circle-right"></i>
-                                    </a>
+                                    <h4 class="fw-bold text-dark mb-2"><?= esc($key->sk_group_nm) ?></h4>
+                                    <p class="text-muted small mb-0">Simulasi kolom angka / huruf / simbol hilang</p>
                                 </div>
+                                <a href="<?= base_url() ?>/sikapkerja/pilihansk/<?= $key->sk_group_id ?>" class="btn btn-warning text-dark w-100 rounded-pill fw-bold py-2">
+                                    Mulai Ujian <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
                             </div>
-                            <?php } ?>
                         </div>
                     </div>
-                </section>
+                    <?php } ?>
+                </div>
             </div>
         </div>
+
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
-</body>
 
+    <?= $this->include('front/template/scriptjs') ?>
+</body>
 </html>

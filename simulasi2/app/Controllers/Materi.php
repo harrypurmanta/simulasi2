@@ -8,7 +8,6 @@ class Materi extends BaseController
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
 	}
 
@@ -29,8 +28,8 @@ class Materi extends BaseController
     public function pilihanMateri() {
         $request = \Config\Services::request();
         $data = [
-            'materi_id' => $request->uri->getSegment(3),
-            'group' => $this->soalmodel->getGroupByid($request->uri->getSegment(4))->getResult(),
+            'materi_id' => $request->getUri()->getSegment(3),
+            'group' => $this->soalmodel->getGroupByid($request->getUri()->getSegment(4))->getResult(),
         ];
         
 
@@ -40,7 +39,7 @@ class Materi extends BaseController
     public function hasiltryout() {
         $request = \Config\Services::request();
         $user_id = $this->session->user_id;
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $benar_kec = 0;
             $salah_kec = 0;
             $benar_keb = 0;

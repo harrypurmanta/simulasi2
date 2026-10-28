@@ -19,7 +19,7 @@
             <h1>Tambah Soal Sikap Kerja (Latihan)</h1>
           </div> 
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
               <li class="breadcrumb-item active">Tambah Soal Sikap Kerja (Latihan)</li>
             </ol>

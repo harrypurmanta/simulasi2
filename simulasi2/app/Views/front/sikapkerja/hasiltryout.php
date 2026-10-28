@@ -4,19 +4,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
 </head>
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
             <div class="container">
@@ -61,7 +56,7 @@
                                                             $benar = 0;
                                                             $salah = 0;
                                                             $soal_terjawab = 0;
-                                                            $query = $db->query("SELECT *,a.pilihan_nm AS pilihan_respon FROM respon_latihan a LEFT JOIN soal b ON b.soal_id = a.soal_id LEFT JOIN jawaban c ON c.jawaban_id = a.jawaban_id WHERE a.materi = 98 AND b.sk_group_id = ".$request->uri->getSegment(3)." AND a.created_user_id = ".$this->session->user_id." AND a.used = ".$this->session->used." AND a.kolom_id = $kkolom->kolom_id AND a.group_id = 4")->getResult();
+                                                            $query = $db->query("SELECT *,a.pilihan_nm AS pilihan_respon FROM respon_latihan a LEFT JOIN soal b ON b.soal_id = a.soal_id LEFT JOIN jawaban c ON c.jawaban_id = a.jawaban_id WHERE a.materi = 98 AND b.sk_group_id = ".$request->getUri()->getSegment(3)." AND a.created_user_id = ".$this->session->user_id." AND a.used = ".$this->session->used." AND a.kolom_id = $kkolom->kolom_id AND a.group_id = 4")->getResult();
 
                                                             if (count($query)>0) {
                                                                 $soal_terjawab = count($query);
@@ -116,11 +111,9 @@
         </div>
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script src="<?= base_url() ?>/plugins/chart.js/Chart.min.js"></script>
 
     <script>

@@ -1,52 +1,55 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$title = 'Petunjuk Latihan Passhand - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12" style="height: 400px;">
-                            <div class="bg-gray col-md-8 text-center" style="top: 50%;left: 50%;transform: translate(-50%, -50%);height: 300px;">
-                                <h3 style="padding-top:10px;"><b>Petunjuk Pengerjaan</b></h3>
-                                <h3><b><?= $jenis->jenis_nm ?></b></h3>
-                                <p>
-                                 Tes ini terdiri dari 140 soal berupa pernyataan diri. Anda diminta untuk membaca setiap Pernyataan yang ada, lalu 
-Pilihlah jawaban yang Anda anggap paling sesuai dengan keadaan/ kondisi diri Anda yang sebenarnya.<br><br>
-Tidak ada jawaban yang benar atau salah dalam tes ini, selama jawaban Anda sesuai dengan kondisi Anda yang sesungguhnya. 
-Kerjakan seluruhnya, jangan ada yang terlewati.
-
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                            <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                                <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">LATIHAN PASSHAND</span>
+                                <h3 class="fw-bold mb-0">Petunjuk Pengerjaan</h3>
+                                <h5 class="text-warning fw-semibold mt-1 mb-0"><?= esc($jenis->jenis_nm) ?></h5>
+                            </div>
+                            <div class="card-body p-4 p-md-5 text-center bg-white">
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;">
+                                    <i class="fas fa-hand-paper fa-3x"></i>
+                                </div>
+                                <div class="px-md-4 py-3 bg-light rounded-3 text-secondary my-3" style="font-size: 1.05rem; line-height: 1.7; text-align: justify;">
+                                    <p class="mb-2">
+                                        Tes ini terdiri dari serangkaian soal berupa pernyataan diri. Anda diminta untuk membaca setiap pernyataan yang ada, lalu pilihlah jawaban yang Anda anggap paling sesuai dengan kondisi diri Anda yang sebenarnya.
+                                    </p>
+                                    <p class="mb-0 fw-semibold text-dark">
+                                        Tidak ada jawaban yang benar atau salah dalam tes ini. Kerjakan seluruhnya dan jangan ada soal yang terlewati.
+                                    </p>
+                                </div>
+                                <p class="text-muted small mb-4">
+                                    <i class="fas fa-info-circle text-primary me-1"></i> Klik tombol <strong>Mulai Sekarang</strong> di bawah untuk membuka paket soal.
                                 </p>
-                                <a href="<?= base_url()."/latihan/tryout/".$group_id."/".$jenis_id ?>" class="btn btn-success" style="font-size:18px;">Mulai</a>
+
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="<?= base_url('latihan/jenis/'.$group_id) ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                                    </a>
+                                    <a href="<?= base_url()."/latihan/tryout/".$group_id."/".$jenis_id ?>" class="btn btn-success rounded-pill px-5 py-2 fw-bold shadow-sm">
+                                        Mulai Sekarang <i class="fas fa-play ms-1"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
+
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
+
+    <?= $this->include('front/template/scriptjs') ?>
 </body>
 </html>

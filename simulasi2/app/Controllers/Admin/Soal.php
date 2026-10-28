@@ -808,19 +808,19 @@ class Soal extends BaseController
         if (count($res)>0) {
             $ret = "<td class='td_form' colspan='2'></td>
                         <td colspan='4' class='td_form'>
-                        <table id='tb_jawaban${soal_id}' class='table table-bordered table-hover'>
+                        <table id='tb_jawaban{$soal_id}' class='table table-bordered table-hover'>
                         <tbody>";
                         foreach ($res as $key) {
                             $jawaban_id = $key->jawaban_id;
-                            $ret .= "<tr id='tr_form_${soal_id}_${jawaban_id}'>
+                            $ret .= "<tr id='tr_form_{$soal_id}_{$jawaban_id}'>
                                       <td style='text-align:center;width:50px;'><button onclick='timesbtn($soal_id,$jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-times'></i></button></td>
-                                      <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='".$key->pilihan_nm."' id='pilihan_nm_${jawaban_id}' name='pilihan_nm[]' data-id='$jawaban_id'/> </td>
-                                      <td><input style='padding-left:10px;width:100%;' type='text' value='".$key->jawaban_nm."' id='jawaban_nm_${jawaban_id}' name='jawaban_nm[]'/> </td>
+                                      <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='".$key->pilihan_nm."' id='pilihan_nm_{$jawaban_id}' name='pilihan_nm[]' data-id='$jawaban_id'/> </td>
+                                      <td><input style='padding-left:10px;width:100%;' type='text' value='".$key->jawaban_nm."' id='jawaban_nm_{$jawaban_id}' name='jawaban_nm[]'/> </td>
                                       <td style='text-align:center;width:50px;'>
                                       <button onclick='deletebtn($soal_id,$jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button>
                                       </td>
                                       <td style='text-align:center;'>";
-                                $ret .= "<div><input type='file' id='jawaban_img_${jawaban_id}' name='jawaban_img[]' data-jawaban_id='$jawaban_id' style='max-width: 200px;'/> <button onclick='hapusgambarjawaban($jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button> <button onclick='simpangambarjawaban($soal_id,$jawaban_id)' type='button' class='btn btn-outline-success'><i class='fa  fa-save'></i></button></div>";
+                                $ret .= "<div><input type='file' id='jawaban_img_{$jawaban_id}' name='jawaban_img[]' data-jawaban_id='$jawaban_id' style='max-width: 200px;'/> <button onclick='hapusgambarjawaban($jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button> <button onclick='simpangambarjawaban($soal_id,$jawaban_id)' type='button' class='btn btn-outline-success'><i class='fa  fa-save'></i></button></div>";
                                     if ($key->jawaban_img == "") {
                                         $ret .= "";
                                     } else {
@@ -841,9 +841,9 @@ class Soal extends BaseController
         } else {
             $ret = "<td class='td_form' colspan='2'></td>
                         <td class='td_form'>
-                        <table id='tb_jawaban${soal_id}' class='table table-bordered table-hover'>
+                        <table id='tb_jawaban{$soal_id}' class='table table-bordered table-hover'>
                         <tbody>";
-                $ret .= "<tr class='tr_form' id='tr_form_${soal_id}_${cntform}'>
+                $ret .= "<tr class='tr_form' id='tr_form_{$soal_id}_{$cntform}'>
                             <td style='text-align:center;width:50px;'><button onclick='timesbtn($soal_id,$cntform)' type='button' class='btn btn-outline-danger'><i class='fa fa-times'></i></button></td>
                             <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='' name='pilihan_nm[]' data-id='new'/> </td>
                             <td><input style='padding-left:10px;width:100%;' type='text' value='' name='jawaban_nm[]'/> </td>
@@ -924,7 +924,7 @@ class Soal extends BaseController
                     $allmateri = $this->soalmodel->getAllJMateri()->getResult();
                         foreach ($allmateri as $mat) {
                             $materi_id = $mat->materi_id;
-                            $ret .= "<label style='margin:0px 10px;' for='materix_${materi_id}'><input value='".$mat->materi_id."' type='radio' id='materix_${materi_id}' name='materix' ".($materi_id==$this->session->materi?'checked':'')."/> ".$mat->materi_nm."</label>";
+                            $ret .= "<label style='margin:0px 10px;' for='materix_{$materi_id}'><input value='".$mat->materi_id."' type='radio' id='materix_{$materi_id}' name='materix' ".($materi_id==$this->session->materi?'checked':'')."/> ".$mat->materi_nm."</label>";
                         }
                     $ret .= "</div>
                     <div class='form-group row'>

@@ -36,7 +36,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12 text-center">
-                                        <a href="<?=base_url()?>/latihan/pembahasan_latihan/<?= $request->uri->getSegment(3) ?>/<?= $request->uri->getSegment(4) ?>" class="btn btn-primary">Pembahasan <i class="fa fa-arrow-circle-right"></i></a>
+                                        <a href="<?=base_url()?>/latihan/pembahasan_latihan/<?= $request->getUri()->getSegment(3) ?>/<?= $request->getUri()->getSegment(4) ?>" class="btn btn-primary">Pembahasan <i class="fa fa-arrow-circle-right"></i></a>
                                     </div>
                                 </div>
                             </div>

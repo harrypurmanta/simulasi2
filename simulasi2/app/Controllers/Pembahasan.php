@@ -10,7 +10,6 @@ class Pembahasan extends BaseController
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
         $this->pembahasanmodel = new Pembahasanmodel();
 	}
@@ -32,8 +31,8 @@ class Pembahasan extends BaseController
     public function pilihanMateri() {
         $request = \Config\Services::request();
         $data = [
-            'materi_id' => $request->uri->getSegment(3),
-            'group' => $this->soalmodel->getGroupByid($request->uri->getSegment(4))->getResult(),
+            'materi_id' => $request->getUri()->getSegment(3),
+            'group' => $this->soalmodel->getGroupByid($request->getUri()->getSegment(4))->getResult(),
         ];
 
         return view('front/pembahasan/pembahasan_pilihanmateri',$data);
@@ -41,12 +40,12 @@ class Pembahasan extends BaseController
 
     public function ujian() {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(3);
-        $group_id = $request->uri->getSegment(4);
+        $materi_id = $request->getUri()->getSegment(3);
+        $group_id = $request->getUri()->getSegment(4);
         $data['group'] = $this->pembahasanmodel->getGroup()->getResult();
         $data['soal'] = $this->pembahasanmodel->getSoal(1,2,$materi_id,0)->getResult();
         $data['jawaban'] = $this->pembahasanmodel->getjawaban($data['soal'][0]->soal_id)->getResult();
-        $data['total_soal'] = $this->pembahasanmodel->getTotalSoal(1,$request->uri->getSegment(3))->getResult();
+        $data['total_soal'] = $this->pembahasanmodel->getTotalSoal(1,$request->getUri()->getSegment(3))->getResult();
 
         $data['used'] = $this->pembahasanmodel->getUsed($this->session->user_id,$materi_id)->getResult();
         
@@ -242,8 +241,8 @@ class Pembahasan extends BaseController
     public function hasil() {
         $request = \Config\Services::request();
         $user_id = $this->session->user_id;
-        $materi_id = $request->uri->getSegment(3);
-        $used = $request->uri->getSegment(4);
+        $materi_id = $request->getUri()->getSegment(3);
+        $used = $request->getUri()->getSegment(4);
         $benar_kec = 0;
             $salah_kec = 0;
             $benar_keb = 0;

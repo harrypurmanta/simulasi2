@@ -19,7 +19,7 @@
             <h1>Soal</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Soal</li>
             </ol>
@@ -80,7 +80,7 @@
                 </div>
               <div class="col-lg-12">
                 <a href="<?= base_url() ?>/admin/soal/viewTambahsoal" class="btn btn-primary">Tambah Soal</a>
-                <button onclick="tambahsoallatihan()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah SK</button>
+                <button onclick="tambahsoallatihan()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">Tambah SK</button>
                 
                 <div class="col-lg-1" style="display:inline-block;text-align:right;width:100%;">
                   <button onclick="showsoal('all')" class="btn btn-secondary">Soal SK</button>
@@ -109,6 +109,19 @@
         </div>
       </div>
     </section>
+    <div class="modal fade" id="modal-lg" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Form Soal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="modal_body" class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="d-none" id='loader-wrapper'>
         <div class="loader"></div>
       </div>

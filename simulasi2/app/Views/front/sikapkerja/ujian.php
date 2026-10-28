@@ -7,15 +7,11 @@ $request = \Config\Services::request();
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
     <link rel="stylesheet" href="<?= base_url() ?>/dist/css/custom.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     <style>
     .d-none {
         display: none !important;
@@ -125,11 +121,9 @@ $request = \Config\Services::request();
     </style>
 </head>
 
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
         <div class="content-wrapper">
             <div class="container">
                 <section class="content">
@@ -180,11 +174,9 @@ $request = \Config\Services::request();
             <div class="loader"></div>
         </div>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script>
     var timers;
     $(document).ready(function() {
@@ -207,7 +199,7 @@ $request = \Config\Services::request();
                 "group_id": group_id,
                 "materi": materi,
                 "kolom_id": kolom_id,
-                "sk_group_id": <?= $request->uri->getSegment(3) ?>
+                "sk_group_id": <?= $request->getUri()->getSegment(3) ?>
             },
             beforeSend: function() {
                 // $("#loader-wrapper").removeClass("d-none")
@@ -224,7 +216,7 @@ $request = \Config\Services::request();
                     $("#dv_soal").html("");
                     countdown(6,kolom_id,data.ret);
                 } else if (data.ret == "selesai") {
-                    window.location.href = "<?= base_url() ?>/sikapkerja/hasiltryout/" + <?= $request->uri->getSegment(3) ?> ;
+                    window.location.href = "<?= base_url() ?>/sikapkerja/hasiltryout/" + <?= $request->getUri()->getSegment(3) ?> ;
                 } else if (data == "soal_tidak_ada") {
                     alert("Soal tidak ada");
                 } else {

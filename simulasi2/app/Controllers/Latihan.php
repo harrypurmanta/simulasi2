@@ -12,7 +12,6 @@ class Latihan extends BaseController
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
         $this->latihanmodel = new Latihanmodel();
         $this->db = \Config\Database::connect();
@@ -38,7 +37,7 @@ class Latihan extends BaseController
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
-            $group_id = $request->uri->getSegment(3);
+            $group_id = $request->getUri()->getSegment(3);
             $jenis = $this->latihanmodel->getJenisByGroupId($group_id)->getResult();
             $levels = [];
             if ($group_id == 2) {
@@ -68,9 +67,9 @@ class Latihan extends BaseController
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
-            $group_id = $request->uri->getSegment(3);
-            $jenis_id = $request->uri->getSegment(4);
-            $level_id = $request->uri->getSegment(5);
+            $group_id = $request->getUri()->getSegment(3);
+            $jenis_id = $request->getUri()->getSegment(4);
+            $level_id = $request->getUri()->getSegment(5);
 
             $level_nm = '';
             if (!empty($level_id)) {
@@ -108,9 +107,9 @@ class Latihan extends BaseController
 			return redirect('/');
 		} else {
 
-            $group_id = $request->uri->getSegment(3);
-            $jenis_id = $request->uri->getSegment(4);
-            $level_id = $request->uri->getSegment(5);
+            $group_id = $request->getUri()->getSegment(3);
+            $jenis_id = $request->getUri()->getSegment(4);
+            $level_id = $request->getUri()->getSegment(5);
 
             if ($group_id == 2) {
                 return $this->tryout_kecerdasan($jenis_id, $level_id);
@@ -128,14 +127,14 @@ class Latihan extends BaseController
 			return redirect('/');
 		}
 
-        $jenis_id = $jenis_id ?? $request->uri->getSegment(3);
-        $level_id = $level_id ?? $request->uri->getSegment(4);
+        $jenis_id = $jenis_id ?? $request->getUri()->getSegment(3);
+        $level_id = $level_id ?? $request->getUri()->getSegment(4);
 
         if (empty($jenis_id) || $jenis_id == 2) {
-            $jenis_id = $request->uri->getSegment(4);
+            $jenis_id = $request->getUri()->getSegment(4);
         }
         if (empty($level_id)) {
-            $level_id = $request->uri->getSegment(5);
+            $level_id = $request->getUri()->getSegment(5);
         }
 
         $jenis_nm = $this->latihanmodel->getJenisById($jenis_id);
@@ -406,10 +405,10 @@ class Latihan extends BaseController
 			return redirect('/');
 		}
 
-        $materi   = $request->uri->getSegment(3) ?? 99;
-        $jenis_id = $request->uri->getSegment(4);
-        $level_id = $request->uri->getSegment(5);
-        $used     = $request->uri->getSegment(6);
+        $materi   = $request->getUri()->getSegment(3) ?? 99;
+        $jenis_id = $request->getUri()->getSegment(4);
+        $level_id = $request->getUri()->getSegment(5);
+        $used     = $request->getUri()->getSegment(6);
 
         $benar = 0;
         $salah = 0;
@@ -702,10 +701,10 @@ class Latihan extends BaseController
     public function hasillatihan() {
         $request = \Config\Services::request();
         // $jenis_id = $this->request->getPost('jenis_id');
-        $materi = $request->uri->getSegment(3);
-        $jenis_id = $request->uri->getSegment(4);
-        $used = $request->uri->getSegment(5);
-        $group_id = $request->uri->getSegment(6);
+        $materi = $request->getUri()->getSegment(3);
+        $jenis_id = $request->getUri()->getSegment(4);
+        $used = $request->getUri()->getSegment(5);
+        $group_id = $request->getUri()->getSegment(6);
         // echo json_encode($jenis_id);exit;
         $benar  = 0;
         $salah  = 0;
@@ -740,8 +739,8 @@ class Latihan extends BaseController
 			return redirect('/');
 		} else {
 
-            $group_id = $request->uri->getSegment(6);
-            $jenis_id = $request->uri->getSegment(4);
+            $group_id = $request->getUri()->getSegment(6);
+            $jenis_id = $request->getUri()->getSegment(4);
 
             $jenis_nm = $this->latihanmodel->getJenisById($jenis_id);
             return view('front/pembahasan_latihan/tryout', ['group_id' => $group_id, 'jenis_nm' => $jenis_nm]);

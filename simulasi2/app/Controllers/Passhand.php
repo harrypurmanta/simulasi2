@@ -434,12 +434,12 @@ class Passhand extends BaseController
                                             $img_jwb = "";
                                             $ret .= "<div class='col-md-12 row' style='margin-bottom:10px;'>
                                                         <div class='col-md-1' style='text-align:center;'>
-                                                            <input $checked type='radio' name='jawaban' id='jawaban_${jawaban_idbox}' value='".$key->jawaban_id."' data-pilihan='".$key->pilihan_nm."'/> 
+                                                            <input $checked type='radio' name='jawaban' id='jawaban_{$jawaban_idbox}' value='".$key->jawaban_id."' data-pilihan='".$key->pilihan_nm."'/> 
                                                         </div>
                                                         <div class='col-md-1'>
-                                                        <label style='font-size:20px;' for='jawaban_${jawaban_idbox}'>".$key->pilihan_nm.". </label>
+                                                        <label style='font-size:20px;' for='jawaban_{$jawaban_idbox}'>".$key->pilihan_nm.". </label>
                                                         </div>
-                                                        <div class='col-md-10' style='padding:0px;font-size:20px;'><label for='jawaban_${jawaban_idbox}'>".$key->jawaban_nm."</label></div>
+                                                        <div class='col-md-10' style='padding:0px;font-size:20px;'><label for='jawaban_{$jawaban_idbox}'>".$key->jawaban_nm."</label></div>
                                                     </div>";
                                             
                                         } else {
@@ -447,12 +447,12 @@ class Passhand extends BaseController
 
                             $ret .= "<div class='col-md-5 row' style='margin:10px;'>
                                         <div class='col-md-1'>
-                                            <input $checked type='radio' name='jawaban' id='jawaban_${jawaban_idbox}' value='".$key->jawaban_id."' data-pilihan='".$key->pilihan_nm."'/> 
+                                            <input $checked type='radio' name='jawaban' id='jawaban_{$jawaban_idbox}' value='".$key->jawaban_id."' data-pilihan='".$key->pilihan_nm."'/> 
                                         </div>
                                         <div class='col-md-2'>
-                                        <label style='font-size:20px;' for='jawaban_${jawaban_idbox}'>".$key->pilihan_nm.". ".$key->jawaban_nm."</label>
+                                        <label style='font-size:20px;' for='jawaban_{$jawaban_idbox}'>".$key->pilihan_nm.". ".$key->jawaban_nm."</label>
                                         </div>
-                                        <div class='col-md-5' style='padding:0px;text-align: center;'><label for='jawaban_${jawaban_idbox}'>$img_jwb</label></div>
+                                        <div class='col-md-5' style='padding:0px;text-align: center;'><label for='jawaban_{$jawaban_idbox}'>$img_jwb</label></div>
                                     </div>";
 
                                         }

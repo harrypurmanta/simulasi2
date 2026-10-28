@@ -1,22 +1,7 @@
 <?php
 $request = \Config\Services::request();
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/custom.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+<?= view('front/template/head'); ?>
     <style>
     .d-none {
         display: none !important;
@@ -143,7 +128,7 @@ $request = \Config\Services::request();
                                 <input type="hidden" id="inp_group_id">
                                 <?php foreach ($group as $key) {
                                     echo "<div class='col-lg-3' style='width: 20%;border-radius:10px;'>
-                                                <div class='small-box ".($request->uri->getSegment(4) == $key->group_soal_id? 'bg-green':'')."' style='border-radius:10px;border:1px solid green;'>
+                                                <div class='small-box ".($request->getUri()->getSegment(4) == $key->group_soal_id? 'bg-green':'')."' style='border-radius:10px;border:1px solid green;'>
                                                     <div class='inner text-center'>
                                                     " . $key->group_nm . "
                                                     </div>
@@ -183,16 +168,12 @@ $request = \Config\Services::request();
             <div class="loader"></div>
         </div>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <?= view('front/template/scriptjs'); ?>
     <script>
     var timers;
     $(document).ready(function() {
         setTimeout(() => {
-            startujian("start","","","",<?= $request->uri->getSegment(4) ?>,0,1,<?= $request->uri->getSegment(3) ?>);
+            startujian("start","","","",<?= $request->getUri()->getSegment(4) ?>,0,1,<?= $request->getUri()->getSegment(3) ?>);
         }, 1000);
     });
 
@@ -206,11 +187,11 @@ $request = \Config\Services::request();
                 "proc": proc,
                 "jawaban_id": jawaban_id,
                 "soal_id": soal_id,
-                "group_id": <?= $request->uri->getSegment(4) ?>,
+                "group_id": <?= $request->getUri()->getSegment(4) ?>,
                 "no_soal": no_soal,
                 "pilihan_nm": pilihan_nm,
                 "kolom_id": kolom_id,
-                "materi": <?= $request->uri->getSegment(3) ?>
+                "materi": <?= $request->getUri()->getSegment(3) ?>
             },
             beforeSend: function() {
                 // $("#loader-wrapper").removeClass("d-none")
@@ -259,8 +240,8 @@ $request = \Config\Services::request();
 
     function countdown(detik,kolom_id,proc) {
         var seconds = detik;
-        var group_id = <?= $request->uri->getSegment(4) ?>;
-        var materi = <?= $request->uri->getSegment(3) ?>;
+        var group_id = <?= $request->getUri()->getSegment(4) ?>;
+        var materi = <?= $request->getUri()->getSegment(3) ?>;
         timers = window.setInterval(function() {
             myFunction();
         }, 1000); // every second

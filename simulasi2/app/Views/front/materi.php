@@ -1,125 +1,111 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$title = 'Materi & Tryout - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                    <div class="col-md-12" style="display: flex;justify-content: center;margin-bottom:20px;">
-                                <h2><b>MATERI</b></h2>
-                            </div>
-                        <div class="col-md-12">
-                            <?php
-                                $this->session = \Config\Services::session();
-                                $user_id = $this->session->user_id;
-                                $db = db_connect();
-                                foreach ($materi as $key) {
-                                    if ($key->materi_id == 1) {
-                                        $group_id = 1;
-                                    } else {
-                                        $group_id = 2;
-                                    }
+            <div class="container py-4">
+                <div class="text-center mb-5">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">
+                        <i class="fas fa-book-reader me-1"></i> SIMULASI TRYOUT
+                    </span>
+                    <h2 class="fw-bold text-dark">Daftar Paket Materi Soal</h2>
+                    <p class="text-muted small">Pilih paket materi untuk mengikuti simulasi ujian CAT terjadwal</p>
+                </div>
 
-                                    $query = $db->query("SELECT * FROM respon WHERE materi = $key->materi_id AND created_user_id = $user_id AND status_cd = 'normal'")->getResultArray();
-                                    if (count($query)>0) {
-                                        $click = base_url()."/materi/hasiltryout/".$key->materi_id;
-                                        $class_bg = "bg-green";
-                                        $a_bg = "bg-green";
-                                        $icon= "fa-check";
-                                        $text= "Selesai";
-                                    } else {
-                                        $click = "onclick='showtoken(".$group_id.",".$key->materi_id.")'";
-                                        $class_bg = "bg-gray";
-                                        $a_bg = "bg-blue";
-                                        $icon= "fa-arrow-circle-right";
-                                        $text= "Mulai";
-                                    }
-                            ?>
-                            <div class="col-lg-3" style="border-radius:10px;">
-                                <div class="small-box <?= $class_bg ?>" style="border-radius:10px;">
-                                    <div class="inner text-center">
-                                        <h3><?= $key->materi_nm ?></h3>
+                <div class="row g-4">
+                    <?php
+                        $this->session = \Config\Services::session();
+                        $user_id = $this->session->user_id;
+                        $db = db_connect();
+                        foreach ($materi as $key) {
+                            if ($key->materi_id == 1) {
+                                $group_id = 1;
+                            } else {
+                                $group_id = 2;
+                            }
+
+                            $query = $db->query("SELECT * FROM respon WHERE materi = $key->materi_id AND created_user_id = $user_id AND status_cd = 'normal'")->getResultArray();
+                            $isDone = (count($query) > 0);
+                    ?>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover" style="border-top: 4px solid <?= $isDone ? '#10b981' : '#1e3c72' ?> !important;">
+                            <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
+                                <div class="mb-3">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background-color: <?= $isDone ? 'rgba(16, 185, 129, 0.1)' : 'rgba(30, 60, 114, 0.08)' ?>; color: <?= $isDone ? '#10b981' : '#1e3c72' ?>;">
+                                        <i class="fas <?= $isDone ? 'fa-check-circle' : 'fa-file-alt' ?> fa-2x"></i>
                                     </div>
-                                    <a <?= $click ?> href="#" class="small-box-footer" style="color:black;">
-                                        <?= $text ?> <i class="fa fa-arrow-circle-right"></i>
-                                    </a>
+                                    <h4 class="fw-bold text-dark mb-1"><?= esc($key->materi_nm) ?></h4>
+                                    <span class="badge <?= $isDone ? 'bg-success' : 'bg-secondary bg-opacity-25 text-dark' ?> rounded-pill px-3 py-1 small">
+                                        <?= $isDone ? 'Sudah Dikerjakan' : 'Belum Dikerjakan' ?>
+                                    </span>
                                 </div>
+
+                                <?php if ($isDone): ?>
+                                    <a href="<?= base_url()."/materi/hasiltryout/".$key->materi_id ?>" class="btn btn-success w-100 rounded-pill fw-semibold py-2">
+                                        Lihat Hasil <i class="fas fa-chart-bar ms-1"></i>
+                                    </a>
+                                <?php else: ?>
+                                    <button type="button" onclick="showtoken(<?= $group_id ?>, <?= $key->materi_id ?>, '<?= esc($key->materi_nm, 'js') ?>')" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
+                                        Mulai Tryout <i class="fas fa-arrow-right ms-1"></i>
+                                    </button>
+                                <?php endif; ?>
                             </div>
-                            <?php } ?>
                         </div>
                     </div>
-                </section>
+                    <?php } ?>
+                </div>
             </div>
         </div>
-        <div class="modal fade" id="modal-token">
-            <div class="modal-dialog modal-md">
-                <div class="modal-content">
-                    <div class="modal-header bg-blue">
-                        <!-- <h4>Masukkan Token</h4> -->
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+
+        <!-- Modal Token -->
+        <div class="modal fade" id="modal-token" tabindex="-1" aria-labelledby="modalTokenLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 18px 24px;">
+                        <h5 class="modal-title fw-bold" id="modalTokenLabel">
+                            <i class="fas fa-key me-2 text-warning"></i> Masukkan Token: <span id="materiNmDisplay" class="text-warning"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div id="modal_body" class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="token">Token Materi</label>
-                                        <input class="form-control" type="text" name="token" id="token" placeholder="Masukkan Token Materi" maxlength="6" minlength="6" autocomplete="off">
-                                        <input class="form-control" type="hidden" name="group_idx" id="group_idx">
-                                        <input class="form-control" type="hidden" name="materi_id" id="materi_id">
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label for="token">Token User</label>
-                                        <input class="form-control" type="text" name="tokenuser" id="tokenuser" placeholder="Masukkan Token User" maxlength="6" minlength="6" autocomplete="off">
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <button style="margin-top: 25px;" class="btn btn-primary" type="button" onclick="checktoken()">Simpan</button>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="modal-body p-4 bg-light">
+                        <input type="hidden" name="group_idx" id="group_idx">
+                        <input type="hidden" name="materi_id" id="materi_id">
+
+                        <div class="mb-3">
+                            <label for="token" class="form-label fw-semibold text-dark">Token Materi</label>
+                            <input class="form-control form-control-lg rounded-3" type="text" name="token" id="token" placeholder="Masukkan 6 Digit Token Materi" maxlength="6" minlength="6" autocomplete="off">
+                            <small class="text-muted">Dapatkan token dari instruktur/admin.</small>
+                        </div>
+                        <div class="mb-4">
+                            <label for="tokenuser" class="form-label fw-semibold text-dark">Token User</label>
+                            <input class="form-control form-control-lg rounded-3" type="text" name="tokenuser" id="tokenuser" placeholder="Masukkan Token User" maxlength="6" minlength="6" autocomplete="off">
+                        </div>
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg rounded-pill fw-semibold" type="button" onclick="checktoken()">
+                                Verifikasi & Mulai Ujian <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-        <script>
-        function showtoken(group_id, materi_id) {
+
+    <?= $this->include('front/template/scriptjs') ?>
+    <script>
+        function showtoken(group_id, materi_id, materi_nm) {
             $("#token").val("");
+            $("#tokenuser").val("");
             $("#group_idx").val(group_id);
             $("#materi_id").val(materi_id);
+            $("#materiNmDisplay").text(materi_nm || '');
             $("#modal-token").modal("show");
         }
 
@@ -128,6 +114,12 @@
             var group_id = $("#group_idx").val();
             var materi_id = $("#materi_id").val();
             var tokenuser = $("#tokenuser").val();
+
+            if (!token) {
+                alert("Silakan masukkan token materi terlebih dahulu");
+                return;
+            }
+
             $.ajax({
                 url: "<?= base_url('token/checktoken') ?>",
                 type: "post",
@@ -138,28 +130,19 @@
                     "materi_id": materi_id,
                     "tokenuser": tokenuser
                 },
-                beforeSend: function() {
-                    $("#loader-wrapper").removeClass("d-none");
-                },
                 success: function(data) {
                     if (data == "sukses") {
                         $("#modal-token").modal("hide");
-                        $("#modal-noTest").modal("show");
-                        $("#group_id_notest").val(group_id);
-                        $("#materi_id_notest").val(materi_id);
-                        window.location.href = "<?= base_url() ?>/tryout/ujian/"+materi_id+"/"+group_id;
+                        window.location.href = "<?= base_url() ?>/tryout/ujian/" + materi_id + "/" + group_id;
                     } else {
-                        alert("Token salah/tidak ada, hubungi administrator");
+                        alert("Token salah atau tidak aktif. Silakan hubungi administrator.");
                     }
-                    $("#loader-wrapper").addClass("d-none");
                 },
                 error: function() {
-                    alert("Error");
-                    $("#loader-wrapper").addClass("d-none");
+                    alert("Terjadi kesalahan saat verifikasi token.");
                 }
             });
         }
     </script>
 </body>
-
 </html>

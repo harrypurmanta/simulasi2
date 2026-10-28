@@ -63,7 +63,7 @@ class Hasil extends BaseController
             if (count($responlatihan)>0) {
                 foreach ($responlatihan as $lat) {
                     $used = $lat->used;
-                    $skused .= "<div style='display:inline-block;border:1px solid black;margin:10px;width: 90px;text-align: center;border-radius:10px;background-color: deepskyblue;cursor:pointer;.'><a target='_blank' href='".base_url()."/admin/hasil/hasillatihanmateri/$user_id/$materi_id/$used' id='dv_used_${used}' style='width: 100%;height:100%;cursor:pointer;color:#000000;'><label for='dv_used_${used}' style='font-size:50px;cursor:pointer;'>".$lat->used."</label></a></div>";
+                    $skused .= "<div style='display:inline-block;border:1px solid black;margin:10px;width: 90px;text-align: center;border-radius:10px;background-color: deepskyblue;cursor:pointer;.'><a target='_blank' href='".base_url()."/admin/hasil/hasillatihanmateri/$user_id/$materi_id/$used' id='dv_used_{$used}' style='width: 100%;height:100%;cursor:pointer;color:#000000;'><label for='dv_used_{$used}' style='font-size:50px;cursor:pointer;'>".$lat->used."</label></a></div>";
                 }
             } else {
                 $skused = "";

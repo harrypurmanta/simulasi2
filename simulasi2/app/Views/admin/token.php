@@ -14,7 +14,7 @@
                             <h1>Data Token</h1>
                         </div>
                         <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
+                            <ol class="breadcrumb float-sm-end">
                                 <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
                                 <li class="breadcrumb-item active">Token</li>
                             </ol>
@@ -111,11 +111,9 @@
             <div class="modal fade" id="modal-tambah">
                 <div class="modal-dialog modal-md">
                     <div class="modal-content">
-                        <div class="modal-header bg-blue">
-                            <h4>Form Tambah Token</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="modal-header bg-primary text-white">
+                            <h4 class="modal-title">Form Tambah Token</h4>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="modal_body" class="modal-body">
                             <div class="row">
@@ -182,11 +180,9 @@
             <div class="modal fade" id="modal-edit">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header bg-blue">
-                            <h4>Form Edit Token</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="modal-header bg-primary text-white">
+                            <h4 class="modal-title">Form Edit Token</h4>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="modal_body" class="modal-body">
                             <input type="hidden" id="token_id_edit" name="token_id_edit">

@@ -1,173 +1,117 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login Siswa - Bintang Timur Prestasi</title>
 
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/iCheck/square/blue.css">
+    <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
+    <!-- AdminLTE v4 -->
+    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
 
     <style>
-        * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+        body {
+            font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url("<?= base_url() ?>/images/bg/bg-body.jpg");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            padding: 20px;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-image: url("./images/bg/bg-body.jpg");
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
+        .login-card-container {
+            width: 100%;
+            max-width: 960px;
+            background-color: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
 
-.container {
-    display: flex;
-    width: 100%;
-    /* height: 100%; */
-    /* max-width: 1200px; */
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
+        .image-column {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
 
-.image-column {
-    flex: 3;
-    overflow: hidden;
-}
+        .image-column img {
+            max-width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+        }
 
-.image-column img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.form-column {
-    flex: 2;
-    padding: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-h2 {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-label {
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .image-column {
-        flex: 1;
-    }
-
-    .form-column {
-        flex: 1;
-        padding: 20px;
-    }
-}
-
+        .form-column {
+            padding: 45px 35px;
+        }
     </style>
+</head>
 
 <body>
+    <div class="login-card-container">
+        <div class="row g-0 align-items-stretch">
+            <div class="col-lg-6 image-column d-none d-lg-flex">
+                <img src="<?= base_url() ?>/images/bg/btp5.png" alt="Bintang Timur Prestasi" class="img-fluid">
+            </div>
 
-<div class="container">
-        <div class="image-column">
-            <img class="image" src="<?php base_url() ?>images/bg/btp5.png" alt="Login">
-        </div>
-        <div class="form-column">
-            <form action="<?= base_url() ?>/login/checklogin" method="post">
-                <h2> <a href="<?= base_url() ?>"><b>Selamat Datang</a></h2>
-                <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" name="username" required>
-                
-                <label for="password">Password</label>
-                <input type="password" id="password" class="form-control" name="password" required>
-                
-                <button type="submit">Login</button>
-                <button type="button" onclick="location.href='login/register'">Register</button>
-            </form>
+            <div class="col-lg-6 form-column d-flex flex-column justify-content-center">
+                <div class="text-center mb-4">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-2">PORTAL SISWA</span>
+                    <h3 class="fw-bold text-dark mb-1">Selamat Datang</h3>
+                    <p class="text-muted small">Silakan login untuk mengakses simulasi CAT</p>
+                </div>
+
+                <form action="<?= base_url() ?>/login/checklogin" method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold text-secondary small">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted">
+                                <i class="fas fa-user"></i>
+                            </span>
+                            <input type="text" id="username" class="form-control form-control-lg border-start-0 bg-light" name="username" placeholder="Masukkan username" required autofocus autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold text-secondary small">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0 text-muted">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                            <input type="password" id="password" class="form-control form-control-lg border-start-0 bg-light" name="password" placeholder="Masukkan password" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-3">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill fw-bold py-2 shadow-sm">
+                            <i class="fas fa-sign-in-alt me-1"></i> Masuk Ujian
+                        </button>
+                        <a href="<?= base_url() ?>/login/register" class="btn btn-outline-secondary rounded-pill py-2">
+                            Pendaftaran Siswa Baru
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Bintang Timur Prestasi &copy; <?= date('Y') ?></small>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-    <!-- <div class="login-box">
-        <div class="login-logo">
-            <a href="<?= base_url() ?>"><b>Selamat Datang</a>
-        </div>
-        <div class="login-box-body">
-            <p class="login-box-msg">Siswa Bintang Timur Prestasi</p>
-            <form action="<?= base_url() ?>/login/checklogin" method="post">
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control" placeholder="username" name="username">
-                    <span class="glyphicon glyphicon-user  form-control-feedback"></span>
-                </div>
-                <div class="form-group has-feedback">
-                    <input type="password" class="form-control" placeholder="Password" name="password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                </div>
-                <div class="row">
-                    <div class="col-xs-4">
-                        <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-                        <a href="login/register"><button style="margin-top:10px;" type="button" class="btn btn-secondary btn-block">Register</button></a>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div> -->
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/plugins/iCheck/icheck.min.js"></script>
-    <script>
-    $(function() {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' /* optional */
-        });
-    });
-    </script>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
