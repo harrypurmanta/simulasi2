@@ -16,6 +16,41 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
             line-height: 1.7 !important;
             font-weight: 500;
         }
+        .jawaban_dv {
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+            padding: 9px 42px 9px 14px !important;
+            background-color: #f8fafc !important;
+            border: 2px solid #cbd5e1 !important;
+            border-radius: 8px !important;
+            text-align: left !important;
+            transition: all 0.15s ease-in-out !important;
+            position: relative !important;
+            color: #1e293b !important;
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+        .jawaban_dv.selected-jawaban {
+            background-color: #d1fae5 !important;
+            border: 2.5px solid #059669 !important;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
+            color: #064e3b !important;
+            font-weight: 600 !important;
+        }
+        .jawaban_dv.selected-jawaban::after {
+            content: "\f058";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #059669;
+            font-size: 1.25rem;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
     </style>
 </head>
 <body class="layout-top-nav">
@@ -57,7 +92,7 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
                 <div class="row g-2">
                     <div class="col-12 col-lg-8">
                         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
-                            <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                            <div class="p-3 mb-3" style="background-color: #f8fafc; border: 2px solid #cbd5e1; border-radius: 8px;">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary rounded-pill px-3 py-1" id="p_no_soal" style="font-size: 15.5px; font-weight: 600; padding: 6px 16px;">Soal no. <?= $soal[0]->no_soal ?></span>
                                 </div>
@@ -110,13 +145,30 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
     <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
     <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script src="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
+    <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
     <script>
-    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-            alwaysShowClose: true,
-            wrapping: false
+    function showImagePopup(largeUrl, fallbackUrl) {
+        var safeFallback = fallbackUrl || largeUrl;
+        Swal.fire({
+            html: '<div style="padding:4px;"><img src="' + largeUrl + '" onerror="if(this.src!==\'' + safeFallback + '\'){this.src=\'' + safeFallback + '\';}" style="max-width:100%; max-height:80vh; width:auto; height:auto; object-fit:contain; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);" alt="Detail Gambar"></div>',
+            width: 'auto',
+            padding: '1rem',
+            background: '#ffffff',
+            showConfirmButton: false,
+            showCloseButton: true,
+            backdrop: 'rgba(15, 23, 42, 0.75)'
         });
+    }
+
+    $(document).on('click', '[data-toggle="lightbox"], #dv_img_soal img, .jawaban_dv img, .popup-img-trigger', function(event) {
+        event.preventDefault();
+        var $el = $(this);
+        var $anchor = $el.closest('a[data-toggle="lightbox"]');
+        var fallbackUrl = $el.attr('data-fallback-src') || ($el.is('img') ? $el.attr('src') : ($el.find('img').attr('src') || $el.attr('href')));
+        var largeUrl = $el.attr('data-large-src') || ($anchor.length ? $anchor.attr('href') : ($el.attr('href') || fallbackUrl));
+        if (largeUrl) {
+            showImagePopup(largeUrl, fallbackUrl);
+        }
     });
 
     var timers;
@@ -129,14 +181,14 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
     function selectJawaban(jawaban_id, pilihan_nm) {
         let dv = document.getElementsByClassName("jawaban_dv");
         for (let index = 0; index < dv.length; index++) {
-            dv[index].style.border = "none";
+            dv[index].classList.remove("selected-jawaban");
         }
         if (jawaban_id && jawaban_id !== "" && jawaban_id !== "null") {
             $("#inp_jawaban_id").val(jawaban_id);
             $("#inp_pilihan_nm").val(pilihan_nm);
             let el = document.getElementById("dv_jawaban_" + jawaban_id);
             if (el) {
-                el.style.border = "thick solid #00a65a";
+                el.classList.add("selected-jawaban");
             }
         }
     }
@@ -188,7 +240,12 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
                     
                 } else {
                     if (data == "jawaban_kosong") {
-                        alert("Jawaban belum dipilih");
+                        Swal.fire({
+                            title: "Perhatian",
+                            text: "Jawaban belum dipilih",
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
                     } else {
                         if (data.group_id == 1 && data.no_soal == 1) {
                             window.clearInterval(timers);
@@ -228,17 +285,14 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
                     // $("#loader-wrapper").addClass("d-none");
 
                 }
-
-
-                let dv = document.getElementsByClassName("jawaban_dv");
-                for (let index = 0; index < dv.length; index++) {
-                    dv[index].style.border = "none";
-                }
-
-
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({
+                    title: "Error",
+                    text: "Error system",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             }
         });
     }

@@ -171,9 +171,11 @@ class Pembahasan extends BaseController
                     if ($res[0]->soal_img == "") {
                         $img_soal = "";
                     } else {
-                        $img_soal = "<div class='col-sm-10'>
-                        <a href='".base_url()."/images/soal/materi/".$res[0]->materi."/besar/".$res[0]->soal_img."' data-toggle='lightbox'>
-                        <img style='max-height:100%; max-width:100%;' src='".base_url()."/images/soal/materi/".$res[0]->materi."/".$res[0]->soal_img."' class='img-fluid'>
+                        $smallUrl = base_url()."/images/soal/materi/".$res[0]->materi."/".$res[0]->soal_img;
+                        $largeUrl = base_url()."/images/soal/materi/".$res[0]->materi."/besar/".$res[0]->soal_img;
+                        $img_soal = "<div class='col-sm-10 mx-auto'>
+                        <a href='".$largeUrl."' data-toggle='lightbox' data-large-src='".$largeUrl."' data-fallback-src='".$smallUrl."'>
+                        <img style='max-height:100%; max-width:350px; cursor:zoom-in; border-radius:6px;' src='".$smallUrl."' class='img-fluid popup-img-trigger' title='Klik untuk memperbesar gambar'>
                         </a>
                     </div>";
                     }
@@ -183,23 +185,26 @@ class Pembahasan extends BaseController
                     $pilihan_nms = "";
                     foreach ($getjawaban as $key) {
                         
-                        if ($pilihan_nmx == $key->pilihan_nm) {
+                        if ($pilihan_nmx !== "" && $pilihan_nmx == $key->pilihan_nm) {
                             $jawaban_idx = $key->jawaban_id;
                             $pilihan_nms = $key->pilihan_nm;
-                            $border = "margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align: left;border: thick solid rgb(0, 166, 90);";
+                            $selectedClass = "selected-jawaban";
                         } else {
-                            $border = "";
+                            $selectedClass = "";
                         }
                         
                         if ($key->jawaban_img == "") {
                             $img_jwb = "";
                         } else {
-                            $img_jwb = "<img style='max-width:350px;height:100%;' src='".base_url()."/images/jawaban/materi/".$res[0]->materi."/".$key->jawaban_img.".jpg'>";
+                            $jwbUrl = base_url()."/images/jawaban/materi/".$res[0]->materi."/".$key->jawaban_img.".jpg";
+                            $img_jwb = "<div class='d-inline-flex align-items-center'><img style='max-width:350px;height:100%;cursor:zoom-in;border-radius:6px;' src='".$jwbUrl."' data-large-src='".$jwbUrl."' data-fallback-src='".$jwbUrl."' class='jawaban-img popup-img-trigger' title='Klik untuk memperbesar gambar'></div>";
                         }
+
+                        $jawaban_text_html = ($key->jawaban_nm !== "" && $key->jawaban_nm !== null)
+                            ? "<span class='jawaban-text' style='color:#1e293b;'>".$key->jawaban_nm."</span>"
+                            : "";
                         
-                        $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='btn col-md-12 jawaban_dv' style='margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align: left;white-space: normal;'> <label for='pilihan_nm'>".$key->pilihan_nm.". </label> <span>".$key->jawaban_nm."</span>
-                        <div>$img_jwb</div>
-                            </div>";
+                        $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='btn col-12 jawaban_dv $selectedClass' style='display:flex;align-items:center;gap:8px;margin-top:4px;margin-bottom:4px;padding:9px 40px 9px 14px;background-color:#f8fafc;border:2px solid #cbd5e1;border-radius:8px;text-align:left;white-space:normal;'> <strong class='pilihan-label' style='font-weight:800; color:#0f172a; margin-right:4px; flex-shrink:0;'>".$key->pilihan_nm.".</strong> $jawaban_text_html $img_jwb</div>";
                     }
 
                     // PEMBAHASAN

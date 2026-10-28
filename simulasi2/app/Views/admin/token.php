@@ -279,19 +279,19 @@
       var end_dttm = $("#end_dttm_tambah").val()
       var group_id = $("#group_id_tambah").val()
       if (start_dttm == "") {
-        alert("Tanggal berlaku token belum di tentukan");
+        Swal.fire({ title: "Perhatian", text: "Tanggal berlaku token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (end_dttm == "") {
-        alert("Tanggal expired token belum di tentukan");
+        Swal.fire({ title: "Perhatian", text: "Tanggal expired token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (token == "") {
-        alert("Token belum di entri");
+        Swal.fire({ title: "Perhatian", text: "Token belum di entri", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (group_id == 0) {
-        alert("Materi belum dipilih");
+        Swal.fire({ title: "Perhatian", text: "Materi belum dipilih", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       $.ajax({
@@ -311,16 +311,16 @@
         },
         success: function(data) {
           if (data == "sukses") {
-              alert("Token berhasil disimpan");
+              Swal.fire({ title: "Berhasil", text: "Token berhasil disimpan", icon: "success", confirmButtonText: "OK" });
           } else {
-              alert("Token gagal disimpan");
+              Swal.fire({ title: "Error", text: "Token gagal disimpan", icon: "error", confirmButtonText: "OK" });
           }
           $("#loader-wrapper").addClass("d-none");
           $("#modal-tambah").modal("hide");
           loadDataToken();
         },
         error: function() {
-          alert("Error");
+          Swal.fire({ title: "Error", text: "Error", icon: "error", confirmButtonText: "OK" });
           $("#loader-wrapper").addClass("d-none");
         }
       });
@@ -345,19 +345,19 @@
         let token = $("#token_edit").val();
         let group_id = $("#group_id_edit").val();
         if (start_dttm == "") {
-            alert("Tanggal berlaku token belum di tentukan");
+            Swal.fire({ title: "Perhatian", text: "Tanggal berlaku token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         if (end_dttm == "") {
-            alert("Tanggal expired token belum di tentukan");
+            Swal.fire({ title: "Perhatian", text: "Tanggal expired token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         if (token == "") {
-            alert("Token belum di entri");
+            Swal.fire({ title: "Perhatian", text: "Token belum di entri", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         if (group_id == 0) {
-            alert("Materi belum dipilih");
+            Swal.fire({ title: "Perhatian", text: "Materi belum dipilih", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         $.ajax({
@@ -376,16 +376,16 @@
             },
             success: function(data) {
                 if (data == "sukses") {
-                    alert("Token berhasil disimpan");
+                    Swal.fire({ title: "Berhasil", text: "Token berhasil disimpan", icon: "success", confirmButtonText: "OK" });
                 } else {
-                    alert("Token gagal disimpan");
+                    Swal.fire({ title: "Error", text: "Token gagal disimpan", icon: "error", confirmButtonText: "OK" });
                 }
                 $("#loader-wrapper").addClass("d-none");
                 $("#modal-tambah").modal("hide");
                 loadDataToken();
             },
             error: function() {
-                alert("Error");
+                Swal.fire({ title: "Error", text: "Error", icon: "error", confirmButtonText: "OK" });
                 $("#loader-wrapper").addClass("d-none");
             }
         });
@@ -406,15 +406,15 @@
                 },
                 success: function(data) {
                     if (data == true) {
-                        alert("hapus token berhasil");
+                        Swal.fire({ title: "Berhasil", text: "hapus token berhasil", icon: "success", confirmButtonText: "OK" });
                     } else {
-                        alert("hapus token gagal");
+                        Swal.fire({ title: "Error", text: "hapus token gagal", icon: "error", confirmButtonText: "OK" });
                     }
                     $("#loader-wrapper").addClass("d-none");
                     loadDataToken();
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                     $("#loader-wrapper").addClass("d-none");
                 }
             });

@@ -1,5 +1,6 @@
 <?php
 $request = \Config\Services::request();
+$session = \Config\Services::session();
 $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
 ?>
 <?= $this->include('front/template/head') ?>
@@ -15,6 +16,60 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             font-size: 1.15rem !important;
             line-height: 1.7 !important;
             font-weight: 500;
+        }
+        .jawaban_dv {
+            margin-top: 4px !important;
+            margin-bottom: 4px !important;
+            padding: 9px 42px 9px 14px !important;
+            background-color: #f8fafc !important;
+            border: 2px solid #cbd5e1 !important;
+            border-radius: 8px !important;
+            text-align: left !important;
+            transition: all 0.15s ease-in-out !important;
+            position: relative !important;
+            color: #1e293b !important;
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            width: 100% !important;
+        }
+        .jawaban_dv:hover {
+            background-color: #f1f5f9 !important;
+            border-color: #94a3b8 !important;
+        }
+        .jawaban_dv label,
+        .jawaban_dv .pilihan-label,
+        .jawaban_dv strong {
+            font-weight: 800 !important;
+            color: #0f172a !important;
+            margin-right: 6px !important;
+            margin-bottom: 0 !important;
+            cursor: pointer;
+        }
+        .jawaban_dv.selected-jawaban {
+            background-color: #d1fae5 !important;
+            border: 2.5px solid #059669 !important;
+            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
+            color: #064e3b !important;
+            font-weight: 600 !important;
+        }
+        .jawaban_dv.selected-jawaban label,
+        .jawaban_dv.selected-jawaban .pilihan-label,
+        .jawaban_dv.selected-jawaban strong {
+            color: #047857 !important;
+            font-weight: 800 !important;
+        }
+        .jawaban_dv.selected-jawaban::after {
+            content: "\f058";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: #059669;
+            font-size: 1.25rem;
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
         }
     </style>
 </head>
@@ -51,7 +106,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                 <div class="row g-2">
                     <div class="col-12 col-lg-8">
                         <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
-                            <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                            <div class="p-3 mb-3" style="background-color: #f8fafc; border: 2px solid #cbd5e1; border-radius: 8px;">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-success rounded-pill px-3 py-1" id="p_no_soal" style="font-size: 15.5px; font-weight: 600; padding: 6px 16px;">Soal no. 1</span>
                                 </div>
@@ -101,30 +156,96 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
     <script src="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
     <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
     <script>
-    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-        event.preventDefault();
-        $(this).ekkoLightbox({
-            alwaysShowClose: true,
-            wrapping: false
+    function showImagePopup(largeUrl, fallbackUrl) {
+        var safeFallback = fallbackUrl || largeUrl;
+        Swal.fire({
+            html: '<div style="padding:4px;"><img src="' + largeUrl + '" onerror="if(this.src!==\'' + safeFallback + '\'){this.src=\'' + safeFallback + '\';}" style="max-width:100%; max-height:80vh; width:auto; height:auto; object-fit:contain; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);" alt="Detail Gambar"></div>',
+            width: 'auto',
+            padding: '1rem',
+            background: '#ffffff',
+            showConfirmButton: false,
+            showCloseButton: true,
+            backdrop: 'rgba(15, 23, 42, 0.75)'
         });
+    }
+
+    $(document).on('click', '[data-toggle="lightbox"], #dv_img_soal img, .jawaban_dv img, .popup-img-trigger', function(event) {
+        event.preventDefault();
+        var $el = $(this);
+        var $anchor = $el.closest('a[data-toggle="lightbox"]');
+        var fallbackUrl = $el.attr('data-fallback-src') || ($el.is('img') ? $el.attr('src') : ($el.find('img').attr('src') || $el.attr('href')));
+        var largeUrl = $el.attr('data-large-src') || ($anchor.length ? $anchor.attr('href') : ($el.attr('href') || fallbackUrl));
+        if (largeUrl) {
+            showImagePopup(largeUrl, fallbackUrl);
+        }
     });
 
-    var timers;
+    var timers = null;
+    var timerRunning = false;
+    var currentJenisId = <?= (int) $request->getUri()->getSegment(4) ?>;
+    var currentGroupId = <?= (int) $group_id ?>;
+    var currentUserId = "<?= esc($session->user_id ?? 'guest') ?>";
+    var timerStorageKey = "latihan_timer_" + currentUserId + "_" + currentJenisId + "_" + currentGroupId;
+
+    function getDefaultDuration(grpId) {
+        return (grpId == 1) ? 3600 : 2700;
+    }
+
+    function getSavedRemainingSeconds(defaultDetik) {
+        try {
+            var raw = localStorage.getItem(timerStorageKey);
+            if (raw) {
+                var parsed = JSON.parse(raw);
+                if (parsed && typeof parsed.remaining === "number" && parsed.remaining > 0) {
+                    var ageMs = Date.now() - (parsed.updatedAt || Date.now());
+                    if (ageMs < 6 * 3600 * 1000) {
+                        var elapsedSec = Math.floor(ageMs / 1000);
+                        var rem = parsed.remaining - (elapsedSec > 0 && elapsedSec < 30 ? elapsedSec : 0);
+                        if (rem > 0) return rem;
+                    }
+                }
+            }
+        } catch (e) {}
+        return defaultDetik;
+    }
+
+    function saveRemainingSeconds(sec) {
+        try {
+            localStorage.setItem(timerStorageKey, JSON.stringify({
+                remaining: sec,
+                updatedAt: Date.now()
+            }));
+        } catch (e) {}
+    }
+
+    function clearSavedTimer() {
+        try {
+            localStorage.removeItem(timerStorageKey);
+        } catch (e) {}
+    }
+
     $(document).ready(function() {
+        var initSec = getSavedRemainingSeconds(getDefaultDuration(currentGroupId));
+        $("#countdown").text(convertSeconds(initSec));
+        countdown(initSec);
+
         setTimeout(() => {
             startujian("start");
-        }, 1000);
+        }, 300);
     });
 
     function selectJawaban(jawaban_id, pilihan_nm) {
-        if (jawaban_id != "") {
-            let dv = document.getElementsByClassName("jawaban_dv");
-            for (let index = 0; index < dv.length; index++) {
-                dv[index].style.border = "none";
-            }
+        let dv = document.getElementsByClassName("jawaban_dv");
+        for (let index = 0; index < dv.length; index++) {
+            dv[index].classList.remove("selected-jawaban");
+        }
+        if (jawaban_id && jawaban_id !== "" && jawaban_id !== "null") {
             $("#inp_jawaban_id").val(jawaban_id);
             $("#inp_pilihan_nm").val(pilihan_nm);
-            document.getElementById("dv_jawaban_" + jawaban_id).style.border = "thick solid #00a65a";
+            let el = document.getElementById("dv_jawaban_" + jawaban_id);
+            if (el) {
+                el.classList.add("selected-jawaban");
+            }
         }
     }
 
@@ -168,6 +289,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             },
             success: function(data) {
                 if (data.proc == "selesai") {
+                    clearSavedTimer();
                     Swal.fire({
                             title: "anda telah selesai mengerjakan Test, klik Ok untuk keluar",
                             icon: "info",
@@ -190,15 +312,16 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                     
                 } else {
                     if (data == "jawaban_kosong") {
-                        alert("Jawaban belum dipilih");
+                        Swal.fire({
+                            title: "Perhatian",
+                            text: "Jawaban belum dipilih",
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
                     } else {
-                        if (data.no_soal == 1) {
-                            window.clearInterval(timers);
-                            if (data.group_id == 1) {
-                                countdown(3600);
-                            } else {
-                                countdown(2700);
-                            }
+                        if (!timerRunning) {
+                            var resumeSec = getSavedRemainingSeconds(getDefaultDuration(data.group_id));
+                            countdown(resumeSec);
                         }
 
                         $("#inp_soal_id").val(data.soal_id);
@@ -214,20 +337,20 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                         $("#inp_pilihan_nm").val("");
                         $("#dv_img_soal").html(data.img_soal);
                         setTimeout(() => {
-                            selectJawaban(data.jawaban_idx,data.pilihan_nms);
+                            if (data.jawaban_idx && data.jawaban_idx !== "") {
+                                selectJawaban(data.jawaban_idx, data.pilihan_nms);
+                            }
                         }, 10);
-                        
                     }
                 }
-                let dv = document.getElementsByClassName("jawaban_dv");
-                for (let index = 0; index < dv.length; index++) {
-                    dv[index].style.border = "none";
-                }
-
-
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({
+                    title: "Error",
+                    text: "Error system",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             }
         });
     }
@@ -254,36 +377,42 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
     }
 
     function convertSeconds(s) {
+        if (s < 0) s = 0;
         var min = Math.floor(s / 60);
         var sec = s % 60;
         if (sec < 10) {
-            sec = "0"+sec;
+            sec = "0" + sec;
         }
-
         if (min < 10) {
-            min = "0"+min;
+            min = "0" + min;
         }
         return min + ":" + sec;
     }
 
-
     function countdown(detik) {
+        if (timers) {
+            window.clearInterval(timers);
+        }
+        timerRunning = true;
         var seconds = detik;
         var jenis_id = <?= $request->getUri()->getSegment(3) ?>;
-        timers = window.setInterval(function() {
-            myFunction();
-        }, 1000); // every second
+        $("#countdown").text(convertSeconds(seconds));
+        saveRemainingSeconds(seconds);
 
-        function myFunction() {
+        timers = window.setInterval(function() {
             seconds--;
-            $("#countdown").text(convertSeconds(seconds));
-            if (seconds === 0) {
+            if (seconds <= 0) {
+                seconds = 0;
+                $("#countdown").text("00:00");
+                window.clearInterval(timers);
+                timerRunning = false;
+                clearSavedTimer();
                 window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + jenis_id;
             } else {
-                //Do nothing
+                $("#countdown").text(convertSeconds(seconds));
+                saveRemainingSeconds(seconds);
             }
-
-        }
+        }, 1000);
     }
     </script>
 </body>

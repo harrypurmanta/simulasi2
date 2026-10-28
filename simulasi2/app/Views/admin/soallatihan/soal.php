@@ -643,7 +643,7 @@
             $("#loader-wrapper").addClass("d-none");
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
   }
@@ -655,7 +655,7 @@
     for (i = 0; i < char.length; i++) {
       for (j = i + 1; j < char.length; j++) {
           if (char[i] == char[j]) {
-            alert("Karakter tidak boleh sama !");
+            Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
             var val = char.substr(0, char.length - 1);
             document.getElementById(kolom).value = val;
           }
@@ -700,7 +700,7 @@ function hapussoal(soal_id) {
                 }
               },
               error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
               }
           });
         }
@@ -725,7 +725,7 @@ function showjawaban(soal_id) {
           $('#tr_data_'+soal_id).html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -785,11 +785,11 @@ function checkbtn(soal_id) {
           processData: false,
           
           success: function(data) {
-            alert("Sukses");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
 }
@@ -806,15 +806,15 @@ function deletebtn(soal_id,jawaban_id) {
           },
           success: function(data) {
             if (data == "sukses") {
-              alert("Sukses");
+              Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             } else {
-              alert("Gagal");
+              Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
             }
             document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
   } else {

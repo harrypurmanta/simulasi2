@@ -34,4 +34,30 @@
             });
         };
     }
+
+    // Global override alert() -> SweetAlert2
+    if (typeof Swal !== 'undefined') {
+        window.alert = function(message) {
+            var msg = String(message || '');
+            var lower = msg.toLowerCase();
+            var icon = 'info';
+            var title = 'Informasi';
+            if (lower.indexOf('sukses') !== -1 || lower.indexOf('berhasil') !== -1) {
+                icon = 'success';
+                title = 'Berhasil';
+            } else if (lower.indexOf('error') !== -1 || lower.indexOf('gagal') !== -1 || lower.indexOf('salah') !== -1) {
+                icon = 'error';
+                title = 'Error';
+            } else if (lower.indexOf('belum') !== -1 || lower.indexOf('tidak') !== -1 || lower.indexOf('kurang') !== -1 || lower.indexOf('pilih') !== -1 || lower.indexOf('harap') !== -1) {
+                icon = 'warning';
+                title = 'Perhatian';
+            }
+            return Swal.fire({
+                title: title,
+                text: msg,
+                icon: icon,
+                confirmButtonText: 'OK'
+            });
+        };
+    }
 </script>

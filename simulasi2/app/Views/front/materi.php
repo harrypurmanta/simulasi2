@@ -114,7 +114,12 @@ $title = 'Materi & Tryout - Bintang Timur Prestasi';
             var tokenuser = $("#tokenuser").val();
 
             if (!token) {
-                alert("Silakan masukkan token materi terlebih dahulu");
+                Swal.fire({
+                    title: "Perhatian",
+                    text: "Silakan masukkan token materi terlebih dahulu",
+                    icon: "warning",
+                    confirmButtonText: "OK"
+                });
                 return;
             }
 
@@ -131,13 +136,23 @@ $title = 'Materi & Tryout - Bintang Timur Prestasi';
                 success: function(data) {
                     if (data == "sukses") {
                         $("#modal-token").modal("hide");
-                        window.location.href = "<?= rtrim(base_url(), '/') ?>/tryout/ujian/" + materi_id + "/" + group_id;
+                        window.location.href = "<?= rtrim(base_url(), '/') ?>/materi/pilihanMateri/" + materi_id + "/" + group_id;
                     } else {
-                        alert("Token salah atau tidak aktif. Silakan hubungi administrator.");
+                        Swal.fire({
+                            title: "Token Tidak Valid",
+                            text: "Token salah atau tidak aktif. Silakan hubungi administrator.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
                     }
                 },
                 error: function() {
-                    alert("Terjadi kesalahan saat verifikasi token.");
+                    Swal.fire({
+                        title: "Error",
+                        text: "Terjadi kesalahan saat verifikasi token.",
+                        icon: "error",
+                        confirmButtonText: "OK"
+                    });
                 }
             });
         }

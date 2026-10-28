@@ -154,7 +154,7 @@
           $('#listlatihan').html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
     });
  }
@@ -171,7 +171,7 @@
           $('#listlatihan').html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
     });
 }

@@ -117,8 +117,9 @@
     </div>
 
     <!-- jQuery & Bootstrap 5 Bundle JS -->
-    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url('plugins/jquery/jquery.min.js') ?>"></script>
+    <script src="<?= base_url('dist/adminlte4/js/bootstrap.bundle.min.js') ?>"></script>
+    <script src="<?= base_url('dist/js/sweetalert2.js') ?>"></script>
     <script>
     function simpanregister() {
         var person_nm   = $("#person_nm").val();
@@ -131,7 +132,12 @@
         var gender_cd   = $("#gender_cd").val();
 
         if (!person_nm || !cellphone || !user_nm) {
-            alert("Harap isi Nama, No. HP, dan Username!");
+            Swal.fire({
+                title: "Perhatian",
+                text: "Harap isi Nama, No. HP, dan Username!",
+                icon: "warning",
+                confirmButtonText: "OK"
+            });
             return;
         }
 
@@ -151,14 +157,30 @@
             },
             success: function(data) {
                 if (data == "userada") {
-                    alert("Nomor Handphone atau Username sudah terdaftar!");
+                    Swal.fire({
+                        title: "Gagal",
+                        text: "Nomor Handphone atau Username sudah terdaftar!",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
                 } else {
-                    alert("Pendaftaran berhasil! Silakan login menggunakan username Anda.");
-                    location.href = "<?= base_url() ?>/login";
+                    Swal.fire({
+                        title: "Berhasil!",
+                        text: "Pendaftaran berhasil! Silakan login menggunakan username Anda.",
+                        icon: "success",
+                        confirmButtonText: "Login Sekarang"
+                    }).then(() => {
+                        location.href = "<?= base_url('login') ?>";
+                    });
                 }
             },
             error: function() {
-                alert("Terjadi kesalahan saat memproses pendaftaran.");
+                Swal.fire({
+                    title: "Error",
+                    text: "Terjadi kesalahan saat memproses pendaftaran.",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             }
         });
     }

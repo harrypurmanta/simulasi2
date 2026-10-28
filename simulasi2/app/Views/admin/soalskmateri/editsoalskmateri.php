@@ -335,7 +335,7 @@
                 // console.log(data);
             },
             error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -392,7 +392,7 @@
                 // console.log(data);
             },
             error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -424,7 +424,7 @@
         var materi_id = <?= $materi_id ?>;
 
         if (jawaban_nm.length < 5) {
-            alert("Jumlah karakter pada clue kurang dari 5");
+            Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada clue kurang dari 5", icon: "warning", confirmButtonText: "OK" });
             document.getElementById("jawaban_nm").focus();
             return;
         } 
@@ -534,7 +534,7 @@
                     }
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                 }
             });
     }
@@ -544,7 +544,7 @@
         for (i = 0; i < char.length; i++) {
         for (j = i + 1; j < char.length; j++) {
             if (char[i] == char[j]) {
-                alert("Karakter tidak boleh sama !");
+                Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
                 var val = char.substr(0, char.length - 1);
                 document.getElementById(kolom).value = val;
             }

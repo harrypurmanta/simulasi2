@@ -336,14 +336,17 @@ class Latihan extends BaseController
 
                 $img_jwb = "";
                 if (!empty($key->jawaban_img)) {
-                    $img_jwb = "<div style='margin-top:5px;'><img style='max-width:300px; max-height:150px; border-radius:4px;' src='".base_url()."/images/jawaban_latihan/jenis/".$jenis_id."/".$key->jawaban_img."'></div>";
+                    $jwbUrl = base_url()."/images/jawaban_latihan/jenis/".$jenis_id."/".$key->jawaban_img;
+                    $img_jwb = "<div class='d-inline-flex align-items-center'><img style='max-width:300px; max-height:150px; border-radius:6px; cursor:zoom-in;' src='".$jwbUrl."' data-large-src='".$jwbUrl."' data-fallback-src='".$jwbUrl."' class='jawaban-img popup-img-trigger' title='Klik untuk memperbesar gambar'></div>";
                 }
 
-                $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='col-md-12 jawaban_dv' style='display: block; padding: 12px 16px; margin-top: 8px; margin-bottom: 8px; border-radius: 8px; text-align: left; cursor: pointer; transition: all 0.2s; $border'>
-                    <label style='cursor:pointer; font-size:15px; margin-bottom:0;'>
-                        <strong style='color:#1e3c72; font-size:16px;'>".$key->pilihan_nm.".</strong> 
-                        <span style='margin-left: 6px; font-weight: normal; color:#2c3e50;'>".esc($key->jawaban_nm)."</span>
-                    </label>
+                $jawaban_text_html = ($key->jawaban_nm !== "" && $key->jawaban_nm !== null)
+                    ? "<span style='font-weight: normal; color:#2c3e50;'>".esc($key->jawaban_nm)."</span>"
+                    : "";
+
+                $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='col-md-12 jawaban_dv' style='display: flex; align-items: center; gap: 8px; padding: 9px 40px 9px 14px; margin-top: 4px; margin-bottom: 4px; border-radius: 8px; text-align: left; cursor: pointer; transition: all 0.2s; $border'>
+                    <strong class='pilihan-label' style='color:#0f172a; font-size:16px; font-weight:800; margin-right:4px; flex-shrink:0;'>".$key->pilihan_nm.".</strong> 
+                    $jawaban_text_html
                     $img_jwb
                 </div>";
             }

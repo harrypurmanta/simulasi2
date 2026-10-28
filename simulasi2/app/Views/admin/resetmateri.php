@@ -190,14 +190,14 @@
             },
             success: function(data) {
                 if (data == true) {
-                    alert("Reset berhasil");
+                    Swal.fire({ title: "Berhasil", text: "Reset berhasil", icon: "success", confirmButtonText: "OK" });
                 } else {
-                    alert("Reset gagal");
+                    Swal.fire({ title: "Error", text: "Reset gagal", icon: "error", confirmButtonText: "OK" });
                 }
                 $("#loader-wrapper").addClass("d-none");
             },
             error: function() {
-              alert("error");
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }

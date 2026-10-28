@@ -357,7 +357,7 @@
                         $("#dv_jwbimg_"+jawaban_id).html("");
                     },
                     error: function() {
-                        alert("error");
+                        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                     }
                 });
             }
@@ -386,7 +386,7 @@
                         $("#dv_soalimg_"+soal_id).html("");
                     },
                     error: function() {
-                        alert("error");
+                        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                     }
                 });
             }
@@ -415,7 +415,7 @@
                         $("#dv_soalimg_"+soal_id).html("");
                     },
                     error: function() {
-                        alert("error");
+                        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                     }
                 });
             }
@@ -526,7 +526,7 @@
             },
             error: function() {
                 $("#loader-wrapper").addClass("d-none")
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -639,7 +639,7 @@
                     }
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                 }
             });
         

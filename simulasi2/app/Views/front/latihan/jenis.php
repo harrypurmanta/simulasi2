@@ -46,16 +46,16 @@ $title = ($group_id == 2) ? 'Latihan Kecerdasan - Bintang Timur Prestasi' : 'Pil
         <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container py-4">
-                <div class="row align-items-center mb-4">
+            <div class="container pt-2 pb-4">
+                <div class="row align-items-center mb-3">
                     <div class="col-md-auto mb-2 mb-md-0">
-                        <a href="<?= base_url('latihan') ?>" class="btn btn-outline-secondary rounded-pill px-3">
+                        <a href="<?= base_url('latihan') ?>" class="btn btn-outline-secondary rounded-pill px-3 btn-sm">
                             <i class="fas fa-arrow-left me-1"></i> Kembali ke Kategori
                         </a>
                     </div>
                     <div class="col text-md-center">
                         <h2 class="fw-bold mb-1 text-dark">
-                            <?= ($group_id == 2) ? 'LATIHAN KECERDASAN' : 'LATIHAN SOAL' ?>
+                            <?= ($group_id == 2) ? 'Latihan Kecerdasan' : 'Daftar Jenis Latihan' ?>
                         </h2>
                         <p class="text-muted mb-0 small">
                             <?= ($group_id == 2) ? 'Pilih jenis soal kecerdasan di bawah ini untuk memilih level latihan' : 'Pilih jenis materi soal untuk memulai latihan' ?>
@@ -64,25 +64,33 @@ $title = ($group_id == 2) ? 'Latihan Kecerdasan - Bintang Timur Prestasi' : 'Pil
                     <div class="col-md-auto d-none d-md-block" style="width: 150px;"></div>
                 </div>
 
-                <div class="row g-4">
+                <div class="row g-3">
                     <?php
                         $this->session = \Config\Services::session();
                         foreach ($jenis as $key) {
                     ?>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="small-box-latihan h-100 d-flex flex-column justify-content-between">
-                            <div class="inner">
-                                <h4><?= esc($key->jenis_nm) ?></h4>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover bg-white">
+                            <div class="card-body p-3 text-center d-flex flex-column justify-content-between">
+                                <div class="my-2">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                                         style="width: 46px; height: 46px; background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;">
+                                        <i class="fas fa-tasks fa-lg"></i>
+                                    </div>
+                                    <h5 class="fw-bold mb-0 text-dark"><?= esc($key->jenis_nm) ?></h5>
+                                </div>
+                                <div class="mt-2">
+                                    <?php if ($group_id == 2): ?>
+                                        <button type="button" onclick="pilihLevel(<?= $key->jenis_id ?>, '<?= esc($key->jenis_nm, 'js') ?>')" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
+                                            Pilih Level <i class="fas fa-arrow-right ms-1"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <a href="<?= base_url('latihan/petunjuk/' . $group_id . '/' . $key->jenis_id) ?>" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
+                                            Mulai <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                </div>
                             </div>
-                            <?php if ($group_id == 2): ?>
-                                <a href="javascript:void(0)" onclick="pilihLevel(<?= $key->jenis_id ?>, '<?= esc($key->jenis_nm, 'js') ?>')" class="small-box-footer">
-                                    Pilih Level <i class="fas fa-arrow-circle-right ms-1"></i>
-                                </a>
-                            <?php else: ?>
-                                <a href="<?= base_url('latihan/petunjuk/' . $group_id . '/' . $key->jenis_id) ?>" class="small-box-footer">
-                                    Mulai Latihan <i class="fas fa-arrow-circle-right ms-1"></i>
-                                </a>
-                            <?php endif; ?>
                         </div>
                     </div>
                     <?php } ?>

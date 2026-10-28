@@ -281,7 +281,7 @@ $('.summernote').summernote({
             },
             error: function() {
                 $("#loader-wrapper").addClass("d-none")
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -369,7 +369,7 @@ $('.summernote').summernote({
                     }
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                 }
             });
     }

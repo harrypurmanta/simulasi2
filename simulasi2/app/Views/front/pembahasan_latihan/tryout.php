@@ -176,7 +176,12 @@ $title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
                     
                 } else {
                     if (data == "jawaban_kosong") {
-                        alert("Jawaban belum dipilih");
+                        Swal.fire({
+                            title: "Perhatian",
+                            text: "Jawaban belum dipilih",
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
                     } else {
                         if (data.no_soal == 1) {
                             window.clearInterval(timers);
@@ -209,7 +214,12 @@ $title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
 
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({
+                    title: "Error",
+                    text: "Error system",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             }
         });
     }

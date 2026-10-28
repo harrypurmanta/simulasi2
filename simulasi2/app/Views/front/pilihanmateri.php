@@ -6,22 +6,21 @@ $title = 'Petunjuk Pengerjaan Soal - Bintang Timur Prestasi';
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
 
-        <div class="content-wrapper">
-            <div class="container py-5">
+        <div class="content-wrapper" style="padding-top: 8px !important; padding-bottom: 20px !important;">
+            <div class="container pt-1 pb-3">
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                            <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
-                                <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">SIMULASI UJIAN</span>
+                            <div class="card-header text-white text-center py-3" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
                                 <h3 class="fw-bold mb-0">Petunjuk Pengerjaan Soal</h3>
                                 <h5 class="text-warning fw-semibold mt-1 mb-0"><?= esc($group[0]->group_nm ?? '') ?></h5>
                             </div>
-                            <div class="card-body p-4 p-md-5 text-center bg-white">
-                                <div class="mb-4">
-                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;">
-                                        <i class="fas fa-clipboard-list fa-3x"></i>
+                            <div class="card-body px-4 pt-3 pb-4 text-center bg-white">
+                                <div class="mb-3">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2" style="width: 68px; height: 68px; background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;">
+                                        <i class="fas fa-clipboard-list fa-2x"></i>
                                     </div>
-                                    <div class="px-md-4 py-3 bg-light rounded-3 text-secondary my-3" style="font-size: 1.1rem; line-height: 1.6;">
+                                    <div class="px-md-4 py-3 bg-light rounded-3 text-secondary my-2" style="font-size: 1.1rem; line-height: 1.6;">
                                         <?php
                                             if ($group[0]->group_soal_id == 1) {
                                                 echo "<p class='mb-0'>Jawablah setiap pertanyaan dengan jujur, sesuai dengan kenyataan yang ada pada diri Anda sendiri.</p>";
@@ -34,7 +33,7 @@ $title = 'Petunjuk Pengerjaan Soal - Bintang Timur Prestasi';
                                             }
                                         ?>
                                     </div>
-                                    <p class="text-muted small">
+                                    <p class="text-muted small mb-0">
                                         <i class="fas fa-info-circle text-primary me-1"></i> Saat Anda menekan tombol <strong>Mulai Sekarang</strong>, timer pengerjaan akan langsung berjalan otomatis.
                                     </p>
                                 </div>

@@ -61,6 +61,10 @@ class Sikapkerja extends BaseController
                 $used = 1;
                 $this->session->set("used",$used);
               }
+        } else if (empty($this->session->used)) {
+            $getUsed = $this->soalmodel->getResponByMateriId($this->session->user_id,$sk_group_id)->getResult();
+            $used = (count($getUsed)>0) ? $getUsed[0]->used : 1;
+            $this->session->set("used",$used);
         }
         
         if ($jawaban_id != "") {

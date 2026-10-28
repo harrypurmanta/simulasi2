@@ -55,7 +55,7 @@ class Materi extends BaseController
             $persen_sk = 0;
             $ttl_benar_sk = 0;
             
-            $kecerdasanskor = $this->soalmodel->getKecerdasanSkor($user_id,$this->session->session,$materi_id)->getResult();
+            $kecerdasanskor = $this->soalmodel->getKecerdasanSkor($user_id,"",$materi_id)->getResult();
             foreach ($kecerdasanskor as $kec) {
                 if ($kec->kunci == $kec->pilihan_nm) {
                     $benar_kec = $benar_kec + 1;
@@ -66,7 +66,7 @@ class Materi extends BaseController
             
             $data['persen_kec'] = ($benar_kec * 0.0025) * 100;
 
-            $kepskor = $this->soalmodel->getKepribadianSkor($user_id,$this->session->session,$materi_id)->getResult();
+            $kepskor = $this->soalmodel->getKepribadianSkor($user_id,"",$materi_id)->getResult();
             foreach ($kepskor as $kep) {
                 if ($kep->kunci == $kep->pilihan_nm) {
                     $benar_keb = $benar_keb + 1;
@@ -81,7 +81,7 @@ class Materi extends BaseController
                 $benar = 0;
                 $salah = 0;
                 $soal_terjawab = 0;
-                $res_responSK = $this->soalmodel->getResponSikapKerja($user_id,$this->session->session,$key->kolom_id,$materi_id)->getResult();
+                $res_responSK = $this->soalmodel->getResponSikapKerja($user_id,"",$key->kolom_id,$materi_id)->getResult();
                 if (count($res_responSK)>0) {
                     $soal_terjawab = count($res_responSK);
                     foreach ($res_responSK as $rSK) {

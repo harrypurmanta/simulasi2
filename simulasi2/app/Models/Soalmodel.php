@@ -416,7 +416,7 @@ public function getAllSoalSK() {
                         ->where('a.status_cd','normal')
                         ->where('b.status_cd','normal')
                         ->where('a.created_user_id',$user_id)
-                        ->where('a.session',$session)
+                        // ->where('a.session',$session)
                         ->where('a.materi',$materi)
                         ->where('a.kolom_id',$kolom_id)
                         ->where('a.group_id',4)
@@ -537,18 +537,18 @@ public function getAllSoalSK() {
                         ->where('a.group_id',3)
                         ->where('a.created_user_id',$user_id)
                         // ->where('a.session',$session)
-                        ->where('c.materi',$materi)
+                        ->where('a.materi',$materi)
                         ->where('a.status_cd','normal')
                         ->get();
         } else {
             return $this->db->table('respon a')
-                        ->select('*')
+                        ->select('*, a.pilihan_nm as pilihan_respon, a.no_soal as no_soal_respon,c.kunci as kunci_soal,b.jawaban_nm as jawaban_nmx')
                         ->join('jawaban b','b.jawaban_id=a.jawaban_id','left')
                         ->join('soal c','c.soal_id=b.soal_id','left')
                         ->where('a.group_id',3)
                         ->where('a.created_user_id',$user_id)
-                        ->where('a.session',$session)
-                        ->where('c.materi',$materi)
+                        // ->where('a.session',$session)
+                        ->where('a.materi',$materi)
                         ->where('a.status_cd','normal')
                         ->get();
         }

@@ -7,35 +7,34 @@ $title = 'Pembahasan Soal - Bintang Timur Prestasi';
         <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container py-4">
-                <div class="text-center mb-5">
-                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill fw-bold mb-2">
-                        <i class="fas fa-search me-1"></i> REVIEW & PEMBAHASAN
-                    </span>
-                    <h2 class="fw-bold text-dark">Pilih Paket Pembahasan</h2>
-                    <p class="text-muted small">Pelajari kunci jawaban dan penjelasan rinci dari setiap paket soal yang telah diujikan</p>
+            <div class="container pt-2 pb-4">
+                <div class="text-center mb-3">
+                    <h2 class="fw-bold text-dark mb-1">Pilih Paket Pembahasan</h2>
+                    <p class="text-muted small mb-0">Pelajari kunci jawaban dan penjelasan rinci dari setiap paket soal yang telah diujikan</p>
                 </div>
 
-                <div class="row g-4 justify-content-center">
+                <div class="row g-3">
                     <?php
                         foreach ($materi as $key) {
                             $group_id = 2;
                     ?>
-                    <div class="col-12 col-sm-6 col-lg-3">
-                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover" style="border-top: 4px solid #0284c7 !important;">
-                            <div class="card-body p-4 text-center d-flex flex-column justify-content-between">
-                                <div class="mb-3">
-                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px; background-color: rgba(2, 132, 199, 0.1); color: #0284c7;">
-                                        <i class="fas fa-file-invoice fa-2x"></i>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden transition-hover bg-white">
+                            <div class="card-body p-3 text-center d-flex flex-column justify-content-between">
+                                <div class="my-2">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                                         style="width: 46px; height: 46px; background-color: rgba(30, 60, 114, 0.08); color: #1e3c72;">
+                                        <i class="fas fa-file-invoice fa-lg"></i>
                                     </div>
-                                    <h5 class="fw-bold text-dark mb-1">
+                                    <h5 class="fw-bold mb-0 text-dark">
                                         <?= esc(str_replace("Materi", "Pembahasan", $key->materi_nm)) ?>
                                     </h5>
-                                    <small class="text-muted">Kunci & Gambar Penjelasan</small>
                                 </div>
-                                <a href="<?= base_url() ?>/pembahasan/pilihanmateri/<?= $key->materi_id ?>/<?= $group_id ?>" class="btn btn-info text-white w-100 rounded-pill fw-semibold py-2">
-                                    Buka Pembahasan <i class="fas fa-arrow-right ms-1"></i>
-                                </a>
+                                <div class="mt-2">
+                                    <a href="<?= base_url('pembahasan/pilihanmateri/' . $key->materi_id . '/' . $group_id) ?>" class="btn btn-primary w-100 rounded-pill fw-semibold py-2">
+                                        Buka Pembahasan <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
