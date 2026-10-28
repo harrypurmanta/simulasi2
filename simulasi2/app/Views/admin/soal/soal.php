@@ -201,11 +201,9 @@
                   
                   if (group_id == 4) {
                       return `
-                        <a href="<?= base_url() ?>/admin/soal/detailsoal/${data.soal_id}" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                        <a href="<?= base_url() ?>/admin/soal/viewEditsoalSK/${data.soal_id}/${group_id}/${materi_id}" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>`;
+                        <a href="<?= base_url() ?>/admin/soalsikapkerjamateri/viewEditsoalSkMateri/${data.soal_id}/${group_id}/${materi_id}/0" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>`;
                   } else {
                       return `
-                        <a href="<?= base_url() ?>/admin/soal/detailsoal/${data.soal_id}" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                         <a href="<?= base_url() ?>/admin/soal/viewEditsoal/${data.soal_id}/${data.no_soal}/${data.group_id}/${data.materi}" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                         <button type="button" class="btn btn-sm btn-danger" onclick="hapussoal(${data.soal_id})"><i class="fas fa-trash"></i></button>`;
                   }
@@ -331,7 +329,7 @@
 
       if (kolom6.length < 5 && kolom6.length > 0) {
         Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 6 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
-        kdocument.getElementById("kolom6").focus();
+        document.getElementById("kolom6").focus();
         return;
       }
 
@@ -580,32 +578,39 @@ function checkbtn(soal_id) {
 }
 
 function deletebtn(soal_id,jawaban_id) {
-  let text = "Apakah anda yakin menghapus data ini ?";
-  if (confirm(text) == true) {
-    $.ajax({
-          url: "<?= base_url('soal/deletejawaban') ?>",
-          type: "post",
-          dataType: "json",
-          data: {
-            "jawaban_id": jawaban_id
-          },
-          success: function(data) {
-            if (data == "sukses") {
-              Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
-            } else {
-              Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+  Swal.fire({
+    title: "Hapus Jawaban?",
+    text: "Apakah anda yakin menghapus data ini ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: "<?= base_url('soal/deletejawaban') ?>",
+            type: "post",
+            dataType: "json",
+            data: {
+              "jawaban_id": jawaban_id
+            },
+            success: function(data) {
+              if (data == "sukses") {
+                Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+              } else {
+                Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+              }
+              document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
+              showjawaban(soal_id);
+            },
+            error: function() {
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
-            document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
-            showjawaban(soal_id);
-          },
-          error: function() {
-            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
-          }
-      });
-  } else {
-
-  }
-  
+        });
+    }
+  });
 }
 
 function timesbtn(soal_id,jawaban_id) {

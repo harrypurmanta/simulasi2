@@ -92,6 +92,10 @@ $routes->get('admin/hasil/latihanmateri/(:num)/(:num)', '\App\Controllers\Admin\
 $routes->post('admin/hasil/latihanmateri/(:num)/(:num)', '\App\Controllers\Admin\Hasil::latihanmateri/$1/$2');
 $routes->get('admin/hasil/hasillatihanmateri/(:num)/(:num)/(:num)', '\App\Controllers\Admin\Hasil::hasillatihanmateri/$1/$2/$3');
 $routes->post('admin/hasil/hasillatihanmateri/(:num)/(:num)/(:num)', '\App\Controllers\Admin\Hasil::hasillatihanmateri/$1/$2/$3');
+$routes->get('admin/hasil/latihansubmateri/(:num)/(:num)', '\App\Controllers\Admin\Hasil::latihansubmateri/$1/$2');
+$routes->post('admin/hasil/latihansubmateri/(:num)/(:num)', '\App\Controllers\Admin\Hasil::latihansubmateri/$1/$2');
+$routes->get('admin/hasil/hasillatihansubmateri/(:num)/(:num)/(:num)', '\App\Controllers\Admin\Hasil::hasillatihansubmateri/$1/$2/$3');
+$routes->post('admin/hasil/hasillatihansubmateri/(:num)/(:num)/(:num)', '\App\Controllers\Admin\Hasil::hasillatihansubmateri/$1/$2/$3');
 
 
 $routes->get('jawaban/showjawaban', '\App\Controllers\Admin\Jawaban::showjawaban');

@@ -174,7 +174,6 @@
 
                   if (data.kolom_id != null) {
                     return `
-                        <a href="<?= base_url() ?>/admin/soalsikapkerjalatihan/detailsoal/${data.kolom_id}" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                         <a href="<?= base_url() ?>/admin/soalsikapkerjalatihan/viewEditsoalSkLatihan/${data.kolom_id}/4/98/${sk_group_id}" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>`;
                   }
                   
@@ -299,7 +298,7 @@
 
       if (kolom6.length < 5 && kolom6.length > 0) {
         Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 6 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
-        kdocument.getElementById("kolom6").focus();
+        document.getElementById("kolom6").focus();
         return;
       }
 
@@ -548,32 +547,38 @@ function checkbtn(soal_id) {
 }
 
 function deletebtn(soal_id,jawaban_id) {
-  let text = "Apakah anda yakin menghapus data ini ?";
-  if (confirm(text) == true) {
-    $.ajax({
-          url: "<?= base_url('soal/deletejawaban') ?>",
-          type: "post",
-          dataType: "json",
-          data: {
-            "jawaban_id": jawaban_id
-          },
-          success: function(data) {
-            if (data == "sukses") {
-              Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
-            } else {
-              Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+  Swal.fire({
+    title: "Apakah anda yakin menghapus data ini ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Ya, Hapus",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: "<?= base_url('soal/deletejawaban') ?>",
+            type: "post",
+            dataType: "json",
+            data: {
+              "jawaban_id": jawaban_id
+            },
+            success: function(data) {
+              if (data == "sukses") {
+                Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+              } else {
+                Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+              }
+              document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
+              showjawaban(soal_id);
+            },
+            error: function() {
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
-            document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
-            showjawaban(soal_id);
-          },
-          error: function() {
-            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
-          }
-      });
-  } else {
-
-  }
-  
+        });
+    }
+  });
 }
 
 function timesbtn(soal_id,jawaban_id) {

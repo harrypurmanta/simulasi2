@@ -36,7 +36,7 @@ class Users extends BaseController
         $user_id = $request->getUri()->getSegment(4);
         $data = [
             'materi' => $this->soalmodel->getjawAllJMateri()->getResult(),
-            // 'ps' => $this->soalmodel->get()->getResult(),
+            'user_id' => $user_id,
         ];
         return view('admin/resetmateri',$data);
     }
@@ -44,17 +44,18 @@ class Users extends BaseController
     public function resetrespon() {
         $materi_id = $this->request->getPost("materi_id");
         $group_id = $this->request->getPost("group_id");
+        $user_id = $this->request->getPost("user_id");
 
         if ($group_id == "semua") {
             $data = [
                 "status_cd" => "nullified"
             ];
-            $reset = $this->soalmodel->resetsemua($materi_id,$data);
+            $reset = $this->soalmodel->resetsemua($materi_id, $data, $user_id);
         } else {
             $data = [
                 "status_cd" => "nullified"
             ];
-            $reset = $this->soalmodel->resetbygroup($materi_id,$group_id,$data);
+            $reset = $this->soalmodel->resetbygroup($materi_id, $group_id, $data, $user_id);
         }
         echo json_encode($reset);
     }
@@ -126,14 +127,15 @@ class Users extends BaseController
                     </div>
                     <div class='card-footer'>
                     <button onclick='simpanuser()' type='button' class='btn btn-info'>Simpan</button>
-                    <button type='button' class='btn btn-default float-right' data-dismiss='modal' aria-label='Close'>Cancel</button>
+                    <button type='button' class='btn btn-default float-right' data-bs-dismiss='modal' aria-label='Close'>Cancel</button>
                     </div>";
                     
         $ret .= "</div>
                 </div>
                 </div>
                 </div>
-                </div>";
+                </div>
+                <script>$('#modal_body select').select2({ dropdownParent: $('#modal-lg'), width: '100%' });</script>";
 
         return $ret;
     }
@@ -241,14 +243,15 @@ class Users extends BaseController
                     </div>
                     <div class='card-footer'>
                     <button onclick='updateuser(".$res[0]->person_id.")' type='button' class='btn btn-info'>Simpan</button>
-                    <button type='button' class='btn btn-default float-right' data-dismiss='modal' aria-label='Close'>Cancel</button>
+                    <button type='button' class='btn btn-default float-right' data-bs-dismiss='modal' aria-label='Close'>Cancel</button>
                     </div>";
                     
         $ret .= "</div>
                 </div>
                 </div>
                 </div>
-                </div>";
+                </div>
+                <script>$('#modal_body select').select2({ dropdownParent: $('#modal-lg'), width: '100%' });</script>";
 
                 echo json_encode($ret);
     }
@@ -326,6 +329,7 @@ class Users extends BaseController
         $sheet->setCellValue("G" . "6", "KUNCI");
         $sheet->setCellValue("H" . "6", "HASIL");
         foreach ($resSoalKec as $sl) {
+            $hasilx = "TIDAK DIJAWAB";
 			$sheet->setCellValue("A" . $columnkecerdasan, $sl->no_soal.". ". $sl->soal_nm);
             $resjawaban = $this->soalmodel->getJawabanBysoalId($sl->soal_id)->getResult();
             $clm = "B";
@@ -366,7 +370,9 @@ class Users extends BaseController
         $sheet->setCellValue("B" . $columnkecerdasanx, "JAWABAN");
         $sheet->setCellValue("G" . $columnkecerdasanx, "KUNCI");
         $sheet->setCellValue("H" . $columnkecerdasanx, "HASIL");
+        $columnkecerdasanx++;
         foreach ($resSoalKecx as $slx) {
+            $hasilxx = "TIDAK DIJAWAB";
 			$sheet->setCellValue("A" . $columnkecerdasanx, $slx->no_soal.". ". $slx->soal_nm);
             $resjawabanx = $this->soalmodel->getJawabanBysoalId($slx->soal_id)->getResult();
             $clm = "B";
@@ -411,6 +417,7 @@ class Users extends BaseController
 		header('Content-Length: ' . filesize($filepath));
 		flush();
 		readfile($filepath);
+        @unlink($filepath);
 		exit;
     }
 
@@ -549,64 +556,7 @@ class Users extends BaseController
                         </table>
                         </div>";
             $ret .= $skskor;
-            // $ret .= "";
-           $ret .= "<div class=\"card-body\">
-                    <div class=\"chart\">
-                        <canvas id=\"barChart\" style=\"min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;\"></canvas> 
-                    </div>
-                    </div>";
             $ret .= "</div>";
-            $js = "<script src=\"../../../../plugins/jquery/jquery.min.js\"></script><script src=\"../../../../plugins/chart.js/Chart.min.js\"></script>";
-            $js .= "var barChartCanvas = $(\"#barChart\").get(0).getContext(\"2d\");
-            var areaChartData = {
-            labels  : ".json_encode($kolom_nm).",
-            datasets: [
-                {
-                  label               : \"Jawaban Benar\",
-                  backgroundColor     : \"rgba(60,141,188,0.9)\",
-                  borderColor         : \"rgba(60,141,188,0.8)\",
-                  pointRadius          : false,
-                  pointColor          : \"#3b8bba\",
-                  pointStrokeColor    : \"rgba(60,141,188,1)\",
-                  pointHighlightFill  : \"#fff\",
-                  pointHighlightStroke: \"rgba(60,141,188,1)\",
-                  data                : ".json_encode($jawaban_benar_chart).",
-                  bezierCurve : false
-                },
-                {
-                  label               : \"Soal Terjawab\",
-                  backgroundColor     : \"rgba(210, 214, 222, 1)\",
-                  borderColor         : \"rgba(210, 214, 222, 1)\",
-                  pointRadius         : false,
-                  pointColor          : \"rgba(210, 214, 222, 1)\",
-                  pointStrokeColor    : \"#c1c7d1\",
-                  pointHighlightFill  : \"#fff\",
-                  pointHighlightStroke: \"rgba(220,220,220,1)\",
-                  data                : ".json_encode($soal_terjawab_chart)."
-                },
-              ]
-          }
-          
-            
-            var barChartData = $.extend(true, {}, areaChartData)
-            var temp0 = areaChartData.datasets[0]
-            var temp1 = areaChartData.datasets[1]
-            barChartData.datasets[0] = temp1
-            barChartData.datasets[1] = temp0
-
-            var barChartOptions = {
-              responsive              : true,
-              maintainAspectRatio     : false,
-              datasetFill             : false,
-            }
-
-            new Chart(barChartCanvas, {
-              type: \"bar\",
-              data: barChartData,
-              options: barChartOptions
-            })";
-
-        
 
         $html = view('admin/hasilpdf',[
 			'ret'=> $ret
@@ -622,9 +572,7 @@ class Users extends BaseController
         $pdf->addPage();
 
         // output the HTML content
-        // $pdf->IncludeJS($js);
 		$pdf->writeHTML($html, true, false, true, false, '');
-        $pdf->IncludeJS($js);
 		//line ini penting
 		$this->response->setContentType('application/pdf');
 		//Close and output PDF document
@@ -717,15 +665,6 @@ class Users extends BaseController
                             </div>";
 
             $total_skor = $persen_sk + $persen_kep + $persen_kec;
-            if ($materi == 4) {
-                $ressession = $this->soalmodel->getSessionSkor($this->session->user_id)->getResult();
-                foreach ($ressession as $sesskr) {
-                    $persen_kec  = $sesskr->skor_kec; 
-                    $persen_kep  = $sesskr->skor_kep;
-                    $persen_sk   = $sesskr->skor_sk;
-                    $total_skor = $persen_sk + $persen_kep + $persen_kec;
-                }
-            }
             
             if ($total_skor >= 61) {
                 $styletotalskor = "color:green;";
@@ -742,7 +681,7 @@ class Users extends BaseController
                         <div>
                         <table style=\"table-layout:fixed;color:#000000;width:100%;\">
                         <tbody>
-                        <tr style=\"font-size:20px;border-bottom:1px solid black;\"><td width=\"150\">Passhand</td><td width=\"20\" style=\"text-align:center;\">:</td><td></td></tr>
+                        <tr style=\"font-size:20px;border-bottom:1px solid black;\"><td width=\"150\">Passhand</td><td width=\"20\" style=\"text-align:center;\">:</td><td><ul style=\"list-style:none;padding-left:0;margin-bottom:0;font-size:14px;\">$passhandjwb</ul></td></tr>
 
                         <tr style=\"font-size:20px;border-bottom:1px solid black;height: 50px;\"><td>Kecerdasan</td><td width=\"20\" style=\"text-align:center;\">:</td><td width=\"50\" style=\"text-align:center;\"><label>$persen_kec</label></td></tr>
                         <tr style=\"font-size:20px;border-bottom:1px solid black;height: 50px;\"><td>Kepribadian</td><td style=\"text-align:center;\">:</td><td style=\"text-align:center;\"><label>$persen_kep</label></td></tr>
@@ -751,7 +690,7 @@ class Users extends BaseController
                         </table>
                         </div>";
             $ret .= $skskor;
-            $date_tes = date('d F Y', strtotime($date_tes));
+            $date_tes = !empty($date_tes) ? date('d F Y', strtotime($date_tes)) : date('d F Y');
             $ret .= "<div class=\"card-body\">
                     <div class=\"chart\">
                         <canvas id=\"barChart\" style=\"min-height: 350px; height: 350px; max-height: 350px; max-width: 80%;\"></canvas> 
@@ -820,43 +759,43 @@ class Users extends BaseController
         $used = $this->request->getUri()->getSegment(6);
 
         $ret = "<div class='col-lg-12' style='color:#000000;'>
-                        <a href='".base_url()."'><button class='btn btn-primary'>Menu Utama</button></a>
-                            <div style='width:100%;text-align:center;'>
-                                <p style='margin:10px;font-size:18px;'>Nilai yang tampil merupakan hasil dari jumlah soal yang terjawab, dan bukan merupakan bobot penilaian seperti saat tes sesungguhnya.</p>
-                                <div style='background-color: #007bff;border-radius:10px;'><h2 style='margin:10px;color:white;'>HASIL PENILAIAN</h2></div>
-                            </div>
-                            <div style='width:100%;text-align:center;'>
-                                <ul style='list-style-type: none;'>";
-                                $kolom_nm = [];
-                                $soal_terjawab_chart = [];
-                                $jawaban_benar_chart = [];
-                                $klm = $this->soalmodel->getKolomSoal()->getResult();
-                                foreach ($klm as $key) {
-                                $kolom_nm[] = $key->kolom_nm;
-                                $benar = 0;
-                                $salah = 0;
-                                $soal_terjawab = 0;
-                                    $res_responSK = $this->soalmodel->getResponSKLatihan($user_id,$used,$key->kolom_id,$materi)->getResult();
-                                    if (count($res_responSK)>0) {
-                                        $soal_terjawab = count($res_responSK);
-                                        foreach ($res_responSK as $rSK) {
-                                            // $soal_terjawab = $soal_terjawab + 1;
-                                            if ($rSK->pilihan_respon == $rSK->kunci) {
-                                                $benar = $benar + 1;
-                                            } else {
-                                                $salah = $salah + 1;
-                                            }
-                                            
-                                        }
-                                    } else {
-                                        $soal_terjawab = $soal_terjawab;
-                                    }
-                                    $soal_terjawab_chart[] =  $soal_terjawab;
-                                    $jawaban_benar_chart[] = $benar;
-                                    $ret .= "<li>".$key->kolom_nm." : <label>[$soal_terjawab soal terjawab]</label> - <label>$benar</label> benar | <label>$salah</label> salah</li>";
-                                }
-                                "</ul>
-                            </div>";
+                        <a href='".base_url('admin/users')."'><button class='btn btn-primary'>Menu Utama</button></a>
+                             <div style='width:100%;text-align:center;'>
+                                 <p style='margin:10px;font-size:18px;'>Nilai yang tampil merupakan hasil dari jumlah soal yang terjawab, dan bukan merupakan bobot penilaian seperti saat tes sesungguhnya.</p>
+                                 <div style='background-color: #007bff;border-radius:10px;'><h2 style='margin:10px;color:white;'>HASIL PENILAIAN</h2></div>
+                             </div>
+                             <div style='width:100%;text-align:center;'>
+                                 <ul style='list-style-type: none;'>";
+                                 $kolom_nm = [];
+                                 $soal_terjawab_chart = [];
+                                 $jawaban_benar_chart = [];
+                                 $klm = $this->soalmodel->getKolomSoal()->getResult();
+                                 foreach ($klm as $key) {
+                                 $kolom_nm[] = $key->kolom_nm;
+                                 $benar = 0;
+                                 $salah = 0;
+                                 $soal_terjawab = 0;
+                                     $res_responSK = $this->soalmodel->getResponSKLatihan($user_id,$used,$key->kolom_id,$materi)->getResult();
+                                     if (count($res_responSK)>0) {
+                                         $soal_terjawab = count($res_responSK);
+                                         foreach ($res_responSK as $rSK) {
+                                             // $soal_terjawab = $soal_terjawab + 1;
+                                             if ($rSK->pilihan_respon == $rSK->kunci) {
+                                                 $benar = $benar + 1;
+                                             } else {
+                                                 $salah = $salah + 1;
+                                             }
+                                             
+                                         }
+                                     } else {
+                                         $soal_terjawab = $soal_terjawab;
+                                     }
+                                     $soal_terjawab_chart[] =  $soal_terjawab;
+                                     $jawaban_benar_chart[] = $benar;
+                                     $ret .= "<li>".$key->kolom_nm." : <label>[$soal_terjawab soal terjawab]</label> - <label>$benar</label> benar | <label>$salah</label> salah</li>";
+                                 }
+                                 $ret .= "</ul>
+                             </div>";
                 $ret .= "<div class='card'>
                             <div class='card-body'>
                             <div class='chart'>

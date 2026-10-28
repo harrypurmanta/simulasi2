@@ -134,7 +134,7 @@
                                     <?php
                                         if ($keySoal->pembahasan_img != "") {
                                     ?>
-                                    <div id="dv_soalimg_<?= $keySoal->soal_id ?>">
+                                    <div id="dv_pembimg_<?= $keySoal->soal_id ?>">
                                         <img src="<?= base_url() ?>/images/pembahasan_latihan/<?= $keySoal->group_id ?>/<?= $keySoal->jenis_id ?>/<?= $keySoal->pembahasan_img ?>" alt="" width="200" height="200">
                                         <button onclick="hapusgambarpembsoal(<?= $keySoal->soal_id ?>)" style="position: absolute;" type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                     </div>
@@ -412,7 +412,7 @@
                         "soal_id": soal_id
                     },
                     success: function(data) {
-                        $("#dv_soalimg_"+soal_id).html("");
+                        $("#dv_pembimg_"+soal_id).html("");
                     },
                     error: function() {
                         Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });

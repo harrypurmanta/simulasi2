@@ -115,7 +115,7 @@
                                     <?php
                                         if ($keySoal->pembahasan_img != "") {
                                     ?>
-                                    <div id="dv_soalimg_<?= $keySoal->soal_id ?>">
+                                    <div id="dv_pembimg_<?= $keySoal->soal_id ?>">
                                         <img src="<?= base_url() ?>/images/pembahasan/<?= $keySoal->materi ?>/<?= $keySoal->pembahasan_img ?>" alt="" width="200" height="200">
                                         <button onclick="hapusgambarpembsoal(<?= $keySoal->soal_id ?>)" style="position: absolute;" type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                     </div>
@@ -172,7 +172,7 @@
                                                         <?php
                                                             if ($jawaban[0]->jawaban_img != "") {
                                                         ?>
-                                                            <div id="dv_jwbimg_<?= $jawaban[1]->jawaban_id ?>">
+                                                            <div id="dv_jwbimg_<?= $jawaban[0]->jawaban_id ?>">
                                                                 <img src="<?= base_url() ?>/images/jawaban/materi/<?= $jawaban[0]->materi ?>/<?= $jawaban[0]->jawaban_img ?>" alt="" width="200" height="200">
                                                                 <button onclick="hapusgambar(<?= $jawaban[0]->jawaban_id ?>)" style="position: absolute;" type="button" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
                                                             </div>
@@ -392,7 +392,7 @@
                         "soal_id": soal_id
                     },
                     success: function(data) {
-                        $("#dv_soalimg_"+soal_id).html("");
+                        $("#dv_pembimg_"+soal_id).html("");
                     },
                     error: function() {
                         Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });

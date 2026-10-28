@@ -106,9 +106,7 @@
                     } else { echo "-"; } ?></td>
                     <td class="text-center"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,2)"><i class="fas fa-undo me-1"></i> Reset</button></td>
                     <td class="text-center"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,3)"><i class="fas fa-undo me-1"></i> Reset</button></td>
-                    <td class="text-center"><?php if ($key->materi_id == 1) {
-                        echo "<button class='btn btn-sm btn-outline-danger rounded-pill px-3' onclick='resetrespon($key->materi_id,4)'><i class='fas fa-undo me-1'></i> Reset</button>";
-                    } else { echo "-"; } ?></td>
+                    <td class="text-center"><button class="btn btn-sm btn-outline-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,4)"><i class="fas fa-undo me-1"></i> Reset</button></td>
                     <td class="text-center"><button class="btn btn-sm btn-danger rounded-pill px-3" onclick="resetrespon(<?= $key->materi_id ?>,'semua')"><i class="fas fa-trash-alt me-1"></i> Semua</button></td>
                   </tr>
                     <?php
@@ -175,15 +173,25 @@
   });
 
   function resetrespon(materi_id,group_id) {
-    let text = "Apakah anda yakin mereset data ini ?";
-    if (confirm(text) == true) {
+    Swal.fire({
+      title: "Konfirmasi Reset",
+      text: "Apakah anda yakin mereset data ini ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Ya, Reset!",
+      cancelButtonText: "Batal"
+    }).then((result) => {
+      if (result.isConfirmed) {
         $.ajax({
             url: "<?= base_url('admin/users/resetrespon') ?>",
             type: "post",
             dataType: "json",
             data: {
-            "materi_id": materi_id,
-            "group_id": group_id
+              "materi_id": materi_id,
+              "group_id": group_id,
+              "user_id": "<?= $user_id ?? '' ?>"
             },
             beforeSend: function() {
                 $("#loader-wrapper").removeClass("d-none")
@@ -197,10 +205,12 @@
                 $("#loader-wrapper").addClass("d-none");
             },
             error: function() {
+              $("#loader-wrapper").addClass("d-none");
               Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
-    }
+      }
+    });
   }
 </script>
 </body>

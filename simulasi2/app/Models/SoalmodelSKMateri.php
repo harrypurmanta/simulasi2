@@ -19,10 +19,8 @@ class SoalmodelSKMateri extends Model
     {
         return $this->db->table('kolom_soal a')
             ->select('a.kolom_id, b.clue, a.kolom_nm')
-            ->join('soal b', 'b.kolom_id = a.kolom_id', 'left')
-            ->where('b.materi', $materi_id)
-            ->where('b.group_id', $group_id)
-            ->where('b.status_cd', 'normal')
+            ->join('soal b', 'b.kolom_id = a.kolom_id AND b.materi = ' . (int)$materi_id . ' AND b.group_id = ' . (int)$group_id . ' AND b.status_cd = "normal"', 'left')
+            ->where('a.status_cd', 'normal')
             ->groupBy('a.kolom_id, b.clue, a.kolom_nm')
             ->get();
     }
@@ -35,6 +33,7 @@ class SoalmodelSKMateri extends Model
                         ->where('sk_group_id',$sk_group_id)
                         ->where('kolom_id',$kolom_id)
                         ->where('materi',$materi)
+                        ->where('status_cd','normal')
                         ->orderby('soal_id', 'ASC')
                         ->get();
     }
@@ -54,7 +53,6 @@ class SoalmodelSKMateri extends Model
     public function updatejawabansk($jawaban_nm, $data,$soal_id, $jawaban_nm_lama) {
         return $this->db->table('jawaban')
                         ->set($data)
-                        ->where('jawaban_nm',$jawaban_nm_lama)
                         ->where('soal_id',$soal_id)
                         ->update();
     }

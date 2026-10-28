@@ -67,7 +67,7 @@
                         <td class="fw-bold text-dark"><?= esc($key->person_nm) ?></td>
                         <td class="text-center"><span class="badge bg-light text-dark border"><?= esc($key->satuan ?? '-') ?></span></td>
                         <td class="text-center small"><?= esc($key->birth_place) ?>, <?= esc($key->birth_dttm) ?></td>
-                        <td class="text-center"><span class="badge <?= $key->gender_cd == 'L' ? 'bg-primary' : 'bg-info' ?>"><?= esc($key->gender_cd) ?></span></td>
+                        <td class="text-center"><span class="badge <?= strtolower($key->gender_cd) == 'l' ? 'bg-primary' : 'bg-info' ?>"><?= esc($key->gender_cd) ?></span></td>
                         <td class="text-center font-monospace small"><?= esc($key->user_nm) ?></td>
                         <td class="text-center small"><?= esc($key->cellphone) ?></td>
                         <td class="small text-muted"><?= esc($key->addr_txt) ?></td>
@@ -202,38 +202,7 @@
         success: function(data) {
           $('#modal-lg').modal("hide");
           Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
-          var table = document.getElementById("example2");
-          var row   = table.insertRow(1);
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          var cell3 = row.insertCell(2);
-          var cell4 = row.insertCell(3);
-          var cell5 = row.insertCell(4);
-          var cell6 = row.insertCell(5);
-          var cell7 = row.insertCell(6);
-          var cell8 = row.insertCell(7);
-          var cell9 = row.insertCell(8);
-          var cell10 = row.insertCell(9);
-          cell1.style.textAlign = "center";
-          cell2.style.textAlign = "center";
-          cell3.style.textAlign = "justify";
-          cell4.style.textAlign = "center";
-          cell5.style.textAlign = "center";
-          cell6.style.textAlign = "center";
-          cell7.style.textAlign = "center";
-          cell8.style.textAlign = "center";
-          cell9.style.textAlign = "center";
-          cell10.style.textAlign = "center";
-          cell1.innerHTML = "new";
-          cell2.innerHTML = person_nm;
-          cell3.innerHTML = satuan;
-          cell4.innerHTML = birth_place+","+birth_dttm;
-          cell8.innerHTML = gender_cd;
-          cell7.innerHTML = user_nm;
-          cell5.innerHTML = cellphone;
-          cell6.innerHTML = addr_txt;
-          cell8.innerHTML = user_group;
-          cell9.innerHTML = "<button data-bs-toggle='modal' data-bs-target='#modal-lg' onclick='editperson("+data.person_id+")' style='font-size:10px;' class='btn btn-secondary'>Edit</button> <button style='font-size:10px;' class='btn btn-danger' onclick='hapuspersom("+data.person_id+")'>Hapus</button>";
+          $("#example2").load(window.location.href+" #example2");
         },
         error: function() {
           Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
@@ -282,20 +251,33 @@
 }
 
 function hapusperson(person_id) {
-    $.ajax({
-      url: "<?= base_url('admin/users/hapususer') ?>",
-      type: "post",
-      dataType: "json",
-      data: {
-        "person_id": person_id
-      },
-      success: function(data) {
-        $('#modal-lg').modal("hide");
-        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
-        $("#example2").load(window.location.href+" #example2");
-      },
-      error: function() {
-        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
+    Swal.fire({
+      title: "Hapus User?",
+      text: "Apakah Anda yakin ingin menghapus data user ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      confirmButtonText: "Ya, Hapus!",
+      cancelButtonText: "Batal"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "<?= base_url('admin/users/hapususer') ?>",
+          type: "post",
+          dataType: "json",
+          data: {
+            "person_id": person_id
+          },
+          success: function(data) {
+            $('#modal-lg').modal("hide");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+            $("#example2").load(window.location.href+" #example2");
+          },
+          error: function() {
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
+          }
+        });
       }
     });
 }

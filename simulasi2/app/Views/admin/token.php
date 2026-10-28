@@ -166,8 +166,14 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="token">Token</label>
+                                        <label for="token">Token Materi</label>
                                         <input class="form-control" type="text" name="token_edit" id="token_edit" maxlength="6" minlength="6">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">Token User</label>
+                                        <input class="form-control" type="text" name="token_edit_user" id="token_edit_user" maxlength="6" minlength="6">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -180,6 +186,14 @@
                                             ?>
                                             <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
                                             <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">User</label>
+                                        <select class="form-control" name="user_edit" id="user_edit" style="width: 100%;">
+                                            <option value="">Pilih User</option>
                                         </select>
                                     </div>
                                 </div>
@@ -327,7 +341,7 @@
     }
 
     function edit(edit) {
-        const [token_id, start_date, end_date, token,group_id] = $(
+        const [token_id, start_date, end_date, token, group_id, tokenuser, user_id, person_nm] = $(
                     edit).attr("value")
                 .split("|")
         $("#modal-edit").modal("show");
@@ -335,7 +349,34 @@
         $("#start_dttm_edit").val(start_date);
         $("#end_dttm_edit").val(end_date);
         $("#token_edit").val(token);
-        $("#group_id_edit").val(group_id);
+        $("#token_edit_user").val(tokenuser || "");
+        $("#group_id_edit").val(group_id).trigger("change");
+
+        $('#user_edit').select2({
+            dropdownParent: $('#modal-edit'),
+            placeholder: "Pilih User",
+            ajax: {
+                url: "<?= base_url('admin/token/getUserAjax') ?>",
+                type: "POST",
+                dataType: "json",
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        if (user_id) {
+            var newOption = new Option(person_nm || user_id, user_id, true, true);
+            $('#user_edit').empty().append(newOption).trigger('change');
+        }
     }
 
     function updatetoken() {
@@ -343,12 +384,14 @@
         let start_date = $("#start_dttm_edit").val();
         let end_date = $("#end_dttm_edit").val();
         let token = $("#token_edit").val();
+        let token_user = $("#token_edit_user").val();
+        let user_edit = $("#user_edit").val();
         let group_id = $("#group_id_edit").val();
-        if (start_dttm == "") {
+        if (start_date == "") {
             Swal.fire({ title: "Perhatian", text: "Tanggal berlaku token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
-        if (end_dttm == "") {
+        if (end_date == "") {
             Swal.fire({ title: "Perhatian", text: "Tanggal expired token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
@@ -366,6 +409,8 @@
             dataType: "json",
             data: {
                 "token": token,
+                "token_user": token_user,
+                "user_edit": user_edit,
                 "start_date": start_date,
                 "end_date": end_date,
                 "token_id": token_id,
@@ -381,7 +426,7 @@
                     Swal.fire({ title: "Error", text: "Token gagal disimpan", icon: "error", confirmButtonText: "OK" });
                 }
                 $("#loader-wrapper").addClass("d-none");
-                $("#modal-tambah").modal("hide");
+                $("#modal-edit").modal("hide");
                 loadDataToken();
             },
             error: function() {
@@ -392,33 +437,43 @@
     }
 
     function hapus(token_id) {
-        let text = "Apakah anda yakin menghapus data ini ?";
-        if (confirm(text) == true) {
-            $.ajax({
-                url: "<?= base_url('admin/tokeb/hapustoken') ?>",
-                type: "post",
-                dataType: "json",
-                data: {
-                    "token_id": token_id
-                },
-                beforeSend: function() {
-                    $("#loader-wrapper").removeClass("d-none")
-                },
-                success: function(data) {
-                    if (data == true) {
-                        Swal.fire({ title: "Berhasil", text: "hapus token berhasil", icon: "success", confirmButtonText: "OK" });
-                    } else {
-                        Swal.fire({ title: "Error", text: "hapus token gagal", icon: "error", confirmButtonText: "OK" });
+        Swal.fire({
+            title: "Hapus Token?",
+            text: "Apakah anda yakin menghapus data ini ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c75d",
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= base_url('admin/token/hapustoken') ?>",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "token_id": token_id
+                    },
+                    beforeSend: function() {
+                        $("#loader-wrapper").removeClass("d-none")
+                    },
+                    success: function(data) {
+                        if (data == "sukses" || data == true) {
+                            Swal.fire({ title: "Berhasil", text: "hapus token berhasil", icon: "success", confirmButtonText: "OK" });
+                        } else {
+                            Swal.fire({ title: "Error", text: "hapus token gagal", icon: "error", confirmButtonText: "OK" });
+                        }
+                        $("#loader-wrapper").addClass("d-none");
+                        loadDataToken();
+                    },
+                    error: function() {
+                        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
+                        $("#loader-wrapper").addClass("d-none");
                     }
-                    $("#loader-wrapper").addClass("d-none");
-                    loadDataToken();
-                },
-                error: function() {
-                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
-                    $("#loader-wrapper").addClass("d-none");
-                }
-            });
-        }
+                });
+            }
+        });
     }
     function tampilkantoken() {
         loadDataToken();
@@ -495,7 +550,7 @@
                         render: function(data) {
                             return `<button
                                                         onclick="edit(this)"
-                                                        value="${data.token_id}|${data.start_date}|${data.end_date}|${data.token}|${data.group_id}"
+                                                        value="${data.token_id}|${data.start_date}|${data.end_date}|${data.token}|${data.group_id}|${data.tokenuser || ''}|${data.user_id || ''}|${data.person_nm || ''}"
                                                         class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>
                                                         <button
                                                         onclick="hapus(${data.token_id})"

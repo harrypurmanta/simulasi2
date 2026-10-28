@@ -146,10 +146,10 @@ class Hasil extends BaseController
         
         $ret = "<div class='col-lg-12'>
             <div style='width:100%;text-align:center;color:#000000;'>
-                <h1 style='margin:10px;color:#ffffff;'>SELAMAT !</h1>
-                <h1 style='margin:10px;color:#ffffff;'><span>SKOR ANDA</span> <span>$total_skor</span></h1>
+                <h1 style='margin:10px;color:#000000;'>SELAMAT !</h1>
+                <h1 style='margin:10px;color:#000000;'><span>SKOR ANDA</span> <span>$total_skor</span></h1>
             </div>
-            <div style='margin:20px;text-align:center;'>
+            <div style='margin:20px;text-align:center;color:#000000;'>
             <table style='table-layout:fixed;width: 50%;margin: 0 auto;'>
             <tbody>
             <tr style='font-size:35px;border-bottom:1px solid black;height: 100px;'><td width='150' style='text-align:center;'>Kecerdasan</td><td width='50' style='text-align:center;'>:</td><td width='80' style='text-align:center;'><label>".ceil($persen_kec)."</label></td></tr>
@@ -160,7 +160,70 @@ class Hasil extends BaseController
 
         $ret .= "</div>";
 
-        return $ret;
+        return view('admin/latihanmateri', ['ret' => $ret]);
+    }
+
+    public function latihansubmateri() {
+        $user_id = $this->request->getUri()->getSegment(4);
+        $jenis_id = $this->request->getUri()->getSegment(5);
+
+        $resuser = $this->usermodel->getbyUserId($user_id)->getResult();
+        $responlatihan = $this->usermodel->getResponLatihansubmateri($user_id, $jenis_id)->getResult();
+        $skused = "";
+        if (count($responlatihan) > 0) {
+            foreach ($responlatihan as $lat) {
+                $used = $lat->used;
+                $skused .= "<div style='display:inline-block;border:1px solid black;margin:10px;width: 90px;text-align: center;border-radius:10px;background-color: deepskyblue;cursor:pointer;'><a target='_blank' href='".base_url()."/admin/hasil/hasillatihansubmateri/$user_id/$jenis_id/$used' id='dv_used_{$used}' style='width: 100%;height:100%;cursor:pointer;color:#000000;'><label for='dv_used_{$used}' style='font-size:50px;cursor:pointer;'>".$lat->used."</label></a></div>";
+            }
+        }
+
+        $person_nm = isset($resuser[0]) ? $resuser[0]->person_nm : '';
+        $ret = "<div>
+                    <div style=\"width:100%;height: 100%;text-align:center;color:#000000;\">
+                        <h1>".$person_nm."</h1>
+                    </div>
+                    <div>
+                    </div>";
+        $ret .= $skused;
+        $ret .= "</div>";
+
+        return view('admin/latihanmateri', ['ret' => $ret]);
+    }
+
+    public function hasillatihansubmateri() {
+        $user_id = $this->request->getUri()->getSegment(4);
+        $jenis_id = $this->request->getUri()->getSegment(5);
+        $used = $this->request->getUri()->getSegment(6);
+
+        $benar = 0;
+        $salah = 0;
+        $skors = $this->usermodel->getlatihanSubmateriSkor($user_id, $used, $jenis_id)->getResult();
+        foreach ($skors as $row) {
+            if ($row->kunci == $row->pilihan_respon) {
+                $benar++;
+            } else {
+                $salah++;
+            }
+        }
+        $total_terjawab = $benar + $salah;
+
+        $ret = "<div class='col-lg-12'>
+            <div style='width:100%;text-align:center;color:#000000;'>
+                <h1 style='margin:10px;color:#000000;'>HASIL LATIHAN SUB MATERI</h1>
+                <h2 style='margin:10px;color:#000000;'>Percobaan Ke-$used</h2>
+            </div>
+            <div style='margin:20px;text-align:center;color:#000000;'>
+            <table style='table-layout:fixed;width: 50%;margin: 0 auto;'>
+            <tbody>
+            <tr style='font-size:28px;border-bottom:1px solid black;height: 70px;'><td width='180' style='text-align:left;'>Total Terjawab</td><td width='40' style='text-align:center;'>:</td><td width='80' style='text-align:center;'><label>$total_terjawab</label></td></tr>
+            <tr style='font-size:28px;border-bottom:1px solid black;height: 70px;'><td style='text-align:left;'>Jawaban Benar</td><td style='text-align:center;'>:</td><td style='text-align:center;color:green;'><label>$benar</label></td></tr>
+            <tr style='font-size:28px;border-bottom:1px solid black;height: 70px;'><td style='text-align:left;'>Jawaban Salah</td><td style='text-align:center;'>:</td><td style='text-align:center;color:red;'><label>$salah</label></td></tr>
+            </tbody>
+            </table>
+            </div>
+        </div>";
+
+        return view('admin/latihanmateri', ['ret' => $ret]);
     }
 
     

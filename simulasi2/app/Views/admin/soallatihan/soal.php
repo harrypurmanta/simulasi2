@@ -684,7 +684,7 @@ function hapussoal(soal_id) {
                 "soal_id": soal_id
               },
               success: function(data) {
-                if (data = "sukses") {
+                if (data == "sukses") {
                   Swal.fire({
                       title: "Soal berhasil di hapus",
                       icon: "success",
@@ -795,32 +795,39 @@ function checkbtn(soal_id) {
 }
 
 function deletebtn(soal_id,jawaban_id) {
-  let text = "Apakah anda yakin menghapus data ini ?";
-  if (confirm(text) == true) {
-    $.ajax({
-          url: "<?= base_url('soal/deletejawaban') ?>",
-          type: "post",
-          dataType: "json",
-          data: {
-            "jawaban_id": jawaban_id
-          },
-          success: function(data) {
-            if (data == "sukses") {
-              Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
-            } else {
-              Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+  Swal.fire({
+    title: "Hapus Jawaban?",
+    text: "Apakah anda yakin menghapus data ini ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: "<?= base_url('soal/deletejawaban') ?>",
+            type: "post",
+            dataType: "json",
+            data: {
+              "jawaban_id": jawaban_id
+            },
+            success: function(data) {
+              if (data == "sukses") {
+                Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+              } else {
+                Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+              }
+              document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
+              showjawaban(soal_id);
+            },
+            error: function() {
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
-            document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
-            showjawaban(soal_id);
-          },
-          error: function() {
-            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
-          }
-      });
-  } else {
-
-  }
-  
+        });
+    }
+  });
 }
 
 function timesbtn(soal_id,jawaban_id) {

@@ -375,12 +375,13 @@
         formData.append('number', number);
         formData.append('pilihan', pilihan);
         formData.append('kolom_id', kolom_id);
+        formData.append('materi_id', <?= $materi_id ?>);
         formData.append('sk_group_id', sk_group_id);
         formData.append('typeSoal', typeSoal);
         formData.append('jawaban_lama', jawaban_lama);
         
         $.ajax({
-            url: "<?= base_url('admin/soalsikapkerjalatihan/insertGambarSk') ?>",
+            url: "<?= base_url('admin/soalsikapkerjamateri/insertGambarSk') ?>",
             type: "post",
             dataType: "json",
             data: formData,
@@ -441,7 +442,7 @@
         }
 
         $.ajax({
-            url: "<?= base_url('admin/soalsikapkerjalatihan/updateclue') ?>",
+            url: "<?= base_url('admin/soalsikapkerjamateri/updateclue') ?>",
             type: "post",
             dataType: "json",
             data: {

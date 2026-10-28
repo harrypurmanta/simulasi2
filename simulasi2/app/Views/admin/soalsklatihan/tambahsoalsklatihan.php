@@ -301,7 +301,7 @@
         formData.append('sk_group_id', sk_group_id);
         
         $.ajax({
-            url: "<?= base_url('admin/soalsikapkerjalatihan/upsertGambarSk') ?>",
+            url: "<?= base_url('admin/soalsikapkerjalatihan/insertGambarSk') ?>",
             type: "post",
             dataType: "json",
             data: formData,
@@ -309,8 +309,13 @@
             processData: false,
             contentType: false,
             success: function(data) {
-                //  location.reload();
-                // console.log(data);
+                if (data && data.status) {
+                    Swal.fire({ title: "Berhasil", text: "Soal gambar berhasil disimpan", icon: "success", confirmButtonText: "OK" }).then(() => {
+                        window.location.href = "<?= base_url('admin/soalsikapkerjalatihan/viewEditsoalSkLatihan/' . $kolom_id . '/4/' . $materi_id . '/' . $sk_group_id) ?>";
+                    });
+                } else {
+                    Swal.fire({ title: "Perhatian", text: (data && data.message) ? data.message : "Gagal menyimpan gambar", icon: "warning", confirmButtonText: "OK" });
+                }
             },
             error: function() {
                 Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
@@ -383,7 +388,7 @@
                         confirmButtonText: "OK"
                         }).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload();
+                            window.location.href = "<?= base_url('admin/soalsikapkerjalatihan/viewEditsoalSkLatihan/' . $kolom_id . '/4/' . $materi_id . '/' . $sk_group_id) ?>";
                         }
                     });
                 }
