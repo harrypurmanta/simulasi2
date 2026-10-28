@@ -1,112 +1,102 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
-</head>
+<?php
+$title = 'Hasil Penilaian Sikap Kerja - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card bg-gray text-center">
-                                <div class="card-body">
-                                    <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <div><h2>HASIL PENILAIAN</h2></div><hr>
-                                        <p style='margin:10px;font-size:18px;'>Nilai yang tampil merupakan hasil dari jumlah soal yang terjawab, dan bukan merupakan bobot penilaian seperti saat tes sesungguhnya.</p>
-                                    </div>
-                                    </div>
-                                    <?php
-                                    $kolom_nm = [];
-                                    $soal_terjawab_chart = [];
-                                    $jawaban_benar_chart = [];
-                                    
-                                    ?>
-                                    <div class="row">
-                                        <div class="card">
-                                            <div class="card-body" style="display: flex;justify-content: center;margin-top:10px;">
-                                            <div class="col-md-6" style="display: flex;justify-content: center;margin-top:10px;padding-bottom:20px;padding-top:20px;background-color:white;">
-                                            <table border="1" style="width:80%;margin:0 auto;line-height: 2;border: black;">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-center">Kolom</th>
-                                                        <th class="text-center">Soal Terjawab</th>
-                                                        <th class="text-center text-info">Benar</th>
-                                                        <th class="text-center text-danger">Salah</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                        $db = db_connect();
-                                                        $request = \Config\Services::request();
-                                                        $this->session = \Config\Services::session();
-                                                        foreach ($kolom as $kkolom) {
-                                                            $kolom_nm[] = $kkolom->kolom_nm;
-                                                            $benar = 0;
-                                                            $salah = 0;
-                                                            $soal_terjawab = 0;
-                                                            $query = $db->query("SELECT *,a.pilihan_nm AS pilihan_respon FROM respon_latihan a LEFT JOIN soal b ON b.soal_id = a.soal_id LEFT JOIN jawaban c ON c.jawaban_id = a.jawaban_id WHERE a.materi = 98 AND b.sk_group_id = ".$request->getUri()->getSegment(3)." AND a.created_user_id = ".$this->session->user_id." AND a.used = ".$this->session->used." AND a.kolom_id = $kkolom->kolom_id AND a.group_id = 4")->getResult();
+            <div class="container py-4">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                    <div class="card-header text-white text-center py-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                        <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">TES KECERMATAN</span>
+                        <h3 class="fw-bold mb-0">HASIL PENILAIAN SIKAP KERJA</h3>
+                    </div>
+                    <div class="card-body p-4 p-md-5 bg-white text-center">
+                        <div class="alert alert-info border-0 rounded-3 mb-4 mx-auto" style="max-width: 800px;">
+                            <i class="fas fa-info-circle me-1"></i> Nilai yang tampil merupakan hasil dari jumlah soal yang terjawab, dan bukan merupakan bobot penilaian seperti saat tes sesungguhnya.
+                        </div>
 
-                                                            if (count($query)>0) {
-                                                                $soal_terjawab = count($query);
-                                                                foreach ($query as $rSK) {
-                                                                    // $soal_terjawab = $soal_terjawab + 1;
-                                                                    if ($rSK->pilihan_respon == $rSK->kunci) {
-                                                                        $benar = $benar + 1;
-                                                                    } else {
-                                                                        $salah = $salah + 1;
-                                                                    }
-                                                                }
+                        <?php
+                        $kolom_nm = [];
+                        $soal_terjawab_chart = [];
+                        $jawaban_benar_chart = [];
+                        ?>
+
+                        <!-- Tabel Hasil Penilaian -->
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-12 col-lg-8">
+                                <div class="table-responsive rounded-3 border">
+                                    <table class="table table-bordered table-hover text-center align-middle mb-0">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Kolom</th>
+                                                <th>Soal Terjawab</th>
+                                                <th class="text-success">Benar</th>
+                                                <th class="text-danger">Salah</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                                $db = db_connect();
+                                                $request = \Config\Services::request();
+                                                $this->session = \Config\Services::session();
+                                                foreach ($kolom as $kkolom) {
+                                                    $kolom_nm[] = $kkolom->kolom_nm;
+                                                    $benar = 0;
+                                                    $salah = 0;
+                                                    $soal_terjawab = 0;
+                                                    $query = $db->query("SELECT *,a.pilihan_nm AS pilihan_respon FROM respon_latihan a LEFT JOIN soal b ON b.soal_id = a.soal_id LEFT JOIN jawaban c ON c.jawaban_id = a.jawaban_id WHERE a.materi = 98 AND b.sk_group_id = ".$request->getUri()->getSegment(3)." AND a.created_user_id = ".$this->session->user_id." AND a.used = ".$this->session->used." AND a.kolom_id = $kkolom->kolom_id AND a.group_id = 4")->getResult();
+
+                                                    if (count($query)>0) {
+                                                        $soal_terjawab = count($query);
+                                                        foreach ($query as $rSK) {
+                                                            if ($rSK->pilihan_respon == $rSK->kunci) {
+                                                                $benar = $benar + 1;
                                                             } else {
-                                                                $soal_terjawab = $soal_terjawab;
+                                                                $salah = $salah + 1;
                                                             }
+                                                        }
+                                                    } else {
+                                                        $soal_terjawab = $soal_terjawab;
+                                                    }
 
-                                                            $soal_terjawab_chart[] =  $soal_terjawab;
-                                                            $jawaban_benar_chart[] = $benar;
-                                                            
-                                                    ?>
-                                                    <tr>
-                                                        <td><?= $kkolom->kolom_nm ?></td>
-                                                        <td><?= $soal_terjawab ?></td>
-                                                        <td><?= $benar ?></td>
-                                                        <td><?= $salah ?></td>
-                                                    </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                        <div class='card'>
-                                            <div class='card-body'>
-                                            <div class='chart'>
-                                                <canvas id='barChart' style='min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;'></canvas>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        </div>
+                                                    $soal_terjawab_chart[] =  $soal_terjawab;
+                                                    $jawaban_benar_chart[] = $benar;
+                                            ?>
+                                            <tr>
+                                                <td class="fw-bold"><?= esc($kkolom->kolom_nm) ?></td>
+                                                <td><?= $soal_terjawab ?></td>
+                                                <td class="fw-bold text-success"><?= $benar ?></td>
+                                                <td class="fw-bold text-danger"><?= $salah ?></td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Grafik Bar Chart -->
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-10">
+                                <div class="card border rounded-3 p-3 shadow-sm">
+                                    <h6 class="fw-bold text-dark text-start mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i> Grafik Performa per Kolom:</h6>
+                                    <div class="chart position-relative" style="min-height: 320px; height: 350px;">
+                                        <canvas id="barChart" style="min-height: 320px; height: 350px; max-height: 350px; width: 100%;"></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="text-center mt-4">
+                            <a href="<?= base_url('sikapkerja') ?>" class="btn btn-primary rounded-pill px-5 py-2 fw-semibold">
+                                <i class="fas fa-arrow-left me-1"></i> Kembali ke Menu Sikap Kerja
+                            </a>
+                        </div>
                     </div>
-                    </div>
-                </section>
+                </div>
             </div>
         </div>
         <?= $this->include('front/footer') ?>

@@ -117,51 +117,55 @@ $request = \Config\Services::request();
             <?= $this->include('front/navbar') ?>
         </header>
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                <div class="col-md-12" style="margin-top:10px;">
-                                    <label for="">Tahapan Ujian</label>
-                                </div>
-                                <input type="hidden" id="inp_group_id">
+            <div class="container py-3">
+                <!-- Tahapan Ujian & Waktu Timer -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-1 rounded-pill fw-bold">
+                                    <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
+                                </span>
+                            </div>
+                            <input type="hidden" id="inp_group_id">
+                            <div class="row g-2">
                                 <?php foreach ($group as $key) {
-                                    echo "<div class='col-lg-3' style='width: 20%;border-radius:10px;'>
-                                                <div class='small-box ".($request->getUri()->getSegment(4) == $key->group_soal_id? 'bg-green':'')."' style='border-radius:10px;border:1px solid green;'>
-                                                    <div class='inner text-center'>
-                                                    " . $key->group_nm . "
-                                                    </div>
-                                                </div>
-                                            </div>";
+                                    $active = ($request->getUri()->getSegment(4) == $key->group_soal_id);
+                                    echo "<div class='col-6 col-sm-4 col-md-3'>
+                                            <div class='card text-center p-2 rounded-3 border " . ($active ? 'bg-success text-white border-success shadow-sm' : 'bg-light text-muted border-light-subtle') . "'>
+                                                <div class='small fw-bold'>" . esc($key->group_nm) . "</div>
+                                            </div>
+                                          </div>";
                                 } ?>
                             </div>
-                            <div class="bg-gray col-md-3 text-center"
-                                style="border-radius:5px;margin-left:10px;height:85px;">
-                                <span style="margin-top:15px;">Waktu</span><br>
-                                <label style="font-size:30px;" id="countdown">00:00</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                            <span class="text-muted small fw-semibold mb-1">
+                                <i class="fas fa-clock text-danger me-1"></i> Waktu Kolom
+                            </span>
+                            <label class="display-6 fw-bold text-danger mb-0" id="countdown">00:00</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soal Sikap Kerja & Kolom -->
+                <div class="row g-3 justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+                            <div class="mb-3">
+                                <span class="badge bg-primary px-4 py-2 fs-6 rounded-pill" id="lb_kolom">Kolom</span>
+                            </div>
+                            <div id="dv_soal" class="col-12 mb-3" style="min-height: 400px;">
+                                <!-- Soal sikap kerja dimuat via AJAX -->
+                            </div>
+                            <div id="dv_button" class="mt-2">
+                                <!-- Tombol aksi jika ada -->
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                <div style="margin-top:10px;text-align:center;">
-                                    <label style="font-size:20px;" for="kolom" id="lb_kolom">Kolom</label>
-                                </div>
-                                <div id="dv_soal" class="col-md-12" style="min-height:500px;border-radius:5px;">
-                                    
-                                </div>
-                                <div class="row" style="margin-top:10px;margin-bottom:10px;">
-                                    <div class="col-md-12" id="dv_button">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
         </div>
         <div class="d-none" id='loader-wrapper'>

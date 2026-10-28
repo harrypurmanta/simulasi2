@@ -1,58 +1,71 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$request = service('request');
+$title = 'Hasil Latihan - Bintang Timur Prestasi';
+$total = ($benar ?? 0) + ($salah ?? 0);
+$persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-12 text-center">
-                                <h3 style="margin-bottom: 5px;"><b>Selamat</b></h3>
-                                <h2 style="margin-top: 5px;"><b>SKOR ANDA</b></h2>
-                                <div class="col-md-12" style="display: flex;justify-content: center;margin-top:10px;padding-bottom:20px;">
-                                    <table class="table" style="width:80%;marign:0 auto;">
-                                        <body>
-                                            <tr><td style="font-size:25px;text-align:left;font-weight:bold;border-top:1px solid black;">Benar</td><td style="font-size:25px;text-align:center;font-weight:bold;border-top:1px solid black;"><?= $benar ?></td></tr>
-                                            <tr><td style="font-size:25px;text-align:left;font-weight:bold;border-top:1px solid black;">Salah</td><td style="font-size:25px;text-align:center;font-weight:bold;border-top:1px solid black;"><?= $salah ?></td></tr>
-                                        </body>
-                                    </table>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 text-center">
-                                        <a href="<?=base_url()?>/latihan/pembahasan_latihan/<?= $request->getUri()->getSegment(3) ?>/<?= $request->getUri()->getSegment(4) ?>" class="btn btn-primary">Pembahasan <i class="fa fa-arrow-circle-right"></i></a>
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="card border-0 shadow-lg rounded-4 overflow-hidden text-center">
+                            <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                                <span class="badge bg-warning text-dark px-3 py-1 rounded-pill fw-bold mb-2">HASIL LATIHAN</span>
+                                <h3 class="fw-bold mb-0">SKOR LATIHAN ANDA</h3>
+                            </div>
+                            <div class="card-body p-4 p-md-5 bg-white">
+                                <div class="mb-4">
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3 border border-4 border-primary" style="width: 100px; height: 100px; background-color: rgba(30, 60, 114, 0.05);">
+                                        <div>
+                                            <span class="fs-2 fw-bold text-primary d-block lh-1"><?= $persen ?>%</span>
+                                            <small class="text-muted" style="font-size: 11px;">Akurasi</small>
+                                        </div>
                                     </div>
+                                    <h4 class="fw-bold text-dark mb-1">Hasil Pengerjaan</h4>
+                                    <p class="text-muted small">Total soal dikerjakan: <?= $total ?> butir</p>
+                                </div>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-6">
+                                        <div class="p-3 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3">
+                                            <div class="fs-6 fw-bold text-success mb-1">
+                                                <i class="fas fa-check-circle me-1"></i> Benar
+                                            </div>
+                                            <div class="fs-2 fw-bold text-success"><?= $benar ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 bg-danger bg-opacity-10 border border-danger border-opacity-25 rounded-3">
+                                            <div class="fs-6 fw-bold text-danger mb-1">
+                                                <i class="fas fa-times-circle me-1"></i> Salah
+                                            </div>
+                                            <div class="fs-2 fw-bold text-danger"><?= $salah ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-center gap-3">
+                                    <a href="<?= base_url('latihan') ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                        <i class="fas fa-arrow-left me-1"></i> Kembali ke Menu Latihan
+                                    </a>
+                                    <a href="<?= base_url() ?>/latihan/pembahasan_latihan/<?= $request->getUri()->getSegment(3) ?>/<?= $request->getUri()->getSegment(4) ?>" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+                                        Lihat Pembahasan <i class="fas fa-arrow-circle-right ms-1"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
-</body>
 
+    <?= $this->include('front/template/scriptjs') ?>
+</body>
 </html>

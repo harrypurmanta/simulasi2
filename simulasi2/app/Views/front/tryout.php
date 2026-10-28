@@ -1,207 +1,94 @@
 <?php
 $request = \Config\Services::request();
+$title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/sweetalert2.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.css">
-    <style>
-    .d-none {
-        display: none !important;
-    }
-
-    #loader-wrapper {
-        display: flex;
-        position: fixed;
-        z-index: 1060;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0.625em;
-        overflow-x: hidden;
-        transition: background-color 0.1s;
-        background-color: rgb(253 253 253 / 58%);
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .loader {
-        border: 10px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 10px solid #3af3f5;
-        border-bottom: 10px solid #3abcec;
-        width: 50px;
-        height: 50px;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-        margin: 1.75rem auto;
-    }
-
-
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-moz-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-o-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-ms-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes spin {
-        0% {
-            -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-    </style>
-</head>
-
+<?= $this->include('front/template/head') ?>
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                <div class="col-md-12" style="margin-top:10px;">
-                                    <label for="">Tahapan Ujian</label>
-                                </div>
-                                <input type="hidden" id="inp_group_id">
+            <div class="container py-3">
+                <!-- Tahapan Ujian & Waktu Timer -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-bold">
+                                    <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
+                                </span>
+                            </div>
+                            <input type="hidden" id="inp_group_id">
+                            <div class="row g-2">
                                 <?php foreach ($group as $key) {
-                                    echo "<div class='col-lg-3' style='width: 20%;border-radius:10px;'>
-                                                <div class='small-box ".($request->getUri()->getSegment(4) == $key->group_soal_id? 'bg-green':'')."' style='border-radius:10px;border:1px solid green;'>
-                                                    <div class='inner text-center'>
-                                                    " . $key->group_nm . "
-                                                    </div>
-                                                </div>
-                                            </div>";
+                                    $active = ($request->getUri()->getSegment(4) == $key->group_soal_id);
+                                    echo "<div class='col-6 col-sm-4 col-md-3'>
+                                            <div class='card text-center p-2 rounded-3 border transition-hover " . ($active ? 'bg-success text-white border-success shadow-sm' : 'bg-light text-muted border-light-subtle') . "'>
+                                                <div class='small fw-bold'>" . esc($key->group_nm) . "</div>
+                                            </div>
+                                          </div>";
                                 } ?>
                             </div>
-                            <div class="bg-gray col-md-3 text-center"
-                                style="border-radius:5px;margin-left:10px;height:85px;">
-                                <span style="margin-top:15px;">Waktu</span><br>
-                                <label style="font-size:35px;" id="countdown">00:00</label>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                            <span class="text-muted small fw-semibold mb-1">
+                                <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Ujian
+                            </span>
+                            <label class="display-6 fw-bold text-danger mb-0" id="countdown">00:00</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Soal & Pilihan Jawaban + Box Nomor Soal -->
+                <div class="row g-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                            <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-primary rounded-pill px-3 py-1" id="p_no_soal">Soal no. <?= $soal[0]->no_soal ?></span>
+                                </div>
+                                <div id="inp_soal_nm" class="fs-6 text-dark mb-2" style="line-height: 1.6;"><?= $soal[0]->soal_nm ?></div>
+                                <div id="dv_img_soal" class="text-center my-2"></div>
+                                <input type="hidden" value="<?= $soal[0]->soal_id ?>" id="inp_soal_id">
+                                <input type="hidden" value="1" id="inp_no_soal">
+                                <input type="hidden" value="<?= $soal[0]->kolom_id ?>" id="inp_kolom_id">
+                            </div>
+
+                            <div id="dv_main_jawaban" class="mb-3">
+                                <?php foreach ($jawaban as $key) { ?>
+                                <div id="dv_jawaban_<?= $key->jawaban_id ?>"
+                                    onclick="selectJawaban(<?= $key->jawaban_id ?>,'<?= $key->pilihan_nm ?>')"
+                                    class="btn w-100 jawaban_dv text-start p-3 mb-2 rounded-3 border"
+                                    style="background-color: #f8fafc;">
+                                    <span class="badge bg-secondary me-2"><?= $key->pilihan_nm ?>.</span>
+                                    <span class="text-dark"><?= $key->jawaban_nm ?></span>
+                                </div>
+                                <?php } ?>
+                            </div>
+
+                            <input type="hidden" value="" id="inp_jawaban_id">
+                            <input type="hidden" value="" id="inp_pilihan_nm">
+
+                            <div id="dv_button" class="mt-3">
+                                <!-- Tombol aksi navigasi soal dimuat dari AJAX -->
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-7" style="border-radius:5px;">
-                                <div style="margin-top:10px;">
-                                    <label for="pertanyaan">Pertanyaan</label>
-                                </div>
-                                <div class="col-md-12"
-                                    style="min-height:100px;background-color:#aeaebb;border-radius:5px;padding-bottom:25px;">
-                                    <b>
-                                        <p id="p_no_soal" style="margin-top:10px;">Soal no. <?= $soal[0]->no_soal ?></p>
-                                    </b>
-                                    <p id="inp_soal_nm" style="margin:5px;font-size:16px;"><?= $soal[0]->soal_nm ?></p>
-                                    <div id="dv_img_soal" style="margin:5px;font-size:16px;"></div>
-                                    <input type="hidden" value="<?= $soal[0]->soal_id ?>" id="inp_soal_id">
-                                    <input type="hidden" value="1" id="inp_no_soal">
-                                    <input type="hidden" value="<?= $soal[0]->kolom_id ?>" id="inp_kolom_id">
-                                </div>
-                                <div id="dv_main_jawaban">
-                                    <?php
-                                        foreach ($jawaban as $key) {
-                                    ?>
-                                    <div id="dv_jawaban_<?= $key->jawaban_id ?>"
-                                        onclick="selectJawaban(<?= $key->jawaban_id ?>,'<?= $key->pilihan_nm ?>')"
-                                        class="btn col-md-12 jawaban_dv"
-                                        style="margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align: left;">
-                                        <label for="pilihan_nm"><?= $key->pilihan_nm ?>.</label>
-                                        <span><?= $key->jawaban_nm ?></span>
-                                    </div>
-                                    <?php } ?>
-                                </div>
-                                <input type="hidden" value="" id="inp_jawaban_id">
-                                <input type="hidden" value="" id="inp_pilihan_nm">
-                                <div class="row" style="margin-top:10px;margin-bottom:10px;">
-                                    <div class="col-md-12" id="dv_button">
 
-                                    </div>
-                                </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 20px; z-index: 10;">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <h6 class="fw-bold text-dark mb-0">
+                                    <i class="fas fa-th me-2 text-primary"></i> Navigasi Soal
+                                </h6>
                             </div>
-                            <div class="bg-gray col-md-4" style="border-radius:5px;margin-left:10px;">
-                                <div class="row">
-                                    <div id="dv_boxnosoal" class="col-md-12 text-center"
-                                        style="margin-top:10px;margin-bottom:10px;display: flex;flex-wrap: wrap;justify-content: center;">
-
-                                    </div>
-                                </div>
+                            <div id="dv_boxnosoal" class="box-no-soal-grid">
+                                <!-- Nomor soal dimuat dari AJAX -->
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
         <div class="d-none" id='loader-wrapper'>

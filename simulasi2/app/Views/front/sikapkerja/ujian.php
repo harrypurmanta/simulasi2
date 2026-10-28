@@ -1,173 +1,54 @@
 <?php
 $request = \Config\Services::request();
+$title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/custom.css">
-    <style>
-    .d-none {
-        display: none !important;
-    }
-
-    #loader-wrapper {
-        display: flex;
-        position: fixed;
-        z-index: 1060;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0.625em;
-        overflow-x: hidden;
-        transition: background-color 0.1s;
-        background-color: rgb(253 253 253 / 58%);
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .loader {
-        border: 10px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 10px solid #3af3f5;
-        border-bottom: 10px solid #3abcec;
-        width: 50px;
-        height: 50px;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-        margin: 1.75rem auto;
-    }
-
-
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-moz-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-o-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-ms-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes spin {
-        0% {
-            -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-    </style>
-</head>
-
+<?= $this->include('front/template/head') ?>
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                <div class="col-md-12" style="margin-top:10px;">
-                                    <label for="">Tahapan Ujian</label>
-                                </div>
-                                <input type="hidden" id="inp_group_id">
-                                <div class='col-lg-3' style='border-radius:10px;'>
-                                                <div class='small-box bg-green' style='border-radius:10px;border:1px solid green;'>
-                                                    <div class='inner text-center'>
-                                                    Sikap Kerja
-                                                    </div>
-                                                </div>
-                                            </div>
+            <div class="container py-3">
+                <!-- Tahapan Ujian & Waktu Timer -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-1 rounded-pill fw-bold">
+                                    <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
+                                </span>
                             </div>
-                            <div class="bg-gray col-md-3 text-center"
-                                style="border-radius:5px;margin-left:10px;height:85px;">
-                                <span style="margin-top:15px;">Waktu</span><br>
-                                <label style="font-size:30px;" id="countdown">00:00</label>
+                            <input type="hidden" id="inp_group_id">
+                            <div class="card bg-success text-white border-0 p-2 rounded-3 text-center shadow-sm" style="max-width: 250px;">
+                                <div class="fw-bold small">Sikap Kerja (Kecermatan)</div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                <div style="margin-top:10px;text-align:center;">
-                                    <label style="font-size:20px;" for="kolom" id="lb_kolom">Kolom</label>
-                                </div>
-                                <div id="dv_soal" class="col-md-12" style="min-height:500px;border-radius:5px;">
-                                    
-                                </div>
-                                <div class="row" style="margin-top:10px;margin-bottom:10px;">
-                                    <div class="col-md-12" id="dv_button">
-
-                                    </div>
-                                </div>
-                            </div>
-
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                            <span class="text-muted small fw-semibold mb-1">
+                                <i class="fas fa-clock text-danger me-1"></i> Waktu Kolom
+                            </span>
+                            <label class="display-6 fw-bold text-danger mb-0" id="countdown">00:00</label>
                         </div>
                     </div>
-                </section>
+                </div>
+
+                <!-- Soal Sikap Kerja & Kolom -->
+                <div class="row g-3 justify-content-center">
+                    <div class="col-12 col-lg-10">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white text-center">
+                            <div class="mb-3">
+                                <span class="badge bg-primary px-4 py-2 fs-6 rounded-pill" id="lb_kolom">Kolom</span>
+                            </div>
+                            <div id="dv_soal" class="col-12 mb-3" style="min-height: 400px;">
+                                <!-- Soal sikap kerja dimuat via AJAX -->
+                            </div>
+                            <div id="dv_button" class="mt-2">
+                                <!-- Tombol aksi jika ada -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="d-none" id='loader-wrapper'>

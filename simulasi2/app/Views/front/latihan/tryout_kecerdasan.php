@@ -1,62 +1,7 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Latihan Kecerdasan - Bintang Timur Prestasi</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/adminlte4/css/adminlte.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/sweetalert2.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.css">
-    <style>
-        .d-none { display: none !important; }
-        #loader-wrapper {
-            display: flex;
-            position: fixed;
-            z-index: 1060;
-            top: 0; right: 0; bottom: 0; left: 0;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.65);
-        }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 8px solid #3c8dbc;
-            border-bottom: 8px solid #00a65a;
-            width: 50px;
-            height: 50px;
-            animation: spin 1.5s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .jawaban_dv:hover {
-            background-color: #e2e8f0 !important;
-            transform: translateX(4px);
-        }
-        #dv_boxnosoal {
-            display: grid !important;
-            grid-template-columns: repeat(5, 1fr) !important;
-            gap: 6px !important;
-        }
-        #dv_boxnosoal div {
-            cursor: pointer;
-            transition: all 0.15s ease-in-out;
-            user-select: none;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-        #dv_boxnosoal div:hover {
-            transform: scale(1.08);
-            z-index: 2;
-        }
-    </style>
-</head>
+<?php
+$title = 'Latihan Kecerdasan - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
 
 <body class="layout-top-nav">
     <div class="wrapper">

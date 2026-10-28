@@ -292,5 +292,90 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Responsive Exam Layout & Component System */
+        #dv_boxnosoal, .box-no-soal-grid {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)) !important;
+            gap: 6px !important;
+            max-height: 480px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+        #dv_boxnosoal div, .box-no-soal-grid div {
+            width: 100% !important;
+            min-height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px !important;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px !important;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            user-select: none;
+            box-sizing: border-box !important;
+            margin: 0 !important;
+        }
+        #dv_boxnosoal div:hover, .box-no-soal-grid div:hover {
+            transform: scale(1.06);
+            z-index: 2;
+        }
+        .jawaban_dv {
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+            border: 2px solid transparent !important;
+        }
+        .jawaban_dv:hover {
+            background-color: #e2e8f0 !important;
+            transform: translateX(4px);
+        }
+        #dv_img_soal img, #dv_pembahasan img {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 8px;
+        }
+        /* Responsive Sikap Kerja (Tes Kecermatan) */
+        #dv_soal {
+            width: 100%;
+            overflow-x: hidden;
+        }
+        #dv_soal table {
+            margin: 0 auto;
+            max-width: 100% !important;
+        }
+        @media (max-width: 768px) {
+            #dv_boxnosoal, .box-no-soal-grid {
+                grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
+                max-height: 320px;
+            }
+            #dv_boxnosoal div, .box-no-soal-grid div {
+                min-height: 34px;
+                font-size: 11px !important;
+            }
+            #dv_soal table tr:first-child {
+                font-size: clamp(30px, 9vw, 55px) !important;
+            }
+            #dv_soal table td {
+                width: clamp(38px, 16vw, 65px) !important;
+                padding: 2px !important;
+            }
+            #dv_soal table tr:nth-child(2) {
+                font-size: clamp(18px, 5vw, 26px) !important;
+            }
+            #dv_soal .col-md-2 {
+                font-size: clamp(32px, 9vw, 50px) !important;
+                min-height: 50px !important;
+                min-width: 44px !important;
+                margin: 4px !important;
+            }
+            #dv_soal img {
+                max-width: 55px !important;
+                height: auto !important;
+            }
+            .content-wrapper {
+                padding: 15px 0 !important;
+            }
+        }
     </style>
 </head>

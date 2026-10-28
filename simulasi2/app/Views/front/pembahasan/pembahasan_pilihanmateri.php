@@ -1,53 +1,52 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$title = 'Petunjuk Pembahasan - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12" style="height: 400px;">
-                            <div class="bg-gray col-md-8 text-center" style="top: 50%;left: 50%;transform: translate(-50%, -50%);height: 300px;">
-                                <h3 style="padding-top:10px;"><b>Petunjuk Pengerjaan Soal</b></h3>
-                                <h3><b><?= $group[0]->group_nm ?></b></h3>
-                                <p>Saat anda klik tombol <b><i>Mulai</i></b>, Maka akan langsung masuk ke Pengerjaan soal Selamat Mengerjakan</p>
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-8 col-lg-6">
+                        <div class="card border-0 shadow-lg rounded-4 overflow-hidden text-center">
+                            <div class="card-header text-white py-4" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
+                                <span class="badge bg-info bg-opacity-25 text-white px-3 py-1 rounded-pill fw-bold mb-2">REVIEW PEMBAHASAN</span>
+                                <h3 class="fw-bold mb-0">Petunjuk Pembahasan Soal</h3>
+                                <h5 class="text-warning fw-semibold mt-1 mb-0"><?= esc($group[0]->group_nm ?? '') ?></h5>
+                            </div>
+                            <div class="card-body p-4 p-md-5 bg-white">
+                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px; background-color: rgba(2, 132, 199, 0.1); color: #0284c7;">
+                                    <i class="fas fa-search-plus fa-3x"></i>
+                                </div>
+                                <p class="text-muted mb-4" style="line-height: 1.6;">
+                                    Saat Anda menekan tombol <strong>Mulai Pembahasan</strong>, Anda akan masuk ke halaman ulasan kunci jawaban dan penjelasan soal. Anda dapat melompat ke nomor berapa saja secara bebas.
+                                </p>
                                 <?php
                                     if ($group[0]->group_soal_id == 4) {
-                                        echo "<a href='".base_url()."/pembahasan/sikapkerja/".$materi_id."/".$group[0]->group_soal_id."' class='btn btn-success' style='font-size:18px;'>Mulai</a>";
+                                        $url = base_url()."/pembahasan/sikapkerja/".$materi_id."/".$group[0]->group_soal_id;
                                     } else {
-                                        echo "<a href='".base_url()."/pembahasan/ujian/".$materi_id."/".$group[0]->group_soal_id."' class='btn btn-success' style='font-size:18px;'>Mulai</a>";
+                                        $url = base_url()."/pembahasan/ujian/".$materi_id."/".$group[0]->group_soal_id;
                                     }
                                 ?>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="<?= base_url('pembahasan') ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
+                                        <i class="fas fa-arrow-left me-1"></i> Kembali
+                                    </a>
+                                    <a href="<?= $url ?>" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm">
+                                        Mulai Pembahasan <i class="fas fa-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
         </div>
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
-</body>
 
+    <?= $this->include('front/template/scriptjs') ?>
+</body>
 </html>
