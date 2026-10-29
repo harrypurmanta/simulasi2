@@ -114,14 +114,15 @@ class Soal extends BaseController
 
     public function viewEditsoalSK() {
         $kolom_id = $this->request->getUri()->getSegment(4);
-        $group_id = $this->request->getUri()->getSegment( 5);
+        $group_id = $this->request->getUri()->getSegment(5);
         $materi_id = $this->request->getUri()->getSegment(6);
+        $sk_group_id = $this->request->getUri()->getSegment(7) ?? 0;
 
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
             
-            $getSoal = $this->soalmodel->getSoalByIdSK($kolom_id, $group_id, $materi_id)->getResult();
+            $getSoal = $this->soalmodel->getSoalByIdSK($kolom_id, $group_id, $materi_id, $sk_group_id)->getResult();
             if (count($getSoal) > 0) {
                 $soal_id_new = $getSoal[0]->soal_id;
             } else {
@@ -242,12 +243,22 @@ class Soal extends BaseController
 
         $newName = "";
         $pembahasan_img = "";
+        $dirSoal = FCPATH . "images/soal/materi/$materi_id";
+        $dirSoalBesar = FCPATH . "images/soal/materi/$materi_id/besar";
+        $dirPemb = FCPATH . "images/pembahasan/$materi_id";
+        $dirJwb = FCPATH . "images/jawaban/materi/$materi_id";
+        foreach ([$dirSoal, $dirSoalBesar, $dirPemb, $dirJwb] as $d) {
+            if (!is_dir($d)) {
+                mkdir($d, 0777, true);
+            }
+        }
+
         if (isset($imagefile['soal_img'])) {
             foreach($imagefile['soal_img'] as $img){
                if ($img->isValid() && ! $img->hasMoved()){
                     $newName = $img->getClientName();
-                    $img->move("../public/images/soal/materi/$materi_id", $newName);
-                    copy("../public/images/soal/materi/$materi_id/$newName","../public/images/soal/materi/$materi_id/besar/$newName");
+                    $img->move($dirSoal, $newName);
+                    copy("$dirSoal/$newName", "$dirSoalBesar/$newName");
                    }
              }
         }
@@ -256,8 +267,7 @@ class Soal extends BaseController
              foreach($imagefile['pembahasan_img'] as $imgs){
                 if ($imgs->isValid() && ! $imgs->hasMoved()){
                      $pembahasan_img = $imgs->getClientName();
-                     $imgs->move("../public/images/pembahasan/$materi_id", $pembahasan_img);
-                    //  $imgs->move("../public/images/pembahasan/materi/$materi_id/besar/level/$level_nm", $pembahasan_img);
+                     $imgs->move($dirPemb, $pembahasan_img);
                     }
               }
         }
@@ -319,7 +329,7 @@ class Soal extends BaseController
                 $imgA = $imagefile['jawaban_img_A'][0];
                 if ($imgA->isValid() && ! $imgA->hasMoved()){
                      $jawaban_img_A = $imgA->getClientName();
-                     $imgA->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_A);
+                     $imgA->move($dirJwb, $jawaban_img_A);
                  }
                  $dataA = [
                     'soal_id' => $soal_id,
@@ -343,7 +353,7 @@ class Soal extends BaseController
                     $imgB = $imagefile['jawaban_img_B'][0];
                     if ($imgB->isValid() && ! $imgB->hasMoved()){
                          $jawaban_img_B = $imgB->getClientName();
-                         $imgB->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_B);
+                         $imgB->move($dirJwb, $jawaban_img_B);
                      }
                      $dataB = [
                         'soal_id' => $soal_id,
@@ -367,7 +377,7 @@ class Soal extends BaseController
                         $imgC = $imagefile['jawaban_img_C'][0];
                         if ($imgC->isValid() && ! $imgC->hasMoved()){
                              $jawaban_img_C = $imgC->getClientName();
-                             $imgC->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_C);
+                             $imgC->move($dirJwb, $jawaban_img_C);
                          }
                          $dataC = [
                             'soal_id' => $soal_id,
@@ -391,7 +401,7 @@ class Soal extends BaseController
                             $imgD = $imagefile['jawaban_img_D'][0];
                             if ($imgD->isValid() && ! $imgD->hasMoved()){
                                  $jawaban_img_D = $imgD->getClientName();
-                                 $imgD->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_D);
+                                 $imgD->move($dirJwb, $jawaban_img_D);
                              }
                              $dataD = [
                                 'soal_id' => $soal_id,
@@ -417,7 +427,7 @@ class Soal extends BaseController
                                 $imgE = $imagefile['jawaban_img_E'][0];
                                 if ($imgE->isValid() && ! $imgE->hasMoved()){
                                      $jawaban_img_E = $imgE->getClientName();
-                                     $imgE->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_E);
+                                     $imgE->move($dirJwb, $jawaban_img_E);
                                  }
                                  $dataE = [
                                     'soal_id' => $soal_id,
@@ -505,12 +515,22 @@ class Soal extends BaseController
 
         $newName = "";
         $pembahasan_img = "";
+        $dirSoal = FCPATH . "images/soal/materi/$materi_id";
+        $dirSoalBesar = FCPATH . "images/soal/materi/$materi_id/besar";
+        $dirPemb = FCPATH . "images/pembahasan/$materi_id";
+        $dirJwb = FCPATH . "images/jawaban/materi/$materi_id";
+        foreach ([$dirSoal, $dirSoalBesar, $dirPemb, $dirJwb] as $d) {
+            if (!is_dir($d)) {
+                mkdir($d, 0777, true);
+            }
+        }
+
         if (isset($imagefile['soal_img'])) {
             foreach($imagefile['soal_img'] as $img){
                if ($img->isValid() && ! $img->hasMoved()){
                     $newName = $img->getClientName();
-                    $img->move("../public/images/soal/materi/$materi_id", $newName);
-                    copy("../public/images/soal/materi/$materi_id/$newName","../public/images/soal/materi/$materi_id/besar/$newName");
+                    $img->move($dirSoal, $newName);
+                    copy("$dirSoal/$newName", "$dirSoalBesar/$newName");
                    }
              }
         }
@@ -519,8 +539,7 @@ class Soal extends BaseController
              foreach($imagefile['pembahasan_img'] as $imgs){
                 if ($imgs->isValid() && ! $imgs->hasMoved()){
                      $pembahasan_img = $imgs->getClientName();
-                     $imgs->move("../public/images/pembahasan/$materi_id", $pembahasan_img);
-                    //  $imgs->move("../public/images/pembahasan/materi/$materi_id/besar/level/$level_nm", $pembahasan_img);
+                     $imgs->move($dirPemb, $pembahasan_img);
                     }
               }
         }
@@ -583,7 +602,7 @@ class Soal extends BaseController
                 $imgA = $imagefile['jawaban_img_A'][0];
                 if ($imgA->isValid() && ! $imgA->hasMoved()){
                      $jawaban_img_A = $imgA->getClientName();
-                     $imgA->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_A);
+                     $imgA->move($dirJwb, $jawaban_img_A);
                  }
                  $dataA = [
                     'soal_id' => $soal_id,
@@ -607,7 +626,7 @@ class Soal extends BaseController
                     $imgB = $imagefile['jawaban_img_B'][0];
                     if ($imgB->isValid() && ! $imgB->hasMoved()){
                          $jawaban_img_B = $imgB->getClientName();
-                         $imgB->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_B);
+                         $imgB->move($dirJwb, $jawaban_img_B);
                      }
                      $dataB = [
                         'soal_id' => $soal_id,
@@ -631,7 +650,7 @@ class Soal extends BaseController
                         $imgC = $imagefile['jawaban_img_C'][0];
                         if ($imgC->isValid() && ! $imgC->hasMoved()){
                              $jawaban_img_C = $imgC->getClientName();
-                             $imgC->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_C);
+                             $imgC->move($dirJwb, $jawaban_img_C);
                          }
                          $dataC = [
                             'soal_id' => $soal_id,
@@ -655,7 +674,7 @@ class Soal extends BaseController
                             $imgD = $imagefile['jawaban_img_D'][0];
                             if ($imgD->isValid() && ! $imgD->hasMoved()){
                                  $jawaban_img_D = $imgD->getClientName();
-                                 $imgD->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_D);
+                                 $imgD->move($dirJwb, $jawaban_img_D);
                              }
                              $dataD = [
                                 'soal_id' => $soal_id,
@@ -681,7 +700,7 @@ class Soal extends BaseController
                                 $imgE = $imagefile['jawaban_img_E'][0];
                                 if ($imgE->isValid() && ! $imgE->hasMoved()){
                                      $jawaban_img_E = $imgE->getClientName();
-                                     $imgE->move("../public/images/jawaban/materi/$materi_id", $jawaban_img_E);
+                                     $imgE->move($dirJwb, $jawaban_img_E);
                                  }
                                  $dataE = [
                                     'soal_id' => $soal_id,
@@ -808,23 +827,24 @@ class Soal extends BaseController
         if (count($res)>0) {
             $ret = "<td class='td_form' colspan='2'></td>
                         <td colspan='4' class='td_form'>
-                        <table id='tb_jawaban${soal_id}' class='table table-bordered table-hover'>
+                        <table id='tb_jawaban{$soal_id}' class='table table-bordered table-hover'>
                         <tbody>";
                         foreach ($res as $key) {
                             $jawaban_id = $key->jawaban_id;
-                            $ret .= "<tr id='tr_form_${soal_id}_${jawaban_id}'>
+                            $ret .= "<tr id='tr_form_{$soal_id}_{$jawaban_id}'>
                                       <td style='text-align:center;width:50px;'><button onclick='timesbtn($soal_id,$jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-times'></i></button></td>
-                                      <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='".$key->pilihan_nm."' id='pilihan_nm_${jawaban_id}' name='pilihan_nm[]' data-id='$jawaban_id'/> </td>
-                                      <td><input style='padding-left:10px;width:100%;' type='text' value='".$key->jawaban_nm."' id='jawaban_nm_${jawaban_id}' name='jawaban_nm[]'/> </td>
+                                      <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='".$key->pilihan_nm."' id='pilihan_nm_{$jawaban_id}' name='pilihan_nm[]' data-id='$jawaban_id'/> </td>
+                                      <td><input style='padding-left:10px;width:100%;' type='text' value='".$key->jawaban_nm."' id='jawaban_nm_{$jawaban_id}' name='jawaban_nm[]'/> </td>
                                       <td style='text-align:center;width:50px;'>
                                       <button onclick='deletebtn($soal_id,$jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button>
                                       </td>
                                       <td style='text-align:center;'>";
-                                $ret .= "<div><input type='file' id='jawaban_img_${jawaban_id}' name='jawaban_img[]' data-jawaban_id='$jawaban_id' style='max-width: 200px;'/> <button onclick='hapusgambarjawaban($jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button> <button onclick='simpangambarjawaban($soal_id,$jawaban_id)' type='button' class='btn btn-outline-success'><i class='fa  fa-save'></i></button></div>";
+                                $ret .= "<div><input type='file' id='jawaban_img_{$jawaban_id}' name='jawaban_img[]' data-jawaban_id='$jawaban_id' style='max-width: 200px;'/> <button onclick='hapusgambarjawaban($jawaban_id)' type='button' class='btn btn-outline-danger'><i class='fa fa-trash'></i></button> <button onclick='simpangambarjawaban($soal_id,$jawaban_id)' type='button' class='btn btn-outline-success'><i class='fa  fa-save'></i></button></div>";
                                     if ($key->jawaban_img == "") {
                                         $ret .= "";
                                     } else {
-                                        $ret .= "<div><img style='max-width:150px;heigth:100%;' src='".base_url()."/images/jawaban/materi/".$this->session->materi_filter."/".$key->jawaban_img.".jpg'></div>";
+                                        $imgFile = preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $key->jawaban_img) ? $key->jawaban_img : $key->jawaban_img . ".jpg";
+                                        $ret .= "<div><img style='max-width:150px;height:100%;' src='".base_url()."/images/jawaban/materi/".$this->session->materi_filter."/".$imgFile."'></div>";
                                     }
                                 $ret .= "</td>
                                      </tr>";
@@ -841,9 +861,9 @@ class Soal extends BaseController
         } else {
             $ret = "<td class='td_form' colspan='2'></td>
                         <td class='td_form'>
-                        <table id='tb_jawaban${soal_id}' class='table table-bordered table-hover'>
+                        <table id='tb_jawaban{$soal_id}' class='table table-bordered table-hover'>
                         <tbody>";
-                $ret .= "<tr class='tr_form' id='tr_form_${soal_id}_${cntform}'>
+                $ret .= "<tr class='tr_form' id='tr_form_{$soal_id}_{$cntform}'>
                             <td style='text-align:center;width:50px;'><button onclick='timesbtn($soal_id,$cntform)' type='button' class='btn btn-outline-danger'><i class='fa fa-times'></i></button></td>
                             <td style='text-align:center;width:50px;'><input style='width:50px;text-align:center;' type='text' value='' name='pilihan_nm[]' data-id='new'/> </td>
                             <td><input style='padding-left:10px;width:100%;' type='text' value='' name='jawaban_nm[]'/> </td>
@@ -866,15 +886,20 @@ class Soal extends BaseController
         $jawaban_nm = $this->request->getPost('jawaban_nm');
         $jawaban_id = $this->request->getPost('jawaban_id');
         $i = 0;
+        $simpanjawaban = false;
+        $dirJwb = FCPATH . "images/jawaban/materi/" . $this->session->materi_filter;
+        if (!is_dir($dirJwb)) {
+            mkdir($dirJwb, 0777, true);
+        }
+        $imagefile = $this->request->getFiles();
         foreach ($pilihan_nm as $k => $v) {
-            $imagefile = $this->request->getFiles();
-        
-            if ($v['id'] == "new") {
-                if ($imagefile["jawaban_img"][$i]->isValid() && ! $imagefile["jawaban_img"][$i]->hasMoved()){
-                    $newName = $soal_id.$pilihan_nm[$i];
-                    $imagefile["jawaban_img"][$i]->move("../public/images/materi/".$this->session->materi_filter."/", $newName);
-                }
+            $newName = "";
+            if (isset($imagefile["jawaban_img"][$i]) && $imagefile["jawaban_img"][$i]->isValid() && !$imagefile["jawaban_img"][$i]->hasMoved()) {
+                $newName = $imagefile["jawaban_img"][$i]->getClientName();
+                $imagefile["jawaban_img"][$i]->move($dirJwb, $newName);
+            }
 
+            if ($v['id'] == "new") {
                 $data = [
                     "soal_id" => $soal_id,
                     "pilihan_nm" => $v['value'],
@@ -888,9 +913,11 @@ class Soal extends BaseController
                     "soal_id" => $soal_id,
                     "pilihan_nm" => $v['value'],
                     "jawaban_nm" => $jawaban_nm[$i],
-                    "jawaban_img" => $newName,
                     "status_cd" => "normal"
                 ];
+                if ($newName !== "") {
+                    $data["jawaban_img"] = $newName;
+                }
                 $simpanjawaban = $this->soalmodel->updatejawaban($jawaban_id[$i],$data);
             }
             $i++;
@@ -924,7 +951,7 @@ class Soal extends BaseController
                     $allmateri = $this->soalmodel->getAllJMateri()->getResult();
                         foreach ($allmateri as $mat) {
                             $materi_id = $mat->materi_id;
-                            $ret .= "<label style='margin:0px 10px;' for='materix_${materi_id}'><input value='".$mat->materi_id."' type='radio' id='materix_${materi_id}' name='materix' ".($materi_id==$this->session->materi?'checked':'')."/> ".$mat->materi_nm."</label>";
+                            $ret .= "<label style='margin:0px 10px;' for='materix_{$materi_id}'><input value='".$mat->materi_id."' type='radio' id='materix_{$materi_id}' name='materix' ".($materi_id==$this->session->materi?'checked':'')."/> ".$mat->materi_nm."</label>";
                         }
                     $ret .= "</div>
                     <div class='form-group row'>
@@ -1131,20 +1158,11 @@ class Soal extends BaseController
         return $ret;
     }
     public function randsoal($characters,$randSoal) {
-        $randomString = $randSoal;
-        for ($s = 0; $s < 5; $s++) {
-            $index = rand(0, strlen($characters) - 1);
-            $randomString .= $characters[$index];
+        $uniqueChars = count_chars($characters, 3);
+        if (strlen($uniqueChars) >= 5) {
+            return str_shuffle(substr($uniqueChars, 0, 5));
         }
-        
-        $randSoal = count_chars($randomString,3);
-        if (strlen($randSoal) == 5) {
-            $soal_nm = str_shuffle($randSoal);
-        } else {
-            $soal_nm = $this->randsoal($characters,$randSoal);
-        }
-
-        return $soal_nm;
+        return str_shuffle($characters);
     }
 
     public function randomchar($char,$kolom,$materi_id,$sk_group_id) {

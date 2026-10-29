@@ -45,7 +45,7 @@ class Token extends BaseController
     {
         $search = $this->request->getPost('search');
 
-        $data = $this->usermodel->getBySiswa()->getResult();
+        $data = $this->usermodel->getBySiswa($search)->getResult();
 
         $result = [];
 
@@ -86,7 +86,8 @@ class Token extends BaseController
                 "user_id" => $user_tambah,
                 "start_date" => $start_date,
                 "end_date" => $end_date,
-                "group_id" => $group_id
+                "group_id" => $group_id,
+                "status_cd" => "normal"
             ];
 
             $simpantoken = $this->tokenmodel->simpantoken($data);
@@ -105,6 +106,8 @@ class Token extends BaseController
 		} else {
             $token_id = $this->request->getPost('token_id');
             $token = $this->request->getPost('token');
+            $token_user = $this->request->getPost('token_user');
+            $user_edit = $this->request->getPost('user_edit');
             $start_date = $this->request->getPost('start_date');
             $end_date = $this->request->getPost('end_date');
             $group_id = $this->request->getPost('group_id');
@@ -115,6 +118,12 @@ class Token extends BaseController
                 "end_date" => $end_date,
                 "group_id" => $group_id,
             ];
+            if ($token_user !== null) {
+                $data["tokenuser"] = $token_user;
+            }
+            if (!empty($user_edit)) {
+                $data["user_id"] = $user_edit;
+            }
 
             $update = $this->tokenmodel->updatetoken($token_id,$data);
             if ($update) {
@@ -131,14 +140,9 @@ class Token extends BaseController
 			return redirect('/');
 		} else {
             $token_id = $this->request->getPost('token_id');
-            $token = $this->request->getPost('token');
-            $start_date = $this->request->getPost('start_date');
-            $end_date = $this->request->getPost('end_date');
 
             $data = [           
-                "token" => $token,
-                "start_date" => $start_date,
-                "end_date" => $end_date,
+                "status_cd" => "nullified"
             ];
 
             $update = $this->tokenmodel->updatetoken($token_id,$data);

@@ -8,6 +8,13 @@ class Soalmodel extends Model
     protected $primaryKey = 'soal_id ';
     protected $allowedFields = ['soal_id','no_soal','soal_nm','soal_img','kunci','status_cd','group_id','materi'];
 
+    public function hapusgambarsoal($soal_id) {
+        return $this->db->table('soal')
+                        ->set('soal_img', NULL)
+                        ->where('soal_id',$soal_id)
+                        ->update();
+    }
+
     public function hapusgambarpembsoal($soal_id) {
         return $this->db->table('soal')
                         ->set('pembahasan_img', NULL)
@@ -15,25 +22,31 @@ class Soalmodel extends Model
                         ->update();
     }
     
-    public function getSoalIdByClue($clue,$group_id,$sk_group_id,$kolom_id) {
-        return $this->db->table('soal')
+    public function getSoalIdByClue($clue,$group_id,$sk_group_id,$kolom_id,$materi_id = null) {
+        $builder = $this->db->table('soal')
                         ->select('soal_id')
-                        ->where('clue',$clue)
                         ->where('group_id',$group_id)
                         ->where('sk_group_id',$sk_group_id)
                         ->where('kolom_id',$kolom_id)
-                        ->orderby('soal_id', 'ASC')
+                        ->where('status_cd','normal');
+        if (!empty($clue)) {
+            $builder->where('clue',$clue);
+        }
+        if ($materi_id !== null) {
+            $builder->where('materi', $materi_id);
+        }
+        return $builder->orderby('soal_id', 'ASC')
                         ->get();
     }
 
     public function getSoalIdByClueSKGambar($clue,$group_id,$sk_group_id,$kolom_id, $materi) {
         return $this->db->table('soal')
                         ->select('soal_id')
-                        ->where('clue',$clue)
                         ->where('group_id',$group_id)
                         ->where('sk_group_id',$sk_group_id)
                         ->where('kolom_id',$kolom_id)
                         ->where('materi',$materi)
+                        ->where('status_cd','normal')
                         ->orderby('soal_id', 'ASC')
                         ->get();
     }
@@ -323,15 +336,13 @@ public function getAllSoalSK() {
     }
 
     public function getResponLatihan($user_id) {
-        return $this->db->table('respon a')
+        return $this->db->table('respon_latihan a')
                         ->select('*,a.pilihan_nm as pilihan_respon,a.kolom_id as kolom_respon,a.soal_id as soal_id_respon,b.soal_id as soal_id_jwb,a.created_dttm as used_dttm')
                         ->join('jawaban b','b.jawaban_id=a.jawaban_id','left')
                         ->join('soal c','c.soal_id=b.soal_id','left')
-                        ->where('b.status_cd','normal')
                         ->where('a.status_cd','normal')
                         ->where('a.created_user_id',$user_id)
-                        // ->where('a.session',$session)
-                        ->where('a.materi',5)
+                        ->whereIn('a.materi',[5, 98])
                         ->where('a.group_id',4)
                         ->groupby('a.used')
                         ->get();
@@ -388,7 +399,7 @@ public function getAllSoalSK() {
                         ->where('b.status_cd','normal')
                         ->where('a.created_user_id', $user_id)
                         ->where('a.used', $used)
-                        ->where('a.materi', $materi)
+                        ->whereIn('a.materi', [$materi, 5, 98])
                         ->where('a.kolom_id', $kolom_id)
                         ->where('a.group_id', 4)
                         ->get();
@@ -416,7 +427,7 @@ public function getAllSoalSK() {
                         ->where('a.status_cd','normal')
                         ->where('b.status_cd','normal')
                         ->where('a.created_user_id',$user_id)
-                        ->where('a.session',$session)
+                        // ->where('a.session',$session)
                         ->where('a.materi',$materi)
                         ->where('a.kolom_id',$kolom_id)
                         ->where('a.group_id',4)
@@ -537,18 +548,18 @@ public function getAllSoalSK() {
                         ->where('a.group_id',3)
                         ->where('a.created_user_id',$user_id)
                         // ->where('a.session',$session)
-                        ->where('c.materi',$materi)
+                        ->where('a.materi',$materi)
                         ->where('a.status_cd','normal')
                         ->get();
         } else {
             return $this->db->table('respon a')
-                        ->select('*')
+                        ->select('*, a.pilihan_nm as pilihan_respon, a.no_soal as no_soal_respon,c.kunci as kunci_soal,b.jawaban_nm as jawaban_nmx')
                         ->join('jawaban b','b.jawaban_id=a.jawaban_id','left')
                         ->join('soal c','c.soal_id=b.soal_id','left')
                         ->where('a.group_id',3)
                         ->where('a.created_user_id',$user_id)
-                        ->where('a.session',$session)
-                        ->where('c.materi',$materi)
+                        // ->where('a.session',$session)
+                        ->where('a.materi',$materi)
                         ->where('a.status_cd','normal')
                         ->get();
         }
@@ -636,7 +647,6 @@ public function getAllSoalSK() {
     public function updatejawabansk($jawaban_nm,$data,$soal_id,$jawaban_nm_lama) {
         return $this->db->table('jawaban')
                         ->set($data)
-                        ->where('jawaban_nm',$jawaban_nm_lama)
                         ->where('soal_id',$soal_id)
                         ->update();
     }
@@ -648,15 +658,17 @@ public function getAllSoalSK() {
                         ->update();
     }
 
-    public function updatesoalsk($group_id,$sk_group_id,$kolom,$data,$soal_id,$jawaban_nm_lama) {
-        return $this->db->table('soal')
+    public function updatesoalsk($group_id,$sk_group_id,$kolom,$data,$soal_id,$jawaban_nm_lama,$materi_id = null) {
+        $builder = $this->db->table('soal')
                         ->set($data)
                         ->where('group_id',$group_id)
                         ->where('sk_group_id',$sk_group_id)
                         ->where('kolom_id',$kolom)
-                        ->where('soal_id',$soal_id)
-                        ->where('clue',$jawaban_nm_lama)
-                        ->update();
+                        ->where('soal_id',$soal_id);
+        if ($materi_id !== null) {
+            $builder->where('materi', $materi_id);
+        }
+        return $builder->update();
     }
 
     public function updatestatus($jawaban_nm,$kolom_id,$status_cd,$old_status) {
@@ -665,6 +677,11 @@ public function getAllSoalSK() {
     }
 
     public function hapussoal($soal_id,$data) {
+        $this->db->table('jawaban')
+                 ->set($data)
+                 ->where('soal_id',$soal_id)
+                 ->update();
+
         return $this->db->table('soal')
                         ->set($data)
                         ->where('soal_id',$soal_id)
@@ -769,20 +786,26 @@ public function getAllSoalSK() {
                         ->update();
     }
 
-    public function resetbygroup($materi_id,$group_id,$data) {
-        return $this->db->table('respon')
+    public function resetbygroup($materi_id,$group_id,$data,$user_id = null) {
+        $builder = $this->db->table('respon')
                         ->set($data)
                         ->where('materi',$materi_id)
                         ->where('group_id',$group_id)
-                        ->where('status_cd','normal')
-                        ->update();
+                        ->where('status_cd','normal');
+        if (!empty($user_id)) {
+            $builder->where('created_user_id', $user_id);
+        }
+        return $builder->update();
     }
 
-    public function resetsemua($materi_id,$data) {
-        return $this->db->table('respon')
+    public function resetsemua($materi_id,$data,$user_id = null) {
+        $builder = $this->db->table('respon')
                         ->set($data)
                         ->where('materi',$materi_id)
-                        ->where('status_cd','normal')
-                        ->update();
+                        ->where('status_cd','normal');
+        if (!empty($user_id)) {
+            $builder->where('created_user_id', $user_id);
+        }
+        return $builder->update();
     }
 }

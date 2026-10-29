@@ -59,7 +59,8 @@ class Jawaban extends BaseController
                 if ($key->jawaban_img == "") {
                   $jawaban_img = "";
                 } else {
-                  $jawaban_img = "<img style='max-width:200px;heigth:100%;' src='".base_url()."/images/jawaban/materi/".$key->materi."/".$key->jawaban_img.".jpg'>";
+                  $imgFile = preg_match('/\.(jpg|jpeg|png|gif|webp)$/i', $key->jawaban_img) ? $key->jawaban_img : $key->jawaban_img . ".jpg";
+                  $jawaban_img = "<img style='max-width:200px;height:100%;' src='".base_url()."/images/jawaban/materi/".$key->materi."/".$imgFile."'>";
                 }
                 $ret .= "<tr>
                         <td style='text-align:center;'>".$no++."</td>
@@ -68,7 +69,7 @@ class Jawaban extends BaseController
                         <td>".$key->jawaban_nm."</td>
                         <td style='text-align:center;'>".$key->pilihan_nm."</td>
                         <td style='text-align:center;'>".$jawaban_img."</td>
-                        <td style='text-align:center;'><button onclick='editjawaban(".$key->jawaban_id.",".$key->materi.")' style='font-size:10px;' class='btn btn-secondary' data-toggle='modal' data-target='#modal-lg'>Edit</button> <button onclick='hapusjawaban(".$key->jawaban_id.")' style='font-size:10px;' class='btn btn-danger'>Hapus</button></td>
+                        <td style='text-align:center;'><button onclick='editjawaban(".$key->jawaban_id.",".$key->materi.")' style='font-size:10px;' class='btn btn-secondary' data-bs-toggle='modal' data-bs-target='#modal-lg'>Edit</button> <button onclick='hapusjawaban(".$key->jawaban_id.")' style='font-size:10px;' class='btn btn-danger'>Hapus</button></td>
                         </tr>";
                 
             }
@@ -120,14 +121,14 @@ class Jawaban extends BaseController
                     </div>
                     <div class='card-footer'>
                     <button onclick='simpanjawaban()' type='button' class='btn btn-info'>Simpan</button>
-                    <button type='button' class='btn btn-default float-right' data-dismiss='modal' aria-label='Close'>Cancel</button>
+                    <button type='button' class='btn btn-default float-right' data-bs-dismiss='modal' aria-label='Close'>Cancel</button>
                     </div>";
                     
         $ret .= "</div>
                 </div>
                 </div>
                 </div>
-                </div> <script>$('.select2').select2()</script>";
+                </div> <script>$('.select2').select2({ dropdownParent: $('#modal-lg'), width: '100%' })</script>";
 
         return $ret;
     }
@@ -174,19 +175,19 @@ class Jawaban extends BaseController
                         <input type='file' class='form-control' id='jawaban_img' name='jawaban_img'>
                         <input type='hidden' class='form-control' id='jawaban_img_lama' name='jawaban_img_lama' value='".$key->jawaban_img."'>
                         </div>
-                        <img style='max-width:200px;heigth:100%;' src='".base_url()."/images/jawaban/materi/$materi/".$key->jawaban_img."'>
+                        <img style='max-width:200px;height:100%;' src='".base_url()."/images/jawaban/materi/$materi/".$key->jawaban_img."'>
                     </div>
                     </div>
                     <div class='card-footer'>
                     <button onclick='updatejawaban(".$key->jawaban_id.")' type='button' class='btn btn-info'>Simpan</button>
-                    <button type='button' class='btn btn-default float-right' data-dismiss='modal' aria-label='Close'>Cancel</button>
+                    <button type='button' class='btn btn-default float-right' data-bs-dismiss='modal' aria-label='Close'>Cancel</button>
                     </div>";
                     
         $ret .= "</div>
                 </div>
                 </div>
                 </div>
-                </div> <script>$('.select2').select2()</script>";
+                </div> <script>$('.select2').select2({ dropdownParent: $('#modal-lg'), width: '100%' })</script>";
 
         
         }
@@ -201,6 +202,10 @@ class Jawaban extends BaseController
         $soal_id = $this->request->getPost('soal_id');
         $materi = $this->request->getPost('materi');
         $newName = "";
+        $dirJwb = FCPATH . "images/jawaban/materi/$materi";
+        if (!is_dir($dirJwb)) {
+            mkdir($dirJwb, 0777, true);
+        }
         $imagefile = $this->request->getFile('jawaban_img');
         if($imagefile){
             $validateImage = $this->validate([
@@ -212,7 +217,7 @@ class Jawaban extends BaseController
             ]);
             if ($validateImage){
                 $newName = $imagefile->getClientName();
-                $imagefile->move("../public/images/jawaban/materi/$materi", $newName);
+                $imagefile->move($dirJwb, $newName);
             }
         }
 
@@ -239,27 +244,26 @@ class Jawaban extends BaseController
         $materi = $this->request->getPost('materi');
         $jawaban_img_lama = $this->request->getPost('jawaban_img_lama');
         $newName = "";
+        $dirJwb = FCPATH . "images/jawaban/materi/$materi";
+        if (!is_dir($dirJwb)) {
+            mkdir($dirJwb, 0777, true);
+        }
+        $data = [
+            'soal_id' => $soal_id,
+            'jawaban_nm' => $jawaban_nm,
+            'pilihan_nm' => $pilihan_nm,
+            'status_cd' => 'normal'
+        ];
         if($imagefile = $this->request->getFiles()){
-            foreach($imagefile['jawaban_img'] as $img){
-               if ($img->isValid() && ! $img->hasMoved()){
-                    $newName = $img->getClientName();
-                    $img->move("../public/images/jawaban/materi/$materi", $newName);
-                        $data = [
-                            'soal_id' => $soal_id,
-                            'jawaban_nm' => $jawaban_nm,
-                            'pilihan_nm' => $pilihan_nm,
-                            'jawaban_img' => $newName,
-                            'status_cd' => 'normal'
-                        ];
+            if (isset($imagefile['jawaban_img'])) {
+                foreach($imagefile['jawaban_img'] as $img){
+                   if ($img->isValid() && ! $img->hasMoved()){
+                        $newName = $img->getClientName();
+                        $img->move($dirJwb, $newName);
+                        $data['jawaban_img'] = $newName;
                    }
-             }
-        } else {
-            $data = [
-                'soal_id' => $soal_id,
-                'jawaban_nm' => $jawaban_nm,
-                'pilihan_nm' => $pilihan_nm,
-                'status_cd' => 'normal'
-            ];
+                }
+            }
         }
 
         $res = $this->jawabanmodel->updatejawaban($jawaban_id,$data);

@@ -8,37 +8,36 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="<?= base_url('plugins/fontawesome-free/css/all.min.css') ?>">
+  <link rel="stylesheet" href="<?= base_url('dist/adminlte4/css/bootstrap.min.css') ?>">
   <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?= base_url('dist/adminlte4/css/adminlte.min.css') ?>">
 </head>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
 <?= $this->include('admin/navbar') ?>
 <!-- Content Wrapper. Contains page content -->
-<div id="contentwrapper" class="content-wrapper" style="background-color: rgb(88, 129, 87);">
+<div id="contentwrapper" class="content-wrapper" style="background-color: #f8fafc;">
 
 <!-- Main content -->
-<div class="content" style="padding-top: 30px;">
-  <div class="container" style="padding:0px;min-width: 90%;">
-    <div class="row">
-      <div class="col-lg-12">
-        <div id="card" class="card" style="background-color: rgb(218, 215, 205);">
-          <div class="card-body">
-            <div id="cardbody"><!-- END ID CARDBODY -->
+<div class="content py-4">
+  <div class="container-fluid px-3 px-lg-4">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div id="card" class="card border-0 shadow-sm rounded-4">
+          <div class="card-body p-4 bg-white">
+            <div id="cardbody">
     
 <div>
   <?= $ret; ?>
 </div>
 
-            </div><!-- END ID CARDBODY -->
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
+  </div>
 </div>
 <!-- /.content -->
 </div>
@@ -51,12 +50,12 @@
 <!-- REQUIRED SCRIPTS -->
 
 <!-- jQuery -->
-<script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url() ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?= base_url('plugins/jquery/jquery.min.js') ?>"></script>
+<!-- Bootstrap 5 -->
+<script src="<?= base_url('dist/adminlte4/js/bootstrap.bundle.min.js') ?>"></script>
 <!-- AdminLTE App -->
-<script src="<?= base_url() ?>/plugins/chart.js/Chart.min.js"></script>
-<script src="<?= base_url() ?>/dist/dist/js/adminlte.min.js"></script>
+<script src="<?= base_url('plugins/chart.js/Chart.min.js') ?>"></script>
+<script src="<?= base_url('dist/adminlte4/js/adminlte.min.js') ?>"></script>
 </body>
 </html>
 

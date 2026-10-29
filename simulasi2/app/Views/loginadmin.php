@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="<?= base_url('plugins/fontawesome-free/css/all.min.css') ?>">
   
   <style>
     :root {
@@ -431,7 +431,7 @@
       </div>
 
       <!-- Login Form -->
-      <form action="<?= base_url() ?>/belakang/checklogin" method="post" id="adminLoginForm">
+      <form action="<?= base_url('belakang/checklogin') ?>" method="post" id="adminLoginForm">
         
         <!-- Username -->
         <div class="form-group">
@@ -483,7 +483,7 @@
         </div>
 
         <!-- Back to Home -->
-        <a href="<?= base_url() ?>" class="btn-back">
+        <a href="<?= base_url('/') ?>" class="btn-back">
           <i class="fas fa-arrow-left"></i>
           <span>Halaman Utama Siswa</span>
         </a>

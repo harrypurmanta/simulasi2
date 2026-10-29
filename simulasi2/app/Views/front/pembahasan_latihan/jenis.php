@@ -1,64 +1,49 @@
-<?php $request = service('request'); ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-
-<body class="hold-transition skin-blue layout-top-nav">
+<?php
+$request = service('request');
+$title = 'Review Jenis Latihan - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                    <div class="col-md-12" style="display: flex;justify-content: center;margin-bottom:20px;">
-                                <h2><b>LATIHAN</b></h2>
+            <div class="container py-4">
+                <div class="row align-items-center mb-4">
+                    <div class="col-md-auto mb-2 mb-md-0">
+                        <a href="<?= base_url('pembahasan') ?>" class="btn btn-outline-secondary rounded-pill px-3">
+                            <i class="fas fa-arrow-left me-1"></i> Kembali ke Kategori
+                        </a>
+                    </div>
+                    <div class="col text-md-center">
+                        <h2 class="fw-bold mb-1 text-dark">PEMBAHASAN LATIHAN</h2>
+                        <p class="text-muted mb-0 small">Pilih jenis soal untuk melihat ulasan pembahasan dan jawaban</p>
+                    </div>
+                    <div class="col-md-auto d-none d-md-block" style="width: 150px;"></div>
+                </div>
+
+                <div class="row g-4 justify-content-center">
+                    <?php
+                        $this->session = \Config\Services::session();
+                        foreach ($jenis as $key) {
+                    ?>
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="small-box-latihan h-100 d-flex flex-column justify-content-between">
+                            <div class="inner">
+                                <h4><?= esc($key->jenis_nm) ?></h4>
                             </div>
-                        <div class="col-md-12">
-                            <?php
-                                $this->session = \Config\Services::session();
-                               
-                                foreach ($jenis as $key) {
-                                
-                            ?>
-                            <div class="col-md-3" style="border-radius:10px;">
-                                <div class="small-box bg-gray" style="border-radius:10px;">
-                                    <div class="inner text-center" style="padding: 10px; word-wrap: break-word !important;">
-                                        <h4><?= $key->jenis_nm ?></h4>
-                                    </div>
-                                    <a href="<?= base_url()."/latihan/tryout/".$request->getUri()->getSegment(3)."/".$key->jenis_id ?>" class="small-box-footer bg-blue" style="color:black;">
-                                        Mulai <i class="fa fa-arrow-circle-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <?php } ?>
+                            <a href="<?= base_url('latihan/pembahasan_latihan/' . $request->getUri()->getSegment(3) . '/' . $key->jenis_id) ?>" class="small-box-footer bg-info text-white">
+                                Buka Pembahasan <i class="fas fa-arrow-circle-right ms-1"></i>
+                            </a>
                         </div>
                     </div>
-                </section>
+                    <?php } ?>
+                </div>
             </div>
         </div>
         <?= $this->include('front/footer') ?>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
-    <script src="<?= base_url() ?>/dist/js/demo.js"></script>
-</body>
 
+    <?= $this->include('front/template/scriptjs') ?>
+</body>
 </html>

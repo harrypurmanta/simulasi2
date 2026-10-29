@@ -1,215 +1,93 @@
 <?php
 $request = \Config\Services::request();
+$title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <style>
-    .d-none {
-        display: none !important;
-    }
-
-    #loader-wrapper {
-        display: flex;
-        position: fixed;
-        z-index: 1060;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        padding: 0.625em;
-        overflow-x: hidden;
-        transition: background-color 0.1s;
-        background-color: rgb(253 253 253 / 58%);
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .loader {
-        border: 10px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 10px solid #3af3f5;
-        border-bottom: 10px solid #3abcec;
-        width: 50px;
-        height: 50px;
-        -webkit-animation: spin 2s linear infinite;
-        animation: spin 2s linear infinite;
-        margin: 1.75rem auto;
-    }
-
-
-
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-moz-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-o-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-ms-keyframes fadeIn {
-        0% {
-            opacity: 0;
-        }
-
-        100% {
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes spin {
-        0% {
-            -webkit-transform: rotate(0deg);
-        }
-
-        100% {
-            -webkit-transform: rotate(360deg);
-        }
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
-        }
-
-        100% {
-            transform: rotate(360deg);
-        }
-    }
-    </style>
-</head>
-
-<body class="hold-transition skin-blue layout-top-nav">
+<?= $this->include('front/template/head') ?>
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
         <div class="content-wrapper">
-            <div class="container">
-                <section class="content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-8" style="border-radius: 5px; margin-right: 10px;">
-                                <div class="bg-gray col-md-8" style="border-radius:5px;">
-                                    <div class="col-md-12" style="margin-top:10px;">
-                                        <label for="">Tahapan Ujian</label>
-                                    </div>
-                                    <div class="col-lg-5" style="border-radius:10px;">
-                                        <div class="small-box bg-green" style="border-radius: 10px; border: 1px solid green;">
-                                            <div class="inner text-center">
-                                                <?= $jenis_nm->jenis_nm ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-gray col-md-3 text-center"
-                                style="border-radius:5px; height:85px;">
-                                <span style="margin-top:15px;">Waktu</span><br>
-                                <label style="font-size:35px;" id="countdown">00:00</label>
+            <div class="container py-3">
+                <!-- Tahapan Latihan -->
+                <div class="row g-3 mb-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-1 rounded-pill fw-bold mb-2 align-self-start">
+                                <i class="fas fa-search me-1"></i> REVIEW LATIHAN
+                            </span>
+                            <div class="card bg-success text-white border-0 p-2 rounded-3 text-center shadow-sm" style="max-width: 250px;">
+                                <div class="fw-bold small"><?= esc($jenis_nm->jenis_nm ?? 'Latihan') ?></div>
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top:10px;">
-                        <div class="col-md-12">
-                            <div class="bg-gray col-md-7" style="border-radius: 5px; margin-right: 10px;">
-                                <div style="margin-top:10px;">
-                                    <label for="pertanyaan">Pertanyaan</label>
-                                </div>
-                                <div class="col-md-12"
-                                    style="min-height:100px;background-color:#aeaebb;border-radius:5px;padding-bottom:25px;">
-                                    <b>
-                                        <p id="p_no_soal" style="margin-top:10px;">Soal no. </p>
-                                    </b>
-                                    <p id="inp_soal_nm" style="margin:5px;font-size:16px;"></p>
-                                    <div id="dv_img_soal" style="margin:5px;font-size:16px;"></div>
-                                    <input type="hidden" id="inp_soal_id">
-                                    <input type="hidden" value="1" id="inp_no_soal">
-                                    <input type="hidden" id="inp_kolom_id">
-                                    <input type="hidden" id="used">
-                                </div>
-                                <div id="dv_main_jawaban">
-                                    
-                                </div>
-                                <input type="hidden" value="" id="inp_jawaban_id">
-                                <input type="hidden" value="" id="inp_pilihan_nm">
-                                <div class="row" style="margin-top:10px;margin-bottom:10px;">
-                                    <div class="col-md-12" id="dv_button">
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                            <span class="text-muted small fw-semibold mb-1">
+                                <i class="fas fa-info-circle text-primary me-1"></i> Mode Pembahasan
+                            </span>
+                            <span class="badge bg-info fs-6 px-3 py-2 rounded-pill">Tanpa Batas Waktu</span>
+                        </div>
+                    </div>
+                </div>
 
-                                    </div>
+                <!-- Soal & Pilihan Jawaban + Pembahasan -->
+                <div class="row g-3">
+                    <div class="col-12 col-lg-8">
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                            <div class="p-3 mb-3 rounded-3" style="background-color: #f8fafc; border: 1px solid #e2e8f0;">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-success rounded-pill px-3 py-1" id="p_no_soal">Soal no. 1</span>
                                 </div>
+                                <div id="inp_soal_nm" class="fs-6 text-dark mb-2" style="line-height: 1.6;"></div>
+                                <div id="dv_img_soal" class="text-center my-2"></div>
+                                <input type="hidden" id="inp_soal_id">
+                                <input type="hidden" value="1" id="inp_no_soal">
+                                <input type="hidden" id="inp_kolom_id">
+                                <input type="hidden" id="used">
                             </div>
-                            <div class="bg-gray col-md-4" style="border-radius:5px;">
-                                <div class="row">
-                                    <div id="dv_boxnosoal" class="col-md-12 text-center"
-                                        style="margin-top:10px;margin-bottom:10px;display: flex;flex-wrap: wrap;justify-content: center;">
 
-                                    </div>
+                            <div id="dv_main_jawaban" class="mb-3">
+                                <!-- Jawaban dimuat via AJAX -->
+                            </div>
+
+                            <input type="hidden" value="" id="inp_jawaban_id">
+                            <input type="hidden" value="" id="inp_pilihan_nm">
+
+                            <div class="row g-3 align-items-center mt-2">
+                                <div class="col-12 col-md-5" id="dv_button">
+                                    <!-- Tombol navigasi soal -->
+                                </div>
+                                <div class="col-12 col-md-7" id="dv_pembahasan">
+                                    <!-- Pembahasan -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                </section>
+
+                    <div class="col-12 col-lg-4">
+                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 20px; z-index: 10;">
+                            <div class="d-flex align-items-center justify-content-between mb-3">
+                                <h6 class="fw-bold text-dark mb-0">
+                                    <i class="fas fa-th me-2 text-success"></i> Navigasi Soal
+                                </h6>
+                            </div>
+                            <div id="dv_boxnosoal" class="box-no-soal-grid">
+                                <!-- Nomor soal dimuat via AJAX -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="d-none" id='loader-wrapper'>
             <div class="loader"></div>
         </div>
     </div>
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script src="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
-    <script src="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
     <script>
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
         event.preventDefault();
@@ -248,13 +126,13 @@ $request = \Config\Services::request();
     function startujian(proc) {
         let soal_id = $("#inp_soal_id").val();
         let jawaban_id = $("#inp_jawaban_id").val();
-        let jenis_id = <?= $request->uri->getSegment(4) ?>;
+        let jenis_id = <?= $request->getUri()->getSegment(4) ?>;
         let no_soal = $("#inp_no_soal").val();
         let pilihan_nm = $("#inp_pilihan_nm").val();
         let group_id = <?= $group_id ?>;
         let materi = 99;
         let waktu = document.getElementById('countdown').textContent;
-        let used =  <?= $request->uri->getSegment(5) ?>;
+        let used =  <?= $request->getUri()->getSegment(5) ?>;
         $.ajax({
             url: "<?= base_url('latihan/startujianpembahasan') ?>",
             type: "post",
@@ -291,14 +169,19 @@ $request = \Config\Services::request();
                                     icon: "success"
                                 });
                                 updateFinishRespon(materi,jenis_id);
-                                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used;
+                                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + materi + "/" +jenis_id+"/"+used;
                             }
                         });
 
                     
                 } else {
                     if (data == "jawaban_kosong") {
-                        alert("Jawaban belum dipilih");
+                        Swal.fire({
+                            title: "Perhatian",
+                            text: "Jawaban belum dipilih",
+                            icon: "warning",
+                            confirmButtonText: "OK"
+                        });
                     } else {
                         if (data.no_soal == 1) {
                             window.clearInterval(timers);
@@ -331,7 +214,12 @@ $request = \Config\Services::request();
 
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({
+                    title: "Error",
+                    text: "Error system",
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
             }
         });
     }
@@ -373,7 +261,7 @@ $request = \Config\Services::request();
 
     function countdown(detik) {
         var seconds = detik;
-        var jenis_id = <?= $request->uri->getSegment(3) ?>;
+        var jenis_id = <?= $request->getUri()->getSegment(3) ?>;
         timers = window.setInterval(function() {
             myFunction();
         }, 1000); // every second
@@ -382,7 +270,7 @@ $request = \Config\Services::request();
             seconds--;
             $("#countdown").text(convertSeconds(seconds));
             if (seconds === 0) {
-                window.location.href = "<?= base_url() ?>/latihan/hasillatihan/" + jenis_id;
+                window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan/" + jenis_id;
             } else {
                 //Do nothing
             }

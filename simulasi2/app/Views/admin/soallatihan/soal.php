@@ -15,7 +15,7 @@
             <h1>Soal Latihan</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Soal Latihan</li>
             </ol>
@@ -110,20 +110,18 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header bg-success text-white">
-            <h5 class="modal-title" id="modalImportSoalLabel"><i class="fas fa-file-excel mr-2"></i> Import Soal Latihan (Excel / CSV)</h5>
-            <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <h5 class="modal-title" id="modalImportSoalLabel"><i class="fas fa-file-excel me-2"></i> Import Soal Latihan (Excel / CSV)</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <form id="formImportSoal" enctype="multipart/form-data">
             <div class="modal-body">
               <div class="alert alert-info">
-                <i class="fas fa-info-circle mr-1"></i> Format file harus sesuai dengan template. Jika belum memiliki template, silakan <a href="<?= base_url('admin/soallatihan/downloadTemplate') ?>" class="alert-link font-weight-bold"><i class="fas fa-download"></i> Download Template Excel Di Sini</a>.
+                <i class="fas fa-info-circle me-1"></i> Format file harus sesuai dengan template. Jika belum memiliki template, silakan <a href="<?= base_url('admin/soallatihan/downloadTemplate') ?>" class="alert-link fw-bold"><i class="fas fa-download"></i> Download Template Excel Di Sini</a>.
               </div>
 
               <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group mb-3">
                     <label for="import_group_id">Group Soal <span class="text-danger">*</span></label>
                     <select name="group_id" id="import_group_id" class="form-control" onchange="handleImportGroupChange()" required>
                       <option value="" disabled selected>Pilih Group Soal</option>
@@ -135,7 +133,7 @@
                 </div>
 
                 <div class="col-md-6">
-                  <div class="form-group">
+                  <div class="form-group mb-3">
                     <label for="import_jenis_id">Jenis Soal <span class="text-danger">*</span></label>
                     <select name="jenis_id" id="import_jenis_id" class="form-control" onchange="handleImportJenisChange()" required>
                       <option value="" disabled selected>Pilih Jenis Soal</option>
@@ -146,7 +144,7 @@
 
               <div class="row" id="import_row_level" style="display: none;">
                 <div class="col-md-12">
-                  <div class="form-group">
+                  <div class="form-group mb-3">
                     <label for="import_level_id">Level Soal (Khusus Group Kecerdasan)</label>
                     <select name="level_id" id="import_level_id" class="form-control">
                       <option value="">Sesuai Kolom Level di Excel (Otomatis)</option>
@@ -158,29 +156,28 @@
                 </div>
               </div>
 
-              <div class="form-group">
+              <div class="form-group mb-3">
                 <label for="import_file">Pilih File Excel / CSV (.xlsx, .xls, .csv) <span class="text-danger">*</span></label>
-                <div class="custom-file">
-                  <input type="file" class="custom-file-input" id="import_file" name="file_excel" accept=".xlsx, .xls, .csv" required onchange="updateFileName(this)">
-                  <label class="custom-file-label" id="import_file_label" for="import_file">Pilih file...</label>
+                <div class="input-group">
+                  <input type="file" class="form-control" id="import_file" name="file_excel" accept=".xlsx, .xls, .csv" required onchange="updateFileName(this)">
                 </div>
               </div>
 
-              <div class="form-group">
-                <label class="d-block font-weight-bold">Opsi Penanganan Soal yang Sudah Ada:</label>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="mode_append" name="mode" value="append" class="custom-control-input" checked>
-                  <label class="custom-control-label" for="mode_append">Tambahkan ke soal yang sudah ada (Append)</label>
+              <div class="form-group mb-3">
+                <label class="d-block fw-bold mb-2">Opsi Penanganan Soal yang Sudah Ada:</label>
+                <div class="form-check form-check-inline">
+                  <input type="radio" id="mode_append" name="mode" value="append" class="form-check-input" checked>
+                  <label class="form-check-label" for="mode_append">Tambahkan ke soal yang sudah ada (Append)</label>
                 </div>
-                <div class="custom-control custom-radio custom-control-inline">
-                  <input type="radio" id="mode_replace" name="mode" value="replace" class="custom-control-input">
-                  <label class="custom-control-label text-danger" for="mode_replace"><i class="fas fa-exclamation-triangle"></i> Hapus &amp; timpa soal lama pada kategori ini</label>
+                <div class="form-check form-check-inline">
+                  <input type="radio" id="mode_replace" name="mode" value="replace" class="form-check-input">
+                  <label class="form-check-label text-danger" for="mode_replace"><i class="fas fa-exclamation-triangle"></i> Hapus &amp; timpa soal lama pada kategori ini</label>
                 </div>
               </div>
             </div>
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
               <button type="submit" id="btnSubmitImport" class="btn btn-success">
                 <span id="btnImportSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                 <i class="fas fa-upload mr-1" id="btnImportIcon"></i> Mulai Import
@@ -646,7 +643,7 @@
             $("#loader-wrapper").addClass("d-none");
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
   }
@@ -658,7 +655,7 @@
     for (i = 0; i < char.length; i++) {
       for (j = i + 1; j < char.length; j++) {
           if (char[i] == char[j]) {
-            alert("Karakter tidak boleh sama !");
+            Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
             var val = char.substr(0, char.length - 1);
             document.getElementById(kolom).value = val;
           }
@@ -687,7 +684,7 @@ function hapussoal(soal_id) {
                 "soal_id": soal_id
               },
               success: function(data) {
-                if (data = "sukses") {
+                if (data == "sukses") {
                   Swal.fire({
                       title: "Soal berhasil di hapus",
                       icon: "success",
@@ -703,7 +700,7 @@ function hapussoal(soal_id) {
                 }
               },
               error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
               }
           });
         }
@@ -728,7 +725,7 @@ function showjawaban(soal_id) {
           $('#tr_data_'+soal_id).html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -788,42 +785,49 @@ function checkbtn(soal_id) {
           processData: false,
           
           success: function(data) {
-            alert("Sukses");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
 }
 
 function deletebtn(soal_id,jawaban_id) {
-  let text = "Apakah anda yakin menghapus data ini ?";
-  if (confirm(text) == true) {
-    $.ajax({
-          url: "<?= base_url('soal/deletejawaban') ?>",
-          type: "post",
-          dataType: "json",
-          data: {
-            "jawaban_id": jawaban_id
-          },
-          success: function(data) {
-            if (data == "sukses") {
-              alert("Sukses");
-            } else {
-              alert("Gagal");
+  Swal.fire({
+    title: "Hapus Jawaban?",
+    text: "Apakah anda yakin menghapus data ini ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: "<?= base_url('soal/deletejawaban') ?>",
+            type: "post",
+            dataType: "json",
+            data: {
+              "jawaban_id": jawaban_id
+            },
+            success: function(data) {
+              if (data == "sukses") {
+                Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+              } else {
+                Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+              }
+              document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
+              showjawaban(soal_id);
+            },
+            error: function() {
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
-            document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
-            showjawaban(soal_id);
-          },
-          error: function() {
-            alert("error");
-          }
-      });
-  } else {
-
-  }
-  
+        });
+    }
+  });
 }
 
 function timesbtn(soal_id,jawaban_id) {

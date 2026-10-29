@@ -19,7 +19,7 @@
             <h1>Tambah Soal Latihan</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Tambah Soal Latihan</li>
             </ol>
@@ -373,7 +373,7 @@
             },
             error: function() {
                 $("#loader-wrapper").addClass("d-none")
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -465,7 +465,7 @@
                     }
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                 }
             });
     }

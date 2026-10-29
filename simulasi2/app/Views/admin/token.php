@@ -8,99 +8,76 @@
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
             <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
+                <div class="container-fluid px-3 px-lg-4">
+                    <div class="row align-items-center mb-2">
                         <div class="col-sm-6">
-                            <h1>Data Token</h1>
+                            <h1 class="m-0 fw-bold text-dark d-flex align-items-center">
+                                <i class="fas fa-key text-warning me-2"></i> Manajemen Token Ujian
+                            </h1>
+                            <p class="text-muted small mb-0 mt-1">Kelola dan generate token sesi simulasi CAT peserta</p>
                         </div>
-                        <div class="col-sm-6">
-                            <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
+                        <div class="col-sm-6 mt-2 mt-sm-0">
+                            <ol class="breadcrumb float-sm-end">
+                                <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
                                 <li class="breadcrumb-item active">Token</li>
                             </ol>
                         </div>
                     </div>
-                </div><!-- /.container-fluid -->
+                </div>
             </section>
+
             <section class="content">
-                <div class="container-fluid">
+                <div class="container-fluid px-3 px-lg-4">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <!-- <div class="row"> -->
-                                        <div class="col-md-12 row">
-                                            <div class="col-3">
-                                                <div class="form-group row">
-                                                    <label for="date" class="col-sm-3 col-form-label">Tanggal</label>
-                                                    <div class="col-sm-8">
-                                                    <input class="form-control" type="date" name="start_dttm"
-                                                        id="start_dttm" value="<?= date("Y-m-d") ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <label style="padding-top:5px; margin-right: 20px;">s/d</label>
-                                            <div class="col-2">
-                                                <div class="form-group row">
-                                                    <div class="col-sm-12">
-                                                    <input class="form-control" type="date" name="end_dttm" id="end_dttm"
-                                                        value="<?= date("Y-m-d") ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <div class="form-group row">
-                                                    <label for="date" class="col-sm-3 col-form-label">Materi :</label>
-                                                    <div class="col-sm-8">
-                                                        <select class="form-control" name="group_id" id="group_id">
-                                                            <option value="all">Semua</option>
-                                                            <?php
-                                                                foreach ($materi as $key) {
-                                                            ?>
-                                                            <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2">
-                                                <div class="form-group row">
-                                                    <button class="btn btn-primary btn-sm" type="button" onclick="tampilkantoken()">Tampilkan</button>
-                                                </div>
-                                            </div>
+                            <div class="card border-0 shadow-sm rounded-4">
+                                <div class="card-header bg-white py-3">
+                                    <div class="row g-2 align-items-end">
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <label for="start_dttm" class="form-label small fw-semibold text-muted mb-1">Tanggal Mulai:</label>
+                                            <input class="form-control" type="date" name="start_dttm" id="start_dttm" value="<?= date("Y-m-d") ?>">
                                         </div>
-                                        <div class="col-md-12 row">
-                                            <div class="col-2">
-                                                <div class="form-group row">
-                                                    <button class="btn btn-success btn-sm" type="button"
-                                                        onclick="tambahtoken()"><i class="fa fa-plus"></i> Tambah Token</button>
-                                                </div>
-                                            </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <label for="end_dttm" class="form-label small fw-semibold text-muted mb-1">Tanggal Sampai:</label>
+                                            <input class="form-control" type="date" name="end_dttm" id="end_dttm" value="<?= date("Y-m-d") ?>">
                                         </div>
-                                    <!-- </div> -->
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <label for="group_id" class="form-label small fw-semibold text-muted mb-1">Paket Materi:</label>
+                                            <select class="form-select" name="group_id" id="group_id">
+                                                <option value="all">Semua Materi</option>
+                                                <?php foreach ($materi as $key): ?>
+                                                <option value="<?= $key->materi_id ?>"><?= esc($key->materi_nm) ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3 d-flex gap-2">
+                                            <button class="btn btn-primary w-100 rounded-pill py-2" type="button" onclick="tampilkantoken()">
+                                                <i class="fas fa-search me-1"></i> Tampilkan
+                                            </button>
+                                            <button class="btn btn-success text-nowrap rounded-pill py-2 px-3 shadow-sm" type="button" onclick="tambahtoken()">
+                                                <i class="fas fa-plus me-1"></i> Tambah
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="card-body">
-                                    <table id="table_token" class="table table-bordered table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style="text-align:center;">No.</th>
-                                                <th style="text-align:center;">Token Materi</th>
-                                                <th style="text-align:center;">Token User</th>
-                                                <th style="text-align:center;">Tanggal</th>
-                                                <th style="text-align:center;">Peserta</th>
-                                                <th style="text-align:center;">Materi</th>
-                                                <th style="text-align:center;">Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!-- <?php
-                                                $no = 1;
-                                                foreach ($token as $key) {
-                                            ?>
-                                            
-                                            <?php  } ?> -->
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table id="table_token" class="table table-bordered table-hover align-middle">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="width: 45px;">No.</th>
+                                                    <th class="text-center">Token Materi</th>
+                                                    <th class="text-center">Token User</th>
+                                                    <th class="text-center">Tanggal Dibuat</th>
+                                                    <th class="text-center">Peserta</th>
+                                                    <th>Paket Materi</th>
+                                                    <th class="text-center" style="width: 140px;">Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,16 +85,14 @@
                 </div>
             </section>
             <!-- /.content -->
-            <div class="modal fade" id="modal-tambah">
-                <div class="modal-dialog modal-md">
-                    <div class="modal-content">
-                        <div class="modal-header bg-blue">
-                            <h4>Form Tambah Token</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+            <div class="modal fade" id="modal-tambah" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered">
+                    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                        <div class="modal-header py-3 px-4">
+                            <h5 class="modal-title fw-bold text-white"><i class="fas fa-key me-2 text-warning"></i> Form Tambah Token</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div id="modal_body" class="modal-body">
+                        <div id="modal_body" class="modal-body p-4 bg-light">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -182,19 +157,23 @@
             <div class="modal fade" id="modal-edit">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        <div class="modal-header bg-blue">
-                            <h4>Form Edit Token</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="modal-header bg-primary text-white">
+                            <h4 class="modal-title">Form Edit Token</h4>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div id="modal_body" class="modal-body">
                             <input type="hidden" id="token_id_edit" name="token_id_edit">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="token">Token</label>
+                                        <label for="token">Token Materi</label>
                                         <input class="form-control" type="text" name="token_edit" id="token_edit" maxlength="6" minlength="6">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">Token User</label>
+                                        <input class="form-control" type="text" name="token_edit_user" id="token_edit_user" maxlength="6" minlength="6">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -207,6 +186,14 @@
                                             ?>
                                             <option value="<?= $key->materi_id ?>"><?= $key->materi_nm ?></option>
                                             <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="token">User</label>
+                                        <select class="form-control" name="user_edit" id="user_edit" style="width: 100%;">
+                                            <option value="">Pilih User</option>
                                         </select>
                                     </div>
                                 </div>
@@ -306,19 +293,19 @@
       var end_dttm = $("#end_dttm_tambah").val()
       var group_id = $("#group_id_tambah").val()
       if (start_dttm == "") {
-        alert("Tanggal berlaku token belum di tentukan");
+        Swal.fire({ title: "Perhatian", text: "Tanggal berlaku token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (end_dttm == "") {
-        alert("Tanggal expired token belum di tentukan");
+        Swal.fire({ title: "Perhatian", text: "Tanggal expired token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (token == "") {
-        alert("Token belum di entri");
+        Swal.fire({ title: "Perhatian", text: "Token belum di entri", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       if (group_id == 0) {
-        alert("Materi belum dipilih");
+        Swal.fire({ title: "Perhatian", text: "Materi belum dipilih", icon: "warning", confirmButtonText: "OK" });
         return;
       }
       $.ajax({
@@ -338,23 +325,23 @@
         },
         success: function(data) {
           if (data == "sukses") {
-              alert("Token berhasil disimpan");
+              Swal.fire({ title: "Berhasil", text: "Token berhasil disimpan", icon: "success", confirmButtonText: "OK" });
           } else {
-              alert("Token gagal disimpan");
+              Swal.fire({ title: "Error", text: "Token gagal disimpan", icon: "error", confirmButtonText: "OK" });
           }
           $("#loader-wrapper").addClass("d-none");
           $("#modal-tambah").modal("hide");
           loadDataToken();
         },
         error: function() {
-          alert("Error");
+          Swal.fire({ title: "Error", text: "Error", icon: "error", confirmButtonText: "OK" });
           $("#loader-wrapper").addClass("d-none");
         }
       });
     }
 
     function edit(edit) {
-        const [token_id, start_date, end_date, token,group_id] = $(
+        const [token_id, start_date, end_date, token, group_id, tokenuser, user_id, person_nm] = $(
                     edit).attr("value")
                 .split("|")
         $("#modal-edit").modal("show");
@@ -362,7 +349,34 @@
         $("#start_dttm_edit").val(start_date);
         $("#end_dttm_edit").val(end_date);
         $("#token_edit").val(token);
-        $("#group_id_edit").val(group_id);
+        $("#token_edit_user").val(tokenuser || "");
+        $("#group_id_edit").val(group_id).trigger("change");
+
+        $('#user_edit').select2({
+            dropdownParent: $('#modal-edit'),
+            placeholder: "Pilih User",
+            ajax: {
+                url: "<?= base_url('admin/token/getUserAjax') ?>",
+                type: "POST",
+                dataType: "json",
+                delay: 250,
+                data: function(params) {
+                    return {
+                        search: params.term
+                    };
+                },
+                processResults: function(data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+            }
+        });
+        if (user_id) {
+            var newOption = new Option(person_nm || user_id, user_id, true, true);
+            $('#user_edit').empty().append(newOption).trigger('change');
+        }
     }
 
     function updatetoken() {
@@ -370,21 +384,23 @@
         let start_date = $("#start_dttm_edit").val();
         let end_date = $("#end_dttm_edit").val();
         let token = $("#token_edit").val();
+        let token_user = $("#token_edit_user").val();
+        let user_edit = $("#user_edit").val();
         let group_id = $("#group_id_edit").val();
-        if (start_dttm == "") {
-            alert("Tanggal berlaku token belum di tentukan");
+        if (start_date == "") {
+            Swal.fire({ title: "Perhatian", text: "Tanggal berlaku token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
-        if (end_dttm == "") {
-            alert("Tanggal expired token belum di tentukan");
+        if (end_date == "") {
+            Swal.fire({ title: "Perhatian", text: "Tanggal expired token belum di tentukan", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         if (token == "") {
-            alert("Token belum di entri");
+            Swal.fire({ title: "Perhatian", text: "Token belum di entri", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         if (group_id == 0) {
-            alert("Materi belum dipilih");
+            Swal.fire({ title: "Perhatian", text: "Materi belum dipilih", icon: "warning", confirmButtonText: "OK" });
             return;
         }
         $.ajax({
@@ -393,6 +409,8 @@
             dataType: "json",
             data: {
                 "token": token,
+                "token_user": token_user,
+                "user_edit": user_edit,
                 "start_date": start_date,
                 "end_date": end_date,
                 "token_id": token_id,
@@ -403,49 +421,59 @@
             },
             success: function(data) {
                 if (data == "sukses") {
-                    alert("Token berhasil disimpan");
+                    Swal.fire({ title: "Berhasil", text: "Token berhasil disimpan", icon: "success", confirmButtonText: "OK" });
                 } else {
-                    alert("Token gagal disimpan");
+                    Swal.fire({ title: "Error", text: "Token gagal disimpan", icon: "error", confirmButtonText: "OK" });
                 }
                 $("#loader-wrapper").addClass("d-none");
-                $("#modal-tambah").modal("hide");
+                $("#modal-edit").modal("hide");
                 loadDataToken();
             },
             error: function() {
-                alert("Error");
+                Swal.fire({ title: "Error", text: "Error", icon: "error", confirmButtonText: "OK" });
                 $("#loader-wrapper").addClass("d-none");
             }
         });
     }
 
     function hapus(token_id) {
-        let text = "Apakah anda yakin menghapus data ini ?";
-        if (confirm(text) == true) {
-            $.ajax({
-                url: "<?= base_url('admin/tokeb/hapustoken') ?>",
-                type: "post",
-                dataType: "json",
-                data: {
-                    "token_id": token_id
-                },
-                beforeSend: function() {
-                    $("#loader-wrapper").removeClass("d-none")
-                },
-                success: function(data) {
-                    if (data == true) {
-                        alert("hapus token berhasil");
-                    } else {
-                        alert("hapus token gagal");
+        Swal.fire({
+            title: "Hapus Token?",
+            text: "Apakah anda yakin menghapus data ini ?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#6c75d",
+            confirmButtonText: "Ya, Hapus!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= base_url('admin/token/hapustoken') ?>",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        "token_id": token_id
+                    },
+                    beforeSend: function() {
+                        $("#loader-wrapper").removeClass("d-none")
+                    },
+                    success: function(data) {
+                        if (data == "sukses" || data == true) {
+                            Swal.fire({ title: "Berhasil", text: "hapus token berhasil", icon: "success", confirmButtonText: "OK" });
+                        } else {
+                            Swal.fire({ title: "Error", text: "hapus token gagal", icon: "error", confirmButtonText: "OK" });
+                        }
+                        $("#loader-wrapper").addClass("d-none");
+                        loadDataToken();
+                    },
+                    error: function() {
+                        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
+                        $("#loader-wrapper").addClass("d-none");
                     }
-                    $("#loader-wrapper").addClass("d-none");
-                    loadDataToken();
-                },
-                error: function() {
-                    alert("error");
-                    $("#loader-wrapper").addClass("d-none");
-                }
-            });
-        }
+                });
+            }
+        });
     }
     function tampilkantoken() {
         loadDataToken();
@@ -522,7 +550,7 @@
                         render: function(data) {
                             return `<button
                                                         onclick="edit(this)"
-                                                        value="${data.token_id}|${data.start_date}|${data.end_date}|${data.token}|${data.group_id}"
+                                                        value="${data.token_id}|${data.start_date}|${data.end_date}|${data.token}|${data.group_id}|${data.tokenuser || ''}|${data.user_id || ''}|${data.person_nm || ''}"
                                                         class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></button>
                                                         <button
                                                         onclick="hapus(${data.token_id})"

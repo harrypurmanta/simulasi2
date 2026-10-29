@@ -59,7 +59,7 @@
                 $("#dv_content").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -73,7 +73,7 @@
                 $("#dv_content").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -93,7 +93,7 @@
                 $("#cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -117,7 +117,7 @@
                 $("#cardbody").html(data.html);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -131,7 +131,7 @@
                 $("#cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -155,7 +155,7 @@
                 $("#cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -211,7 +211,7 @@
             },
             success: function(data) {
                 if (data == "jawabankosong") {
-                    alert("Jawaban belum dipilih");
+                    Swal.fire({ title: "Perhatian", text: "Jawaban belum dipilih", icon: "warning", confirmButtonText: "OK" });
                 } else {
                     if (data.class_soal == "finish") {
                         window.clearInterval(timers);
@@ -226,7 +226,7 @@
 
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({ title: "Error", text: "Error system", icon: "error", confirmButtonText: "OK" });
             }
         });
 
@@ -250,7 +250,7 @@
                 $("#cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -292,9 +292,9 @@
             success: function(data) {
                 $("#loader-wrapper").addClass("d-none");
                 if (data == "jawabankosong") {
-                    alert("Jawaban belum dipilih");
+                    Swal.fire({ title: "Perhatian", text: "Jawaban belum dipilih", icon: "warning", confirmButtonText: "OK" });
                 } else if (data.html == "belumadasoal") {
-                    alert("Tidak ada soal");
+                    Swal.fire({ title: "Perhatian", text: "Tidak ada soal", icon: "warning", confirmButtonText: "OK" });
                 } else if (data.html == "finish") {
                     $("#loader-wrapper").removeClass("d-none");
                     setTimeout(showresult(jenis_id), 3000);
@@ -311,7 +311,7 @@
                 }
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({ title: "Error", text: "Error system", icon: "error", confirmButtonText: "OK" });
             }
         });
 
@@ -337,7 +337,7 @@
                 $("#cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -388,7 +388,7 @@
             success: function(data) {
                 $("#loader-wrapper").addClass("d-none");
                 if (data == "jawabankosong") {
-                    alert("Jawaban belum dipilih");
+                    Swal.fire({ title: "Perhatian", text: "Jawaban belum dipilih", icon: "warning", confirmButtonText: "OK" });
                 } else {
                     if (data.group_id == 1 && data.no_soal == 1 && class_soal == "petunjukpasshand") {
                         window.clearInterval(timers);
@@ -426,7 +426,7 @@
                 }
             },
             error: function() {
-                alert("Error system");
+                Swal.fire({ title: "Error", text: "Error system", icon: "error", confirmButtonText: "OK" });
             }
         });
 

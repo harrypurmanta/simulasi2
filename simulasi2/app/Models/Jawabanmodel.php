@@ -67,5 +67,12 @@ class jawabanmodel extends Model
                         ->update();
     }
 
+    public function hapusgambar($jawaban_id) {
+        return $this->db->table('jawaban')
+                        ->set('jawaban_img', NULL)
+                        ->where('jawaban_id', $jawaban_id)
+                        ->update();
+    }
+
     
 }

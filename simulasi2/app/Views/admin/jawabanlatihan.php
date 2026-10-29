@@ -1,166 +1,55 @@
 <?php 
   $this->session = \Config\Services::session();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Admin | Soal</title>
-
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/fontawesome-free/css/all.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <link rel="stylesheet" href="<?= base_url() ?>/plugins/select2/css/select2.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?= base_url() ?>/dist/dist/css/adminlte.min.css">
-  <style>
-    #loader-wrapper {
-	display: flex;
-	position: fixed;
-	z-index: 1060;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	flex-direction: row;
-	align-items: center;
-	justify-content: center;
-	padding: 0.625em;
-	overflow-x: hidden;
-	transition: background-color 0.1s;
-	background-color: rgb(253 253 253 / 58%);
-	-webkit-overflow-scrolling: touch;
-}
-
-.loader {
-	border: 10px solid #f3f3f3;
-	border-radius: 50%;
-	border-top: 10px solid #3af3f5;
-	border-bottom: 10px solid #3abcec;
-	width: 50px;
-	height: 50px;
-	-webkit-animation: spin 2s linear infinite;
-	animation: spin 2s linear infinite;
-	margin: 1.75rem auto;
-}
-	
-		@keyframes fadeIn {
-		  0% {
-		    opacity: 0;
-		  }
-		  100% {
-		    opacity: 1;
-		  }
-		}
-
-		@-moz-keyframes fadeIn {
-		  0% {
-		    opacity: 0;
-		  }
-		  100% {
-		    opacity: 1;
-		  }
-		}
-
-		@-webkit-keyframes fadeIn {
-		  0% {
-		    opacity: 0;
-		  }
-		  100% {
-		    opacity: 1;
-		  }
-		}
-
-		@-o-keyframes fadeIn {
-		  0% {
-		    opacity: 0;
-		  }
-		  100% {
-		    opacity: 1;
-		  }
-		}
-
-		@-ms-keyframes fadeIn {
-		  0% {
-		    opacity: 0;
-		  }
-		  100% {
-		    opacity: 1;
-		  }
-		}
-
-		@-webkit-keyframes spin {
-		  0% {
-		    -webkit-transform: rotate(0deg);
-		  }
-		  100% {
-		    -webkit-transform: rotate(360deg);
-		  }
-		}
-
-		@keyframes spin {
-		  0% {
-		    transform: rotate(0deg);
-		  }
-		  100% {
-		    transform: rotate(360deg);
-		  }
-		}
-  </style>
-</head>
+<?= $this->include('admin/template/head') ?>
 <body class="hold-transition layout-top-nav">
 <div class="wrapper">
- <!-- Navbar -->
- 
-
- <?= $this->include('admin/navbar') ?>
+  <!-- Navbar -->
+  <?= $this->include('admin/navbar') ?>
   <!-- /.navbar -->
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
+      <div class="container-fluid px-3 px-lg-4">
+        <div class="row align-items-center mb-2">
           <div class="col-sm-6">
-            <h1>Jawaban</h1>
+            <h1 class="m-0 fw-bold text-dark d-flex align-items-center">
+              <i class="fas fa-check-double text-success me-2"></i> Kunci Jawaban Soal Latihan
+            </h1>
+            <p class="text-muted small mb-0 mt-1">Kelola data opsi dan kunci jawaban untuk bank soal latihan</p>
           </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Jawaban</li>
+          <div class="col-sm-6 mt-2 mt-sm-0">
+            <ol class="breadcrumb float-sm-end">
+              <li class="breadcrumb-item"><a href="<?= base_url('admin') ?>">Home</a></li>
+              <li class="breadcrumb-item active">Jawaban Latihan</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
+      <div class="container-fluid px-3 px-lg-4">
         <div class="row">
           <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-              <div class="col-lg-12">
-                <div class="col-lg-1" style="display:inline-block;text-align:left;width:100%;">
-                  <button style="margin-bottom:10px;" onclick="tambahjawaban()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah</button>
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white py-3">
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                  <button onclick="tambahjawaban()" class="btn btn-success rounded-pill px-3 shadow-sm" data-bs-toggle="modal" data-bs-target="#modal-lg">
+                    <i class="fas fa-plus me-1"></i> Tambah Jawaban
+                  </button>
+                  <div class="d-flex flex-wrap align-items-center gap-2">
+                    <span class="small fw-bold text-muted">Filter Jenis:</span>
+                    <?php foreach ($jenis as $k): ?>
+                    <div class="form-check form-check-inline mb-0">
+                      <input class="form-check-input" <?= ($k->jenis_id == $this->session->jenis_filter ? "checked" : "") ?> onclick="showjawaban('filter')" type="radio" value="<?= $k->jenis_id ?>" id="jns_ans_<?= $k->jenis_id ?>" name="jenis_filter">
+                      <label class="form-check-label small" for="jns_ans_<?= $k->jenis_id ?>"><?= esc($k->jenis_nm) ?></label>
+                    </div>
+                    <?php endforeach; ?>
+                  </div>
                 </div>
-                <div class="col-lg-10" style="display:inline-block;text-align:center;width:100%;">
-                  <?php
-                    foreach ($jenis as $k) {
-                  ?>
-                  <label> <input <?= ($k->jenis_id == $this->session->jenis_filter?"checked":"") ?> onclick="showjawaban('filter')" type="radio" value="<?= $k->jenis_id ?>" id="jenis_filter" name="jenis_filter" style="margin-left:10px;"/> <?= $k->jenis_nm ?> </label>
-                  <?php
-                    }
-                  ?>
-                </div>
-              </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body" id="dv_cardbody">
@@ -182,10 +71,9 @@
     <div class="modal fade" id="modal-lg">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <div class="modal-header" style="padding: 0px 10px;">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+          <div class="modal-header">
+            <h5 class="modal-title">Form Jawaban</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div id="modal_body" class="modal-body">
 
@@ -206,21 +94,7 @@
 </div>
 <!-- ./wrapper -->
 
-
-<!-- jQuery -->
-<script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="<?= base_url() ?>/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="<?= base_url() ?>/plugins/select2/js/select2.full.min.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="<?= base_url() ?>/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="<?= base_url() ?>/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<!-- AdminLTE App -->
-<script src="<?= base_url() ?>/dist/dist/js/adminlte.min.js"></script>
+<?= $this->include('admin/template/scriptjs') ?>
 <!-- Page specific script -->
 <script>
   $(function () {
@@ -257,7 +131,7 @@
             $('#dv_cardbody').html(data);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
       }
@@ -272,7 +146,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -290,7 +164,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -317,14 +191,14 @@
         success: function(data) {
           $('#modal-lg').modal("hide");
           if (data == "sukses") {
-            alert("Sukses");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
           } else {
-            alert("Gagal");
+            Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
           }
           showjawaban('filter');
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -356,11 +230,11 @@
       processData: false,
       success: function(data) {
         $('#modal-lg').modal("hide");
-        alert("Sukses");
+        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         showjawaban('filter');
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }
@@ -376,15 +250,15 @@ function hapusjawaban(jawaban_id) {
       },
       success: function(data) {
         if (data == "sukses") {
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         } else {
-          alert("Gagal");
+          Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
         }
         $('#modal-lg').modal("hide");
         showjawaban('filter');
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
   } else {
