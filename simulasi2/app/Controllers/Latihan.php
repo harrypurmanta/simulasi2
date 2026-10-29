@@ -958,9 +958,9 @@ class Latihan extends BaseController
                     $button .= "<button onclick='startujian(\"next\")' style='font-size:16px;padding-left:25px;padding-right:25px;' class='btn btn-success'>Next</button>";
                     $button .= "</div>";
 
-                    $button .= "<div class='col-md-6 text-right'>
-                            <button onclick='if(document.getElementById(\"spoiler\") .style.display==\"none\") {document.getElementById(\"spoiler\") .style.display=\"\"}else{document.getElementById(\"spoiler\") .style.display=\"none\"}' style='margin-bottom:10px;' type='button' class='btn bg-gradient-secondary'>pembahasan</button><br>
-                            <div id='spoiler' style='display:none;border: 1px solid black;background-color: #8fbc8f;border-radius:5px;'>";
+                    $button .= "<div class='col-md-6 text-end'>
+                            <button onclick='if(document.getElementById(\"spoiler\").style.display==\"none\") {document.getElementById(\"spoiler\").style.display=\"block\"}else{document.getElementById(\"spoiler\").style.display=\"none\"}' style='margin-bottom:10px; font-weight:600; padding:8px 20px; border-radius:8px; box-shadow:0 4px 12px rgba(37,99,235,0.3); cursor:pointer;' type='button' class='btn btn-primary'><i class='fas fa-lightbulb me-2 text-warning'></i>Lihat Pembahasan</button><br>
+                            <div id='spoiler' style='display:none;border: 2px solid #86efac;background-color: #f0fdf4;border-radius:10px;padding:12px;'>";
                             if ($res[0]->pembahasan_img != "") {
                                 $button .= "<img style='padding:10px;max-height:100%; max-width:100%;' src='/images/pembahasan_latihan/$group_id/$jenis_id/".$res[0]->pembahasan_img."'>";
                             } else {

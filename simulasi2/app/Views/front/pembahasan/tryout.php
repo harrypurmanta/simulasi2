@@ -51,6 +51,29 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
             top: 50%;
             transform: translateY(-50%);
         }
+        .btn-pembahasan {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+            color: #ffffff !important;
+            font-weight: 600 !important;
+            font-size: 15px !important;
+            padding: 8px 20px !important;
+            border-radius: 8px !important;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+            cursor: pointer !important;
+            transition: all 0.2s ease !important;
+            display: inline-flex !important;
+            align-items: center !important;
+        }
+        .btn-pembahasan:hover {
+            background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 16px rgba(29, 78, 216, 0.4) !important;
+            color: #ffffff !important;
+        }
+        .btn-pembahasan:active {
+            transform: translateY(0) !important;
+        }
     </style>
 </head>
 <body class="layout-top-nav">
@@ -111,7 +134,7 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
                             <input type="hidden" value="" id="inp_jawaban_id">
                             <input type="hidden" value="" id="inp_pilihan_nm">
 
-                            <div class="row g-3 align-items-center mt-2">
+                            <div class="row g-3 align-items-start mt-2">
                                 <div class="col-12 col-md-5" id="dv_button">
                                     <!-- Tombol navigasi soal -->
                                 </div>
@@ -199,6 +222,33 @@ $title = 'Pembahasan Soal Tryout - Bintang Timur Prestasi';
         $("#p_no_soal").text("Soal no. " + no_soal);
         startujian("prev");
     }
+
+    window.togglePembahasan = function(e) {
+        if (e && e.preventDefault) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        var $spoiler = $("#spoiler");
+        if (!$spoiler.length) {
+            var el = document.getElementById("spoiler");
+            if (el) $spoiler = $(el);
+        }
+        if (!$spoiler.length) return;
+
+        // Cegah animasi ganda jika tombol diklik cepat
+        if ($spoiler.is(":animated")) return;
+
+        var isHidden = $spoiler.is(":hidden") || $spoiler.css("display") === "none";
+        if (isHidden) {
+            $spoiler.slideDown(200);
+            $("#txt_pembahasan_toggle").text("Tutup Pembahasan");
+            $("#icon_pembahasan_toggle").removeClass("fa-chevron-down").addClass("fa-chevron-up");
+        } else {
+            $spoiler.slideUp(200);
+            $("#txt_pembahasan_toggle").text("Lihat Pembahasan");
+            $("#icon_pembahasan_toggle").removeClass("fa-chevron-up").addClass("fa-chevron-down");
+        }
+    };
 
     function startujian(proc) {
         let soal_id = $("#inp_soal_id").val();

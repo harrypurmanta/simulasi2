@@ -68,7 +68,7 @@ class Pembahasan extends BaseController
         $group_id = $this->request->getPost("group_id");
         $no_soal = $this->request->getPost("no_soal");
         $pilihan_nm = $this->request->getPost("pilihan_nm");
-        $kolom_id = $this->request->getPost("kolom_id");
+        $kolom_id = (int)($this->request->getPost("kolom_id") ?: 0);
         $materi = $this->request->getPost("materi");
         $proc = $this->request->getPost("proc");
         $used = $this->request->getPost("used");
@@ -76,7 +76,7 @@ class Pembahasan extends BaseController
         $soal_nm = "";
         $jawaban = "";
         $boxnomorsoal = "";
-        $res_ttlsoal = "";
+        $res_ttlsoal = $this->pembahasanmodel->getTotalSoal($group_id, $materi)->getResult();
 
         if ($jawaban_id == "null") {
 
@@ -208,23 +208,41 @@ class Pembahasan extends BaseController
                     }
 
                     // PEMBAHASAN
+                    $resjawaban_nm = $this->pembahasanmodel->getJawabannm($res[0]->kunci, $res[0]->soal_id)->getResult();
+                    $kunci_text = !empty($resjawaban_nm)
+                        ? $resjawaban_nm[0]->pilihan_nm . ". " . trim($resjawaban_nm[0]->jawaban_nm)
+                        : $res[0]->kunci;
 
-                $pembahasan = "<div class='col-md-12'>
-                <button onclick='if(document.getElementById(\"spoiler\") .style.display==\"none\") {document.getElementById(\"spoiler\") .style.display=\"\"}else{document.getElementById(\"spoiler\") .style.display=\"none\"}' style='margin-bottom:10px;float: right;' type='button' class='btn bg-gradient-secondary'>pembahasan</button><br>
-                <div id='spoiler' style='display:none;border: 1px solid black;background-color: #8fbc8f;border-radius:5px;'>";
-                // if ($group_id == 2) {
-                if ($res[0]->pembahasan_img != "") {
-                     $pembahasan .= "<img style='padding:10px;max-height:100%; max-width:100%;' src='".base_url()."/images/pembahasan/".$res[0]->materi."/".$res[0]->pembahasan_img."'>";
-                }
-                   
-                    $pembahasan .= "<div style='margin: 20px;background-color: white;padding: 10px;'><span>".$res[0]->pembahasan."</span></div>";
-                // } else if ($group_id == 3) {
-                    $resjawaban_nm = $this->pembahasanmodel->getJawabannm($res[0]->kunci,$res[0]->soal_id)->getResult();
-                    $pembahasan .= "<div style='margin: 20px;background-color: white;padding: 10px;'><span>".$resjawaban_nm[0]->pilihan_nm.". ".$resjawaban_nm[0]->jawaban_nm."</span></div>";
-                // }
-                
-        $pembahasan .= "</div>
-             </div>";
+                    $pembahasan = "<div class='col-12'>
+                        <div class='d-flex justify-content-end mb-2'>
+                            <button id='btn_pembahasan_toggle' onclick='window.togglePembahasan(event);' type='button' class='btn btn-pembahasan' style='background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color:#ffffff; font-weight:600; font-size:15px; padding:8px 20px; border-radius:8px; border:none; box-shadow:0 4px 12px rgba(37,99,235,0.3); cursor:pointer; display:inline-flex; align-items:center;'>
+                                <i class='fas fa-lightbulb me-2 text-warning'></i>
+                                <span id='txt_pembahasan_toggle'>Lihat Pembahasan</span>
+                                <i id='icon_pembahasan_toggle' class='fas fa-chevron-down ms-2'></i>
+                            </button>
+                        </div>
+                        <div id='spoiler' style='display:none; margin-top:10px; border:2px solid #86efac; background-color:#f0fdf4; border-radius:10px; padding:14px; text-align:left; box-shadow:0 4px 12px rgba(22,163,74,0.08);'>";
+
+                    if ($res[0]->pembahasan_img != "") {
+                        $pembImgUrl = rtrim(base_url(), '/') . "/images/pembahasan/" . $res[0]->materi . "/" . $res[0]->pembahasan_img;
+                        $pembahasan .= "<div class='text-center mb-3'>
+                            <img style='padding:6px; max-height:100%; max-width:100%; cursor:zoom-in; border-radius:8px; background:#fff; border:1px solid #cbd5e1;' src='" . $pembImgUrl . "' data-large-src='" . $pembImgUrl . "' data-fallback-src='" . $pembImgUrl . "' class='popup-img-trigger' title='Klik untuk memperbesar gambar'>
+                        </div>";
+                    }
+
+                    if (!empty($res[0]->pembahasan)) {
+                        $pembahasan .= "<div style='margin-bottom:10px; background-color:#ffffff; padding:12px 14px; border-radius:8px; border:1px solid #bbf7d0; color:#1e293b;'>
+                            <div class='fw-bold text-success small mb-1'><i class='fas fa-book-open me-1'></i> Penjelasan:</div>
+                            <div>" . $res[0]->pembahasan . "</div>
+                        </div>";
+                    }
+
+                    $pembahasan .= "<div style='background-color:#ffffff; padding:10px 14px; border-radius:8px; border:1px solid #bbf7d0; color:#065f46; font-weight:700;'>
+                        <i class='fas fa-check-circle text-success me-1'></i> Kunci Jawaban: <span>" . $kunci_text . "</span>
+                    </div>";
+
+                    $pembahasan .= "</div>
+                    </div>";
                     
                     $button = "";
                     if (count($res_ttlsoal) == $no_soal) {

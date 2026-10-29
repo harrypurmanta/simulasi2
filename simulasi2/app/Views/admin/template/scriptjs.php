@@ -32,9 +32,10 @@
       var $root = context ? $(context) : $(document);
       $root.find('select').each(function() {
         var $this = $(this);
-        // Exclude DataTables pagination/length select or already initialized select2 or special ajax selects
+        // Exclude DataTables pagination/length select, SweetAlert2 internal select, already initialized select2, or special ajax selects
         if ($this.hasClass('select2-hidden-accessible') || 
-            $this.closest('.dataTables_length').length > 0 || 
+            $this.hasClass('swal2-select') ||
+            $this.closest('.swal2-container, .swal2-popup, .dataTables_length').length > 0 || 
             $this.attr('id') === 'user_tambah' ||
             $this.hasClass('no-select2')) {
           return;
