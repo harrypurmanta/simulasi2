@@ -99,7 +99,7 @@ $session = \Config\Services::session();
         #dv_boxnosoal, .box-no-soal-grid {
             display: grid !important;
             grid-template-columns: repeat(5, 1fr) !important;
-            gap: 6px !important;
+            gap: 4px !important;
             padding: 4px !important;
             max-height: 480px !important;
             overflow-y: auto !important;
@@ -120,12 +120,12 @@ $session = \Config\Services::session();
             background: #94a3b8;
         }
         .box-no-item {
-            height: 38px !important;
+            height: 35px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             border-radius: 8px !important;
-            font-size: 13px !important;
+            font-size: 12px !important;
             font-weight: 700 !important;
             cursor: pointer !important;
             transition: all 0.15s ease !important;
@@ -158,7 +158,7 @@ $session = \Config\Services::session();
             <div class="container" style="max-width: 1280px;">
                 <!-- Top Bar Info & Timer -->
                 <div class="row g-2 mb-2">
-                    <div class="col-12 col-lg-8">
+                    <div class="col-12 col-lg-9">
                         <div class="card exam-card p-3 h-100">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-bold">
@@ -180,20 +180,20 @@ $session = \Config\Services::session();
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12 col-lg-3">
                         <div class="card exam-card p-2 px-3 text-center h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
                             </span>
-                            <label class="display-6 fw-bold text-danger mb-0" id="countdown" style="font-size: 2.3rem; font-family: monospace; letter-spacing: 1px;">00:00</label>
+                            <label class="display-6 fw-bold text-danger mb-0" id="countdown" style="font-size: 2rem; font-family: monospace; letter-spacing: 1px;">00:00</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Exam Area -->
                 <div class="row g-2">
-                    <!-- Left Area: Question & Choices (col-12 col-lg-8) -->
-                    <div class="col-12 col-lg-8">
+                    <!-- Left Area: Question & Choices (col-12 col-lg-9) -->
+                    <div class="col-12 col-lg-9">
                         <div class="card exam-card p-3 p-md-4">
                             <!-- Question Box -->
                             <div class="p-3 mb-3 soal-box-container">
@@ -224,9 +224,9 @@ $session = \Config\Services::session();
                         </div>
                     </div>
 
-                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-4) -->
-                    <div class="col-12 col-lg-4">
-                        <div class="card exam-card p-3 sticky-lg-top" style="top: 15px; z-index: 10;">
+                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-3) -->
+                    <div class="col-12 col-lg-3">
+                        <div class="card exam-card p-2 p-md-3 sticky-lg-top" style="top: 15px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-primary"></i> Navigasi Nomor Soal

@@ -93,7 +93,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             <div class="container pt-0 pb-3">
                 <!-- Tahapan Ujian & Waktu Timer -->
                 <div class="row g-2 mb-2">
-                    <div class="col-12 col-lg-8">
+                    <div class="col-12 col-lg-9">
                         <div class="card exam-card p-2 px-3 bg-white h-100">
                             <div class="d-flex align-items-center justify-content-between mb-1">
                                 <span class="badge bg-success bg-opacity-10 text-success px-3 py-1 rounded-pill fw-bold">
@@ -105,7 +105,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12 col-lg-3">
                         <div class="card exam-card p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
@@ -117,7 +117,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
 
                 <!-- Soal & Pilihan Jawaban + Box Nomor Soal -->
                 <div class="row g-2">
-                    <div class="col-12 col-lg-8">
+                    <div class="col-12 col-lg-9">
                         <div class="card exam-card p-3 bg-white">
                             <div class="p-3 mb-3 soal-box-container">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -144,7 +144,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                         </div>
                     </div>
 
-                    <div class="col-12 col-lg-4">
+                    <div class="col-12 col-lg-3">
                         <div class="card exam-card p-3 bg-white sticky-lg-top" style="top: 10px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <h6 class="fw-bold text-dark mb-0">
