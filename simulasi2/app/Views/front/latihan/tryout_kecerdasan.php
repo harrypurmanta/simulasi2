@@ -5,6 +5,12 @@ $session = \Config\Services::session();
 <?= $this->include('front/template/head') ?>
 <head>
     <style>
+        .exam-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02) !important;
+            border-radius: 16px !important;
+        }
         #p_no_soal {
             font-size: 15px !important;
             font-weight: 600 !important;
@@ -17,12 +23,18 @@ $session = \Config\Services::session();
             font-weight: 500;
             color: #1e293b;
         }
+        .soal-box-container {
+            background-color: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+        }
         .jawaban_dv {
             margin-top: 4px !important;
             margin-bottom: 4px !important;
             padding: 10px 44px 10px 16px !important;
-            background-color: #f8fafc !important;
-            border: 2px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
             border-radius: 10px !important;
             text-align: left !important;
             transition: all 0.15s ease-in-out !important;
@@ -34,10 +46,12 @@ $session = \Config\Services::session();
             gap: 10px !important;
             width: 100% !important;
             cursor: pointer !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
         }
         .jawaban_dv:hover {
-            background-color: #f1f5f9 !important;
-            border-color: #94a3b8 !important;
+            background-color: #f8fafc !important;
+            border-color: #cbd5e1 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
             transform: translateX(2px);
         }
         .jawaban_dv .pilihan-label,
@@ -51,9 +65,9 @@ $session = \Config\Services::session();
             cursor: pointer;
         }
         .jawaban_dv.selected-jawaban {
-            background-color: #d1fae5 !important;
-            border: 2.5px solid #059669 !important;
-            box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
+            background-color: #ecfdf5 !important;
+            border: 2px solid #10b981 !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.15) !important;
             color: #064e3b !important;
             font-weight: 600 !important;
         }
@@ -66,7 +80,7 @@ $session = \Config\Services::session();
             content: "\f058";
             font-family: "Font Awesome 5 Free";
             font-weight: 900;
-            color: #059669;
+            color: #10b981;
             font-size: 1.3rem;
             position: absolute;
             right: 14px;
@@ -81,44 +95,39 @@ $session = \Config\Services::session();
         .jawaban_dv img:hover {
             transform: scale(1.02);
         }
-        .box-no-soal-grid {
+        /* 5 Baris Kebawah (10 Kolom per Baris) */
+        #dv_boxnosoal, .box-no-soal-grid {
             display: grid !important;
-            grid-template-columns: repeat(5, 1fr) !important;
-            gap: 6px !important;
-            max-height: 222px !important;
-            overflow-y: auto !important;
+            grid-template-columns: repeat(10, 1fr) !important;
+            gap: 5px !important;
             padding: 4px !important;
-            scrollbar-width: thin;
-        }
-        .box-no-soal-grid::-webkit-scrollbar {
-            width: 5px;
-        }
-        .box-no-soal-grid::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        .box-no-soal-grid::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 4px;
-        }
-        .box-no-soal-grid::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
         }
         .box-no-item {
-            height: 38px !important;
+            height: 36px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
             border-radius: 6px !important;
-            font-size: 12.5px !important;
-            font-weight: 600 !important;
+            font-size: 12px !important;
+            font-weight: 700 !important;
             cursor: pointer !important;
             transition: all 0.15s ease !important;
             user-select: none;
+            box-sizing: border-box !important;
         }
         .box-no-item:hover {
             transform: translateY(-1px) !important;
             box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+        }
+        @media (max-width: 991.98px) {
+            #dv_boxnosoal, .box-no-soal-grid {
+                grid-template-columns: repeat(10, 1fr) !important;
+                gap: 4px !important;
+            }
+            .box-no-item {
+                height: 32px !important;
+                font-size: 11px !important;
+            }
         }
     </style>
 </head>
@@ -127,17 +136,17 @@ $session = \Config\Services::session();
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
 
-        <div class="content-wrapper" style="padding-top: 8px !important; padding-bottom: 24px !important; background-color: #f4f6f9;">
-            <div class="container" style="max-width: 1240px;">
+        <div class="content-wrapper" style="padding-top: 10px !important; padding-bottom: 24px !important; background-color: #f1f5f9;">
+            <div class="container" style="max-width: 1280px;">
                 <!-- Top Bar Info & Timer -->
                 <div class="row g-2 mb-2">
-                    <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white h-100">
+                    <div class="col-12 col-lg-7">
+                        <div class="card exam-card p-3 h-100">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-bold">
                                     <i class="fas fa-brain me-1"></i> LATIHAN KECERDASAN
                                 </span>
-                                <span id="answered_stat" class="badge bg-light text-secondary border px-3 py-1 rounded-pill fw-semibold">
+                                <span id="answered_stat" class="badge bg-white text-secondary border px-3 py-1 rounded-pill fw-semibold shadow-xs">
                                     <i class="fas fa-tasks me-1 text-primary"></i> Memuat...
                                 </span>
                             </div>
@@ -153,23 +162,23 @@ $session = \Config\Services::session();
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                    <div class="col-12 col-lg-5">
+                        <div class="card exam-card p-2 px-3 text-center h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
                             </span>
-                            <label class="display-6 fw-bold text-danger mb-0" id="countdown" style="font-size: 2.2rem; font-family: monospace; letter-spacing: 1px;">00:00</label>
+                            <label class="display-6 fw-bold text-danger mb-0" id="countdown" style="font-size: 2.3rem; font-family: monospace; letter-spacing: 1px;">00:00</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- Main Exam Area -->
                 <div class="row g-2">
-                    <!-- Left Area: Question & Choices (col-12 col-lg-8) -->
-                    <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 p-md-4 bg-white">
+                    <!-- Left Area: Question & Choices (col-12 col-lg-7) -->
+                    <div class="col-12 col-lg-7">
+                        <div class="card exam-card p-3 p-md-4">
                             <!-- Question Box -->
-                            <div class="p-3 mb-3" style="background-color: #f8fafc; border: 2px solid #cbd5e1; border-radius: 12px;">
+                            <div class="p-3 mb-3 soal-box-container">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-primary rounded-pill px-3 py-1" id="p_no_soal">
                                         Soal no. 1
@@ -197,34 +206,34 @@ $session = \Config\Services::session();
                         </div>
                     </div>
 
-                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-4) -->
-                    <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 15px; z-index: 10;">
+                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-5) -->
+                    <div class="col-12 col-lg-5">
+                        <div class="card exam-card p-3 sticky-lg-top" style="top: 15px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-primary"></i> Navigasi Nomor Soal
                                 </h6>
-                                <span class="badge bg-light text-muted border small">5 per baris</span>
+                                <span class="badge bg-light text-primary border small fw-semibold">5 Baris</span>
                             </div>
 
                             <div>
                                 <div id="dv_boxnosoal" class="box-no-soal-grid mb-3">
-                                    <!-- 5 Box per baris injected via AJAX -->
+                                    <!-- 10 Box per baris x 5 baris kebawah injected via AJAX -->
                                 </div>
                             </div>
 
                             <!-- Legend -->
                             <div class="pt-2 border-top d-flex justify-content-around text-muted small" style="font-size: 11.5px;">
                                 <span class="d-flex align-items-center gap-1">
-                                    <span style="display:inline-block; width:13px; height:13px; background:#e8f8e8; border:2px solid #3cce3c; border-radius:3px;"></span>
+                                    <span style="display:inline-block; width:13px; height:13px; background:#f0fdf4; border:2px solid #22c55e; border-radius:3px;"></span>
                                     <span>Dijawab</span>
                                 </span>
                                 <span class="d-flex align-items-center gap-1">
-                                    <span style="display:inline-block; width:13px; height:13px; background:#ffffff; border:2px solid #f87171; border-radius:3px;"></span>
+                                    <span style="display:inline-block; width:13px; height:13px; background:#ffffff; border:1.5px solid #f87171; border-radius:3px;"></span>
                                     <span>Belum</span>
                                 </span>
                                 <span class="d-flex align-items-center gap-1">
-                                    <span style="display:inline-block; width:13px; height:13px; background:#d0e2ff; border:2.5px solid #2a5298; border-radius:3px;"></span>
+                                    <span style="display:inline-block; width:13px; height:13px; background:#eff6ff; border:2.5px solid #2563eb; border-radius:3px;"></span>
                                     <span>Aktif</span>
                                 </span>
                             </div>
@@ -406,14 +415,6 @@ $session = \Config\Services::session();
                         selectJawaban(data.jawaban_idx, data.pilihan_nms);
                     }, 10);
                 }
-
-                // Auto scroll ke nomor soal yang aktif agar selalu terlihat dalam 5 baris
-                setTimeout(() => {
-                    let activeBox = document.querySelector("#dv_boxnosoal .box-no-item[style*='#2a5298'], #dv_boxnosoal .box-item-active");
-                    if (activeBox) {
-                        activeBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
-                }, 40);
             },
             error: function(xhr, status, error) {
                 $("#loader-wrapper").addClass("d-none");

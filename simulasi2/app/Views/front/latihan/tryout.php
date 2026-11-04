@@ -6,6 +6,18 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
 <?= $this->include('front/template/head') ?>
 <head>
     <style>
+        .exam-card {
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.02) !important;
+            border-radius: 16px !important;
+        }
+        .soal-box-container {
+            background-color: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+        }
         #p_no_soal {
             font-size: 15.5px !important;
             font-weight: 600 !important;
@@ -21,8 +33,9 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             margin-top: 4px !important;
             margin-bottom: 4px !important;
             padding: 9px 42px 9px 14px !important;
-            background-color: #f8fafc !important;
-            border: 2px solid #cbd5e1 !important;
+            background-color: #ffffff !important;
+            border: 1.5px solid #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
             border-radius: 8px !important;
             text-align: left !important;
             transition: all 0.15s ease-in-out !important;
@@ -48,8 +61,8 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
             cursor: pointer;
         }
         .jawaban_dv.selected-jawaban {
-            background-color: #d1fae5 !important;
-            border: 2.5px solid #059669 !important;
+            background-color: #ecfdf5 !important;
+            border: 2px solid #10b981 !important;
             box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2) !important;
             color: #064e3b !important;
             font-weight: 600 !important;
@@ -81,7 +94,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                 <!-- Tahapan Ujian & Waktu Timer -->
                 <div class="row g-2 mb-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 bg-white h-100">
+                        <div class="card exam-card p-2 px-3 bg-white h-100">
                             <div class="d-flex align-items-center justify-content-between mb-1">
                                 <span class="badge bg-success bg-opacity-10 text-success px-3 py-1 rounded-pill fw-bold">
                                     <i class="fas fa-layer-group me-1"></i> TAHAPAN LATIHAN
@@ -93,7 +106,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
+                        <div class="card exam-card p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
                             </span>
@@ -105,8 +118,8 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                 <!-- Soal & Pilihan Jawaban + Box Nomor Soal -->
                 <div class="row g-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
-                            <div class="p-3 mb-3" style="background-color: #f8fafc; border: 2px solid #cbd5e1; border-radius: 8px;">
+                        <div class="card exam-card p-3 bg-white">
+                            <div class="p-3 mb-3 soal-box-container">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-success rounded-pill px-3 py-1" id="p_no_soal" style="font-size: 15.5px; font-weight: 600; padding: 6px 16px;">Soal no. 1</span>
                                 </div>
@@ -132,7 +145,7 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
                     </div>
 
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white sticky-lg-top" style="top: 10px; z-index: 10;">
+                        <div class="card exam-card p-3 bg-white sticky-lg-top" style="top: 10px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between mb-3">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-success"></i> Navigasi Soal
