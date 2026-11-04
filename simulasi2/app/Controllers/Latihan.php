@@ -280,9 +280,10 @@ class Latihan extends BaseController
             $jenis_id = $res[0]->jenis_id;
 
             if (!empty($res[0]->soal_img)) {
-                $img_soal = "<div class='col-sm-10' style='margin-top:10px;'>
-                    <a href='".base_url()."/images/soal_latihan/jenis/".$res[0]->jenis_id."/".$res[0]->soal_img."' data-toggle='lightbox'>
-                        <img style='max-width: 350px; max-height: 100%; border-radius: 6px;' src='".base_url()."/images/soal_latihan/jenis/".$res[0]->jenis_id."/".$res[0]->soal_img."' class='img-fluid'>
+                $imgUrl = base_url()."/images/soal_latihan/jenis/".$res[0]->jenis_id."/".$res[0]->soal_img;
+                $img_soal = "<div class='col-sm-10 mx-auto my-2 text-center'>
+                    <a href='".$imgUrl."' data-toggle='lightbox' data-large-src='".$imgUrl."' data-fallback-src='".$imgUrl."'>
+                        <img style='max-width: 350px; max-height: 100%; cursor: zoom-in; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);' src='".$imgUrl."' class='img-fluid popup-img-trigger' title='Klik untuk memperbesar gambar'>
                     </a>
                 </div>";
             }
@@ -326,29 +327,32 @@ class Latihan extends BaseController
         if (!empty($soal_id)) {
             $getjawaban = $this->latihanmodel->getjawaban($soal_id)->getResult();
             foreach ($getjawaban as $key) {
-                if ($pilihan_nmx == $key->pilihan_nm) {
+                if ($pilihan_nmx !== "" && $pilihan_nmx == $key->pilihan_nm) {
                     $jawaban_idx = $key->jawaban_id;
                     $pilihan_nms = $key->pilihan_nm;
-                    $border = "border: 2px solid #00a65a; background-color: #d7f0db;";
+                    $selectedClass = "selected-jawaban";
                 } else {
-                    $border = "border: 1px solid #d2d6de; background-color: #f4f6f9;";
+                    $selectedClass = "";
                 }
 
                 $img_jwb = "";
                 if (!empty($key->jawaban_img)) {
                     $jwbUrl = base_url()."/images/jawaban_latihan/jenis/".$jenis_id."/".$key->jawaban_img;
-                    $img_jwb = "<div class='d-inline-flex align-items-center'><img style='max-width:300px; max-height:150px; border-radius:6px; cursor:zoom-in;' src='".$jwbUrl."' data-large-src='".$jwbUrl."' data-fallback-src='".$jwbUrl."' class='jawaban-img popup-img-trigger' title='Klik untuk memperbesar gambar'></div>";
+                    $img_jwb = "<div class='d-inline-flex align-items-center'><img style='max-width:350px; height:100%; cursor:zoom-in; border-radius:6px;' src='".$jwbUrl."' data-large-src='".$jwbUrl."' data-fallback-src='".$jwbUrl."' class='jawaban-img popup-img-trigger' title='Klik untuk memperbesar gambar'></div>";
                 }
 
                 $jawaban_text_html = ($key->jawaban_nm !== "" && $key->jawaban_nm !== null)
-                    ? "<span style='font-weight: normal; color:#2c3e50;'>".esc($key->jawaban_nm)."</span>"
+                    ? "<span class='jawaban-text' style='color:#1e293b;'>".esc($key->jawaban_nm)."</span>"
                     : "";
 
-                $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='col-md-12 jawaban_dv' style='display: flex; align-items: center; gap: 8px; padding: 9px 40px 9px 14px; margin-top: 4px; margin-bottom: 4px; border-radius: 8px; text-align: left; cursor: pointer; transition: all 0.2s; $border'>
-                    <strong class='pilihan-label' style='color:#0f172a; font-size:16px; font-weight:800; margin-right:4px; flex-shrink:0;'>".$key->pilihan_nm.".</strong> 
-                    $jawaban_text_html
-                    $img_jwb
-                </div>";
+                $jawaban .= "
+                    <div id='dv_jawaban_" . $key->jawaban_id . "' 
+                        onclick='selectJawaban(" . $key->jawaban_id . ", \"" . $key->pilihan_nm . "\")' 
+                        class='btn col-12 jawaban_dv " . $selectedClass . "'>
+                        <strong class='pilihan-label'>" . $key->pilihan_nm . ".</strong> 
+                        " . $jawaban_text_html . "
+                        " . $img_jwb . "
+                    </div>";
             }
         }
 
@@ -367,18 +371,18 @@ class Latihan extends BaseController
             }
         }
 
-        $button = "<div class='col-md-8' style='padding-left:0;'>";
+        $button = "<div class='d-flex align-items-center gap-2'>";
         if ($no_soal > 1) {
-            $button .= "<button type='button' onclick='startujian(\"prevsoal\")' style='font-size:15px; padding: 8px 24px; border-radius:6px; margin-right:8px;' class='btn btn-default'><i class='fa fa-arrow-left'></i> Previous</button>";
+            $button .= "<button type='button' onclick='startujian(\"prevsoal\")' class='btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold'><i class='fa fa-arrow-left me-1'></i> Sebelumnya</button>";
         }
         if ($no_soal < $total_soal) {
-            $button .= "<button type='button' onclick='startujian(\"next\")' style='font-size:15px; padding: 8px 28px; border-radius:6px;' class='btn btn-primary'>Next <i class='fa fa-arrow-right'></i></button>";
+            $button .= "<button type='button' onclick='startujian(\"next\")' class='btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm'>Selanjutnya <i class='fa fa-arrow-right ms-1'></i></button>";
         }
         $button .= "</div>";
 
-        $button .= "<div class='col-md-4 text-right' style='padding-right:0;'>";
+        $button .= "<div>";
         if ($show_selesai) {
-            $button .= "<button type='button' onclick='konfirmasiSelesai()' style='font-size:15px; padding: 8px 24px; border-radius:6px;' class='btn btn-success'><i class='fa fa-check-circle'></i> Selesai</button>";
+            $button .= "<button type='button' onclick='konfirmasiSelesai()' class='btn btn-success rounded-pill px-4 py-2 fw-bold shadow-sm'><i class='fa fa-check-circle me-1'></i> Selesai Latihan</button>";
         }
         $button .= "</div>";
 
