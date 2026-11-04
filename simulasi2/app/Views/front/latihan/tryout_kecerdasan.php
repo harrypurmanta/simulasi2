@@ -85,9 +85,24 @@ $session = \Config\Services::session();
             display: grid !important;
             grid-template-columns: repeat(5, 1fr) !important;
             gap: 6px !important;
-            max-height: 460px !important;
+            max-height: 222px !important;
             overflow-y: auto !important;
             padding: 4px !important;
+            scrollbar-width: thin;
+        }
+        .box-no-soal-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        .box-no-soal-grid::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        .box-no-soal-grid::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .box-no-soal-grid::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
         .box-no-item {
             height: 38px !important;
@@ -391,6 +406,14 @@ $session = \Config\Services::session();
                         selectJawaban(data.jawaban_idx, data.pilihan_nms);
                     }, 10);
                 }
+
+                // Auto scroll ke nomor soal yang aktif agar selalu terlihat dalam 5 baris
+                setTimeout(() => {
+                    let activeBox = document.querySelector("#dv_boxnosoal .box-no-item[style*='#2a5298'], #dv_boxnosoal .box-item-active");
+                    if (activeBox) {
+                        activeBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }, 40);
             },
             error: function(xhr, status, error) {
                 $("#loader-wrapper").addClass("d-none");

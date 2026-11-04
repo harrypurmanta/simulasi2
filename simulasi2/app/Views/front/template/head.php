@@ -297,9 +297,24 @@
             display: grid !important;
             grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)) !important;
             gap: 6px !important;
-            max-height: 480px;
+            max-height: 222px !important;
             overflow-y: auto;
             padding: 4px;
+            scrollbar-width: thin;
+        }
+        #dv_boxnosoal::-webkit-scrollbar, .box-no-soal-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-track, .box-no-soal-grid::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-thumb, .box-no-soal-grid::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-thumb:hover, .box-no-soal-grid::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
         #dv_boxnosoal div, .box-no-soal-grid div {
             width: 100% !important;

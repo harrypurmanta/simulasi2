@@ -348,7 +348,11 @@ $title = 'Simulasi Tryout CAT - Bintang Timur Prestasi';
                             if (data.jawaban_idx && data.jawaban_idx !== "") {
                                 selectJawaban(data.jawaban_idx, data.pilihan_nms);
                             }
-                        }, 10);
+                            let activeBox = document.querySelector("#dv_boxnosoal [style*='blue'], #dv_boxnosoal [style*='#2a5298']");
+                            if (activeBox) {
+                                activeBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                        }, 40);
                     }
                 }
             },
