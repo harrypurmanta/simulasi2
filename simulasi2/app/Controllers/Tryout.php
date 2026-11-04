@@ -12,35 +12,34 @@ class Tryout extends BaseController
     public function __construct()
 	{
 		$this->session = \Config\Services::session();
-        $this->session->start();
         $this->soalmodel = new Soalmodel();
 	}
 
     public function index()
     {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(2);
+        $materi_id = $request->getUri()->getSegment(2);
         $data['group'] = $this->soalmodel->getGroup()->getResult();
         $data['soal'] = $this->soalmodel->getSoal(1,1,$materi_id,0)->getResult();
         $data['jawaban'] = $this->soalmodel->getjawaban($data['soal'][0]->soal_id)->getResult();
-        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->uri->getSegment(2))->getResult();
+        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->getUri()->getSegment(2))->getResult();
         return view('front/tryout',$data);
     }
 
     public function ujian() {
         $request = \Config\Services::request();
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $data['group'] = $this->soalmodel->getGroup()->getResult();
-        if ($request->uri->getSegment(4) == 4) {
+        if ($request->getUri()->getSegment(4) == 4) {
             $kolom_id = 1;
         } else {
             $kolom_id = 0;
         }
         
-        $data['soal'] = $this->soalmodel->getSoal(1,$request->uri->getSegment(4),$materi_id,$kolom_id)->getResult();
+        $data['soal'] = $this->soalmodel->getSoal(1,$request->getUri()->getSegment(4),$materi_id,$kolom_id)->getResult();
         // print_r($data['soal']);exit;
         $data['jawaban'] = $this->soalmodel->getjawaban($data['soal'][0]->soal_id)->getResult();
-        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->uri->getSegment(3))->getResult();
+        $data['total_soal'] = $this->soalmodel->getTotalSoal(1,$request->getUri()->getSegment(3))->getResult();
         return view('front/tryout',$data);
     }
     public function startujian() {
@@ -161,6 +160,7 @@ class Tryout extends BaseController
                     //     $res_ttlsoal = $this->soalmodel->getTotalSoal($group_id,$materi)->getResult();
                     // }
                     // $no_soal_belum = array();
+                    $pilihan_nmx = "";
                     foreach ($res_ttlsoal as $boxsoal) {
                         $getResponBox = $this->soalmodel->getResponBox($boxsoal->soal_id,$group_id,$materi,$this->session->user_id)->getResult();
                         if ($group_id == 2) {
@@ -201,9 +201,11 @@ class Tryout extends BaseController
                     if ($res[0]->soal_img == "") {
                         $img_soal = "";
                     } else {
-                        $img_soal = "<div class='col-sm-10'>
-                        <a href='".base_url()."/images/soal/materi/".$res[0]->materi."/besar/".$res[0]->soal_img."' data-toggle='lightbox'>
-                        <img style='max-width: 350px;max-height: 100%;' src='".base_url()."/images/soal/materi/".$res[0]->materi."/".$res[0]->soal_img."' class='img-fluid'>
+                        $smallUrl = base_url()."/images/soal/materi/".$res[0]->materi."/".$res[0]->soal_img;
+                        $largeUrl = base_url()."/images/soal/materi/".$res[0]->materi."/besar/".$res[0]->soal_img;
+                        $img_soal = "<div class='col-sm-10 mx-auto'>
+                        <a href='".$largeUrl."' data-toggle='lightbox' data-large-src='".$largeUrl."' data-fallback-src='".$smallUrl."'>
+                        <img style='max-width: 350px;max-height: 100%;cursor: zoom-in;border-radius: 6px;' src='".$smallUrl."' class='img-fluid popup-img-trigger' title='Klik untuk memperbesar gambar'>
                         </a>
                     </div>";
                     }
@@ -212,39 +214,36 @@ class Tryout extends BaseController
                     $jawaban_idx = "";
                     $pilihan_nms = "";
                     foreach ($getjawaban as $key) {
-                        if ($pilihan_nmx == $key->pilihan_nm) {
+                        if ($pilihan_nmx !== "" && $pilihan_nmx == $key->pilihan_nm) {
                             $jawaban_idx = $key->jawaban_id;
                             $pilihan_nms = $key->pilihan_nm;
-                            $border = "margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align: left;border: thick solid rgb(0, 166, 90);";
+                            $selectedClass = "selected-jawaban";
                         } else {
-                            $border = "";
+                            $selectedClass = "";
                         }
                         
                         if ($key->jawaban_img == "") {
                             $img_jwb = "";
                         } else {
-                            $img_jwb = "<img style='max-width:350px;height:100%;' src='".base_url()."/images/jawaban/materi/".$res[0]->materi."/".$key->jawaban_img.".jpg'>";
+                            $jwbUrl = base_url()."/images/jawaban/materi/".$res[0]->materi."/".$key->jawaban_img.".jpg";
+                            $img_jwb = "<div class='d-inline-flex align-items-center'><img style='max-width:350px;height:100%;cursor:zoom-in;border-radius:6px;' src='".$jwbUrl."' data-large-src='".$jwbUrl."' data-fallback-src='".$jwbUrl."' class='jawaban-img popup-img-trigger' title='Klik untuk memperbesar gambar'></div>";
                         }
+
+                        $jawaban_text_html = ($key->jawaban_nm !== "" && $key->jawaban_nm !== null)
+                            ? "<span class='jawaban-text' style='color:#1e293b;'>".$key->jawaban_nm."</span>"
+                            : "";
                         
                         $jawaban .= "
                             <div id='dv_jawaban_".$key->jawaban_id."' 
                                 onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' 
-                                class='btn col-md-12 jawaban_dv' 
-                                style='margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align:left;
-                                        word-break: break-all; overflow-wrap: break-word; white-space: normal;'>
+                                class='btn col-12 jawaban_dv $selectedClass' 
+                                style='display:flex;align-items:center;gap:8px;margin-top:4px;margin-bottom:4px;padding:9px 40px 9px 14px;background-color:#f8fafc;border:2px solid #cbd5e1;border-radius:8px;text-align:left;
+                                        word-break: break-word; overflow-wrap: break-word; white-space: normal;'>
                                 
-                                <label for='pilihan_nm'>".$key->pilihan_nm.". </label> 
-
-                                <span>
-                                    ".$key->jawaban_nm."
-                                </span>
-
-                                <div>$img_jwb</div>
+                                <strong class='pilihan-label' style='font-weight:800; color:#0f172a; margin-right:4px; flex-shrink:0;'>".$key->pilihan_nm.".</strong> 
+                                $jawaban_text_html
+                                $img_jwb
                             </div>";
-                        
-                        // $jawaban .= "<div id='dv_jawaban_".$key->jawaban_id."' onclick='selectJawaban(".$key->jawaban_id.",\"".$key->pilihan_nm."\")' class='btn col-md-12 jawaban_dv' style='margin-top:10px;margin-bottom:10px;background-color:#aeaebb;border-radius:5px;text-align: left;'> <label for='pilihan_nm'>".$key->pilihan_nm.". </label> <span>".$key->jawaban_nm."</span>
-                        // <div>$img_jwb</div>
-                        //     </div>";
                     }
                     $button = "";
                     $getjumlahjawab = $this->soalmodel->getResponCountByMateriUser($group_id,$materi,$this->session->user_id)->getResult();
@@ -281,8 +280,8 @@ class Tryout extends BaseController
     public function sikapkerja() {
         $request = \Config\Services::request();
         $data['group'] = $this->soalmodel->getGroup()->getResult();
-        $materi_id = $request->uri->getSegment(3);
-        $group_id = $request->uri->getSegment(4);
+        $materi_id = $request->getUri()->getSegment(3);
+        $group_id = $request->getUri()->getSegment(4);
         return view('front/sikapkerja',$data);
     }
 
@@ -297,7 +296,7 @@ class Tryout extends BaseController
         $kolom_id = $this->request->getPost("kolom_id");
         $materi = $this->request->getPost("materi");
         $date = date("Y-m-d H:i:s");
-        if (isset($jawaban_id)) {
+        if (!empty($jawaban_id)) {
             $data = [
                 "jawaban_id" => $jawaban_id,
                 "pilihan_nm" => $pilihan_nm,
@@ -427,7 +426,7 @@ class Tryout extends BaseController
     public function hasiltryout() {
         $request = \Config\Services::request();
         $user_id = $this->session->user_id;
-        $materi_id = $request->uri->getSegment(3);
+        $materi_id = $request->getUri()->getSegment(3);
         $benar_kec = 0;
             $salah_kec = 0;
             $benar_keb = 0;

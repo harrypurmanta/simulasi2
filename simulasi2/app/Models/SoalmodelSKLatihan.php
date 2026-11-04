@@ -18,7 +18,8 @@ class SoalmodelSKLatihan extends Model
     public function getKolomSkLatihan($group_id, $materi_id, $sk_group_id) {
         return $this->db->table('kolom_soal a')
                     ->select('a.kolom_id, b.clue, a.kolom_nm')
-                    ->join('soal b', 'b.kolom_id = a.kolom_id AND b.sk_group_id = '.$sk_group_id.' AND b.status_cd = "normal"', 'left')
+                    ->join('soal b', 'b.kolom_id = a.kolom_id AND b.materi = ' . (int)$materi_id . ' AND b.group_id = ' . (int)$group_id . ' AND b.sk_group_id = ' . (int)$sk_group_id . ' AND b.status_cd = "normal"', 'left')
+                    ->where('a.status_cd', 'normal')
                     ->groupBy('a.kolom_id, b.clue, a.kolom_nm')
                     ->get();
     }

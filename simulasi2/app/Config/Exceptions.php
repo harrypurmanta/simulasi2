@@ -3,6 +3,10 @@
 namespace Config;
 
 use CodeIgniter\Config\BaseConfig;
+use CodeIgniter\Debug\ExceptionHandler;
+use CodeIgniter\Debug\ExceptionHandlerInterface;
+use Psr\Log\LogLevel;
+use Throwable;
 
 /**
  * Setup how the exception handler works.
@@ -10,51 +14,39 @@ use CodeIgniter\Config\BaseConfig;
 class Exceptions extends BaseConfig
 {
     /**
-     * --------------------------------------------------------------------------
-     * LOG EXCEPTIONS?
-     * --------------------------------------------------------------------------
-     * If true, then exceptions will be logged
-     * through Services::Log.
-     *
-     * Default: true
-     *
-     * @var bool
+     * If true, then exceptions will be logged through Services::Log.
      */
-    public $log = true;
+    public bool $log = true;
 
     /**
-     * --------------------------------------------------------------------------
-     * DO NOT LOG STATUS CODES
-     * --------------------------------------------------------------------------
      * Any status codes here will NOT be logged if logging is turned on.
-     * By default, only 404 (Page Not Found) exceptions are ignored.
-     *
-     * @var array
+     * @var list<int>
      */
-    public $ignoreCodes = [404];
+    public array $ignoreCodes = [404];
 
     /**
-     * --------------------------------------------------------------------------
-     * Error Views Path
-     * --------------------------------------------------------------------------
-     * This is the path to the directory that contains the 'cli' and 'html'
-     * directories that hold the views used to generate errors.
-     *
-     * Default: APPPATH.'Views/errors'
-     *
-     * @var string
+     * Path to the directory that contains error views.
      */
-    public $errorViewPath = APPPATH . 'Views/errors';
+    public string $errorViewPath = APPPATH . 'Views/errors';
 
     /**
-     * --------------------------------------------------------------------------
-     * HIDE FROM DEBUG TRACE
-     * --------------------------------------------------------------------------
      * Any data that you would like to hide from the debug trace.
-     * In order to specify 2 levels, use "/" to separate.
-     * ex. ['server', 'setup/password', 'secret_token']
-     *
-     * @var array
+     * @var list<string>
      */
-    public $sensitiveDataInTrace = [];
+    public array $sensitiveDataInTrace = [];
+
+    /**
+     * If set to `true`, DEPRECATED errors are only logged and no exceptions are thrown.
+     */
+    public bool $logDeprecations = true;
+
+    /**
+     * Log level threshold for deprecations.
+     */
+    public string $deprecationLogLevel = LogLevel::WARNING;
+
+    public function handler(int $statusCode, Throwable $exception): ExceptionHandlerInterface
+    {
+        return new ExceptionHandler($this);
+    }
 }

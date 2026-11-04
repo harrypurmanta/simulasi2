@@ -11,7 +11,6 @@ class Login extends BaseController
 	public function __construct()
 	{
 		$this->session = \Config\Services::session();
-		$this->session->start();
 		$this->usersmodel = new Usersmodel();
 	}
 

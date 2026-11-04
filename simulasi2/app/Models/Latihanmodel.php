@@ -15,6 +15,13 @@ class Latihanmodel extends Model
                         ->update();
     }
 
+    public function hapusgambarpembsoal($soal_id) {
+        return $this->db->table('soal_latihan')
+                        ->set('pembahasan_img', NULL)
+                        ->where('soal_id',$soal_id)
+                        ->update();
+    }
+
     public function hapusgambar($jawaban_id) {
         return $this->db->table('jawaban_latihan')
                         ->set('jawaban_img', NULL)
@@ -758,6 +765,26 @@ public function getAllSoalSK() {
                         ->set('status_cd','nullified')
                         ->where('jawaban_id',$jawaban_id)
                         ->update();
+    }
+
+    public function hapusjawaban($jawaban_id) {
+        return $this->db->table('jawaban_latihan')
+                        ->set('status_cd','nullified')
+                        ->where('jawaban_id',$jawaban_id)
+                        ->update();
+    }
+
+    public function getJawabanbyjenis($jenis) {
+        return $this->db->table('jawaban_latihan a')
+                        ->select('a.*, b.no_soal, b.jenis_id, c.jenis_nm')
+                        ->join('soal_latihan b', 'b.soal_id = a.soal_id', 'left')
+                        ->join('jenis_soal c', 'c.jenis_id = b.jenis_id', 'left')
+                        ->where('a.status_cd', 'normal')
+                        ->where('b.status_cd', 'normal')
+                        ->where('b.jenis_id', $jenis)
+                        ->orderBy('b.no_soal', 'ASC')
+                        ->orderBy('a.jawaban_id', 'ASC')
+                        ->get();
     }
 
     public function insertsoalSKlatihan($data) {

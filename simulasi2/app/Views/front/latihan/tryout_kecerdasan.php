@@ -1,70 +1,11 @@
-<!DOCTYPE html>
-<html>
+<?php
+$title = 'Latihan Kecerdasan - Bintang Timur Prestasi';
+?>
+<?= $this->include('front/template/head') ?>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Latihan Kecerdasan - Bintang Timur Prestasi</title>
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/bower_components/Ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/dist/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-    <style>
-        .d-none { display: none !important; }
-        #loader-wrapper {
-            display: flex;
-            position: fixed;
-            z-index: 1060;
-            top: 0; right: 0; bottom: 0; left: 0;
-            align-items: center;
-            justify-content: center;
-            background-color: rgba(255, 255, 255, 0.65);
-        }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 8px solid #3c8dbc;
-            border-bottom: 8px solid #00a65a;
-            width: 50px;
-            height: 50px;
-            animation: spin 1.5s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .jawaban_dv:hover {
-            background-color: #e2e8f0 !important;
-            transform: translateX(4px);
-        }
-        #dv_boxnosoal {
-            display: grid !important;
-            grid-template-columns: repeat(5, 1fr) !important;
-            gap: 6px !important;
-        }
-        #dv_boxnosoal div {
-            cursor: pointer;
-            transition: all 0.15s ease-in-out;
-            user-select: none;
-            width: 100% !important;
-            box-sizing: border-box !important;
-        }
-        #dv_boxnosoal div:hover {
-            transform: scale(1.08);
-            z-index: 2;
-        }
-    </style>
-</head>
-
-<body class="hold-transition skin-blue layout-top-nav">
+<body class="layout-top-nav">
     <div class="wrapper">
-        <header class="main-header">
-            <?= $this->include('front/navbar') ?>
-        </header>
+        <?= $this->include('front/navbar') ?>
 
         <div class="content-wrapper">
             <div class="container" style="max-width: 1200px;">
@@ -161,13 +102,11 @@
         <?= $this->include('front/footer') ?>
     </div>
 
-    <script src="<?= base_url() ?>/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="<?= base_url() ?>/bower_components/fastclick/lib/fastclick.js"></script>
-    <script src="<?= base_url() ?>/dist/js/adminlte.min.js"></script>
+    <script src="<?= base_url() ?>/plugins/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/dist/adminlte4/js/adminlte.min.js"></script>
     <script src="<?= base_url() ?>/plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
-    <script src="<?= base_url() ?>/plugins/sweetalert2/sweetalert2.js"></script>
+    <script src="<?= base_url() ?>/dist/js/sweetalert2.js"></script>
 
     <script>
     $(document).on('click', '[data-toggle="lightbox"]', function(event) {
@@ -316,7 +255,7 @@
             icon: "success",
             confirmButtonText: "Lihat Hasil"
         }).then(() => {
-            window.location.href = "<?= base_url() ?>/latihan/hasillatihan_kecerdasan/99/" + jenis_id + "/" + level_id + "/" + used;
+            window.location.href = "<?= rtrim(base_url(), '/') ?>/latihan/hasillatihan_kecerdasan/99/" + jenis_id + "/" + level_id + "/" + used;
         });
     }
 

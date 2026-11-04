@@ -4,13 +4,14 @@ use CodeIgniter\Model;
 
 class Tokenmodel extends Model
 {
-    protected $table      = 'users';
+    protected $table      = 'token';
     // protected $primaryKey = 'user_id';
-    protected $allowedFields = ['token', 'start_date','end_date','status_cd'];
+    protected $allowedFields = ['token', 'tokenuser', 'user_id', 'group_id', 'start_date', 'end_date', 'status_cd'];
 
     public function getAll() {
         return $this->db->table('token')
                         ->select('*')
+                        ->where('status_cd', 'normal')
                         ->get();
     }
 
@@ -21,6 +22,7 @@ class Tokenmodel extends Model
                         ->join('materi b','b.materi_id = a.group_id','LEFT')
                         ->join('users c','c.user_id = a.user_id','LEFT')
                         ->join('person d','d.person_id = c.person_id','LEFT')
+                        ->where('a.status_cd', 'normal')
                         ->where('a.start_date >=', $start_date)
                         ->where('a.end_date >=', $start_date)
                         ->where('a.start_date <=', $end_date)
@@ -32,6 +34,7 @@ class Tokenmodel extends Model
                         ->join('materi b','b.materi_id = a.group_id')
                         ->join('users c','c.user_id = a.user_id','LEFT')
                         ->join('person d','d.person_id = c.person_id','LEFT')
+                        ->where('a.status_cd', 'normal')
                         ->where('a.start_date >=', $start_date)
                         ->where('a.end_date >=', $start_date)
                         ->where('a.start_date <=', $end_date)
@@ -56,6 +59,7 @@ class Tokenmodel extends Model
     public function checktoken($token, $group_id, $materi_id, $tokenuser, $user_id) {
         return $this->db->table('token')
                         ->select('*')
+                        ->where('status_cd', 'normal')
                         ->where('token', $token)
                         ->where('tokenuser', $tokenuser)
                         ->where('CURDATE() BETWEEN start_date AND end_date', null, false)

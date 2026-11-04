@@ -306,7 +306,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $("#dv_cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
   }
@@ -324,7 +324,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 $("#dv_cardbody").html(data);
             },
             error: function() {
-                alert("error ajax");
+                Swal.fire({ title: "Error", text: "error ajax", icon: "error", confirmButtonText: "OK" });
             }
         });
   }

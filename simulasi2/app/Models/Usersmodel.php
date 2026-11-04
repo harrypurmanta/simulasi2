@@ -39,16 +39,21 @@ class Usersmodel extends Model
                         ->select('*')
                         ->join('users b', 'b.person_id = a.person_id','left')
                         ->where('a.status_cd', 'normal')
+                        ->where('b.status_cd', 'normal')
                         ->get();
     }
 
-    public function getBySiswa() {
-        return $this->db->table('person a')
+    public function getBySiswa($search = null) {
+        $builder = $this->db->table('person a')
                         ->select('*')
                         ->join('users b', 'b.person_id = a.person_id','left')
                         ->where('a.status_cd', 'normal')
-                        ->where('b.user_group', 'siswa')
-                        ->get();
+                        ->where('b.status_cd', 'normal')
+                        ->where('b.user_group', 'siswa');
+        if (!empty($search)) {
+            $builder->like('a.person_nm', $search);
+        }
+        return $builder->get();
     }
 
     public function getbyId($id){
@@ -149,6 +154,7 @@ class Usersmodel extends Model
                         ->select('*')
                         ->where('created_user_id',$user_id)
                         ->where('materi',$materi_id)
+                        ->where('status_cd','normal')
                         ->groupby('used')
                         ->get();
     }
@@ -162,6 +168,7 @@ class Usersmodel extends Model
                         ->where('a.created_user_id',$user_id)
                         ->where('a.used',$used)
                         ->where('a.materi',$materi_id)
+                        ->where('a.status_cd','normal')
                         ->get(); 
     }
 
@@ -174,7 +181,30 @@ class Usersmodel extends Model
                         ->where('a.created_user_id',$user_id)
                         ->where('a.used',$used)
                         ->where('a.materi',$materi_id)
+                        ->where('a.status_cd','normal')
                         ->get(); 
+    }
+
+    public function getResponLatihansubmateri($user_id, $jenis_id) {
+        return $this->db->table('respon_latihan')
+                        ->select('*')
+                        ->where('created_user_id', $user_id)
+                        ->where('jenis_id', $jenis_id)
+                        ->where('status_cd', 'normal')
+                        ->groupBy('used')
+                        ->get();
+    }
+
+    public function getlatihanSubmateriSkor($user_id, $used, $jenis_id) {
+        return $this->db->table('respon_latihan a')
+                        ->select('a.*, a.pilihan_nm as pilihan_respon, a.no_soal as no_soal_respon, c.kunci as kunci, c.kunci as kunci_soal, b.jawaban_nm as jawaban_nmx')
+                        ->join('jawaban_latihan b', 'b.jawaban_id = a.jawaban_id', 'left')
+                        ->join('soal_latihan c', 'c.soal_id = a.soal_id', 'left')
+                        ->where('a.created_user_id', $user_id)
+                        ->where('a.used', $used)
+                        ->where('a.jenis_id', $jenis_id)
+                        ->where('a.status_cd', 'normal')
+                        ->get();
     }
 
     

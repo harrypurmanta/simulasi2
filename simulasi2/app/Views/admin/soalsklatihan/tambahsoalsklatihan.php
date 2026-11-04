@@ -19,7 +19,7 @@
             <h1>Tambah Soal Sikap Kerja (Latihan)</h1>
           </div> 
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
               <li class="breadcrumb-item active">Tambah Soal Sikap Kerja (Latihan)</li>
             </ol>
@@ -301,7 +301,7 @@
         formData.append('sk_group_id', sk_group_id);
         
         $.ajax({
-            url: "<?= base_url('admin/soalsikapkerjalatihan/upsertGambarSk') ?>",
+            url: "<?= base_url('admin/soalsikapkerjalatihan/insertGambarSk') ?>",
             type: "post",
             dataType: "json",
             data: formData,
@@ -309,11 +309,16 @@
             processData: false,
             contentType: false,
             success: function(data) {
-                //  location.reload();
-                // console.log(data);
+                if (data && data.status) {
+                    Swal.fire({ title: "Berhasil", text: "Soal gambar berhasil disimpan", icon: "success", confirmButtonText: "OK" }).then(() => {
+                        window.location.href = "<?= base_url('admin/soalsikapkerjalatihan/viewEditsoalSkLatihan/' . $kolom_id . '/4/' . $materi_id . '/' . $sk_group_id) ?>";
+                    });
+                } else {
+                    Swal.fire({ title: "Perhatian", text: (data && data.message) ? data.message : "Gagal menyimpan gambar", icon: "warning", confirmButtonText: "OK" });
+                }
             },
             error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
         });
     }
@@ -342,7 +347,7 @@
         var materi_id = <?= $materi_id ?>;
 
         if (jawaban_nm.length < 5) {
-            alert("Jumlah karakter pada clue kurang dari 5");
+            Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada clue kurang dari 5", icon: "warning", confirmButtonText: "OK" });
             document.getElementById("jawaban_nm").focus();
             return;
         } 
@@ -383,7 +388,7 @@
                         confirmButtonText: "OK"
                         }).then((result) => {
                         if (result.isConfirmed) {
-                            location.reload();
+                            window.location.href = "<?= base_url('admin/soalsikapkerjalatihan/viewEditsoalSkLatihan/' . $kolom_id . '/4/' . $materi_id . '/' . $sk_group_id) ?>";
                         }
                     });
                 }
@@ -452,7 +457,7 @@
                     }
                 },
                 error: function() {
-                    alert("error");
+                    Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
                 }
             });
     }
@@ -462,7 +467,7 @@
         for (i = 0; i < char.length; i++) {
         for (j = i + 1; j < char.length; j++) {
             if (char[i] == char[j]) {
-                alert("Karakter tidak boleh sama !");
+                Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
                 var val = char.substr(0, char.length - 1);
                 document.getElementById(kolom).value = val;
             }

@@ -278,7 +278,7 @@
             $('#dv_cardbody').html(data);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
       }
@@ -311,7 +311,7 @@
             $("#loader-wrapper").addClass("d-none");
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
   }
@@ -323,7 +323,7 @@
     for (i = 0; i < char.length; i++) {
       for (j = i + 1; j < char.length; j++) {
           if (char[i] == char[j]) {
-            alert("Karakter tidak boleh sama !");
+            Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
             var val = char.substr(0, char.length - 1);
             document.getElementById(kolom).value = val;
           }
@@ -339,7 +339,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -361,65 +361,65 @@
     if (checkBox.checked) {
       var materi_id = $("#materi_"+materi_id).val();
     } else {
-      alert("pilih materi dahulu");
+      Swal.fire({ title: "Perhatian", text: "pilih materi dahulu", icon: "warning", confirmButtonText: "OK" });
     }
 
     if (kolom1.length < 5 && kolom1.length > 0) {
-      alert("Jumlah karakter pada KOLOM 1 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 1 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom1").focus();
       return;
     } 
     
     if (kolom2.length < 5 && kolom2.length > 0) {
-      alert("Jumlah karakter pada KOLOM 2 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 2 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom2").focus();
       return;
     }
 
     if (kolom3.length < 5 && kolom3.length > 0) {
-      alert("Jumlah karakter pada KOLOM 3 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 3 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom3").focus();
       return;
     }
 
     if (kolom4.length < 5 && kolom4.length > 0) {
-      alert("Jumlah karakter pada KOLOM 4 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 4 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom4").focus();
       return;
     }
 
     if (kolom5.length < 5 && kolom5.length > 0) {
-      alert("Jumlah karakter pada KOLOM 5 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 5 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom5").focus();
       return;
     }
 
     if (kolom6.length < 5 && kolom6.length > 0) {
-      alert("Jumlah karakter pada KOLOM 6 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 6 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       kdocument.getElementById("kolom6").focus();
       return;
     }
 
     if (kolom7.length < 5 && kolom7.length > 0) {
-      alert("Jumlah karakter pada KOLOM 7 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 7 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom7").focus();
       return;
     }
 
     if (kolom8.length < 5 && kolom8.length > 0) {
-      alert("Jumlah karakter pada KOLOM 8 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 8 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom8").focus();
       return;
     }
 
     if (kolom9.length < 5 && kolom9.length > 0) {
-      alert("Jumlah karakter pada KOLOM 9 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 9 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom9").focus();
       return;
     }
 
     if (kolom10.length < 5 && kolom10.length > 0) {
-      alert("Jumlah karakter pada KOLOM 10 kurang dari 5");
+      Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 10 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
       document.getElementById("kolom10").focus();
       return;
     }  
@@ -448,12 +448,12 @@
       success: function(data) {
         $("#loader-wrapper").addClass("d-none");
         $('#modal-lg').modal("hide");
-        alert("Sukses");
+        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         
       },
       error: function() {
         $("#loader-wrapper").addClass("d-none");
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }
@@ -466,7 +466,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -484,7 +484,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -510,7 +510,7 @@
         },
         success: function(data) {
           $('#modal-lg').modal("hide");
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
           var table = document.getElementById("example2");
           var row   = table.insertRow(1);
           var cell1 = row.insertCell(0);
@@ -536,7 +536,7 @@
           cell7.innerHTML = "<button data-toggle='modal' data-target='#modal-lg' onclick='editsoal("+data.soal_id+")' style='font-size:10px;' class='btn btn-secondary'>Edit</button> <button style='font-size:10px;' class='btn btn-danger'  onclick='hapussoal("+data.soal_id+")'>Hapus</button>";
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -564,11 +564,11 @@
       },
       success: function(data) {
         $('#modal-lg').modal("hide");
-        alert("Sukses");
+        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         $("#example2").load(window.location.href+" #example2");
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }
@@ -584,11 +584,11 @@ function hapussoal(soal_id) {
       },
       success: function(data) {
         $('#modal-lg').modal("hide");
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         $("#example2").load(window.location.href+" #example2");
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }
@@ -611,7 +611,7 @@ function showjawaban(soal_id) {
           $('#tr_data_'+soal_id).html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -671,11 +671,11 @@ function checkbtn(soal_id) {
           processData: false,
           
           success: function(data) {
-            alert("Sukses");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
 }
@@ -692,15 +692,15 @@ function deletebtn(soal_id,jawaban_id) {
           },
           success: function(data) {
             if (data == "sukses") {
-              alert("Sukses");
+              Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             } else {
-              alert("Gagal");
+              Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
             }
             document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
   } else {

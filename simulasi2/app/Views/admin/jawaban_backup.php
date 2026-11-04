@@ -159,7 +159,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -177,7 +177,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -203,7 +203,7 @@
         },
         success: function(data) {
           $('#modal-lg').modal("hide");
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
           var table = document.getElementById("example2");
           var row   = table.insertRow(1);
           var cell1 = row.insertCell(0);
@@ -229,7 +229,7 @@
           cell7.innerHTML = "<button data-toggle='modal' data-target='#modal-lg' onclick='editsoal("+data.soal_id+")' style='font-size:10px;' class='btn btn-secondary'>Edit</button> <button style='font-size:10px;' class='btn btn-danger'  onclick='hapussoal("+data.soal_id+")'>Hapus</button>";
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -257,11 +257,11 @@
       },
       success: function(data) {
         $('#modal-lg').modal("hide");
-        alert("Sukses");
+        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         $("#example2").load(window.location.href+" #example2");
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }
@@ -277,11 +277,11 @@ function hapussoal(soal_id) {
       },
       success: function(data) {
         $('#modal-lg').modal("hide");
-        alert("Sukses");
+        Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         $("#example2").load(window.location.href+" #example2");
       },
       error: function() {
-        alert("error");
+        Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
       }
     });
 }

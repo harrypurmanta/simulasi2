@@ -43,11 +43,6 @@ class Soalsikapkerjalatihan extends BaseController
         $materi_id = $this->request->getUri()->getSegment(6);
         $sk_group_id = $this->request->getUri()->getSegment(7);
 
-        $kolom_id = $this->request->getUri()->getSegment(4);
-        $group_id = $this->request->getUri()->getSegment(5);
-        $materi_id = $this->request->getUri()->getSegment(6);
-        $sk_group_id = $this->request->getUri()->getSegment(7);
-
         if ($this->session->get("user_nm") == "") {
 			return redirect('/');
 		} else {
@@ -207,9 +202,6 @@ class Soalsikapkerjalatihan extends BaseController
                 ]);
             }
         }
-        $soal_nm = implode('|', $soal_nm);
-        $res = $this->randomcharGambar($soal_nm,$kolom_id,98,$sk_group_id);
-        return $res;
         if (empty($uploadedFiles)) {
             return $this->response->setJSON([
                 'status' => false,
@@ -217,8 +209,12 @@ class Soalsikapkerjalatihan extends BaseController
             ]);
         }
 
+        $soal_nm = implode('|', $soal_nm);
+        $res = $this->randomcharGambar($soal_nm, $kolom_id, 98, $sk_group_id);
+
         return $this->response->setJSON([
             'status' => true,
+            'res' => $res,
             'files' => $uploadedFiles
         ]);
     }
@@ -302,12 +298,13 @@ class Soalsikapkerjalatihan extends BaseController
         $soal_nm = implode('|', $soal_nm);
         
         $soal_id = $this->soalmodel->getSoalIdByClueSKGambar($jawaban_nm_lama, $group_id, $sk_group_id, $kolom_id, 98)->getResult();
-        // echo json_encode($soal_id);exit;
-        $res = $this->randomcharGambarUpdate($soal_nm, $kolom_id, 98, $sk_group_id, $group_id, $soal_id, $jawaban_nm_lama);
+        if (empty($soal_id)) {
+            $res = $this->randomcharGambar($soal_nm, $kolom_id, 98, $sk_group_id);
+        } else {
+            $res = $this->randomcharGambarUpdate($soal_nm, $kolom_id, 98, $sk_group_id, $group_id, $soal_id, $jawaban_nm_lama);
+        }
 
-        echo json_encode($res); // $res = $this->randomcharGambar($soal_nm,$kolom_id,98,$sk_group_id);
-
-        // return $res;
+        echo json_encode($res);
     }
 
     public function updateclue() {
@@ -322,11 +319,15 @@ class Soalsikapkerjalatihan extends BaseController
         $jawaban_nm_lama = $this->request->getPost('jawaban_nm_lama');
         $kolom_id = $this->request->getPost('kolom_id');
         
-        if ($this->request->getPost('jawaban_nm_lama') == $this->request->getPost('jawaban_nm')) {
+        if ($jawaban_nm_lama !== '' && $jawaban_nm_lama == $jawaban_nm) {
             $res = "finish";
         } else {
-            $soal_id = $this->soalmodel->getSoalIdByClue($jawaban_nm_lama, $group_id, $sk_group_id, $kolom_id)->getResult();
-            $res = $this->randomcharUpdate($jawaban_nm, $kolom_id, $materi_id, $sk_group_id, $group_id, $soal_id, $jawaban_nm_lama);
+            $soal_id = $this->soalmodel->getSoalIdByClue($jawaban_nm_lama, $group_id, $sk_group_id, $kolom_id, $materi_id)->getResult();
+            if (empty($soal_id)) {
+                $res = $this->randomchar($jawaban_nm, $kolom_id, $materi_id, $sk_group_id);
+            } else {
+                $res = $this->randomcharUpdate($jawaban_nm, $kolom_id, $materi_id, $sk_group_id, $group_id, $soal_id, $jawaban_nm_lama);
+            }
         }
         
         echo json_encode($res);
@@ -375,7 +376,7 @@ class Soalsikapkerjalatihan extends BaseController
                 'typesoal' => "text"
             ];
 
-            $updatesoal = $this->soalmodel->updatesoalsk($group_id,$sk_group_id,$kolom,$data,$soal_id[$index]->soal_id,$jawaban_nm_lama);
+            $updatesoal = $this->soalmodel->updatesoalsk($group_id,$sk_group_id,$kolom,$data,$soal_id[$index]->soal_id,$jawaban_nm_lama,$materi_id);
 
             if ($updatesoal) {
                 $dataJawaban = [
@@ -402,20 +403,7 @@ class Soalsikapkerjalatihan extends BaseController
     }
 
     public function randsoal($characters,$randSoal) {
-        $randomString = $randSoal;
-        for ($s = 0; $s < 5; $s++) {
-            $index = rand(0, strlen($characters) - 1);
-            $randomString .= $characters[$index];
-        }
-        
-        $randSoal = count_chars($randomString,3);
-        if (strlen($randSoal) == 5) {
-            $soal_nm = str_shuffle($randSoal);
-        } else {
-            $soal_nm = $this->randsoal($characters,$randSoal);
-        }
-
-        return $soal_nm;
+        return str_shuffle($characters);
     }
 
     public function randsoalGambar(array $characters): string

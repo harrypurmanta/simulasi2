@@ -19,7 +19,7 @@
             <h1>Soal</h1>
           </div>
           <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
+            <ol class="breadcrumb float-sm-end">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Soal</li>
             </ol>
@@ -80,7 +80,7 @@
                 </div>
               <div class="col-lg-12">
                 <a href="<?= base_url() ?>/admin/soal/viewTambahsoal" class="btn btn-primary">Tambah Soal</a>
-                <button onclick="tambahsoallatihan()" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">Tambah SK</button>
+                <button onclick="tambahsoallatihan()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-lg">Tambah SK</button>
                 
                 <div class="col-lg-1" style="display:inline-block;text-align:right;width:100%;">
                   <button onclick="showsoal('all')" class="btn btn-secondary">Soal SK</button>
@@ -109,6 +109,19 @@
         </div>
       </div>
     </section>
+    <div class="modal fade" id="modal-lg" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Form Soal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div id="modal_body" class="modal-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="d-none" id='loader-wrapper'>
         <div class="loader"></div>
       </div>
@@ -188,11 +201,9 @@
                   
                   if (group_id == 4) {
                       return `
-                        <a href="<?= base_url() ?>/admin/soal/detailsoal/${data.soal_id}" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
-                        <a href="<?= base_url() ?>/admin/soal/viewEditsoalSK/${data.soal_id}/${group_id}/${materi_id}" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>`;
+                        <a href="<?= base_url() ?>/admin/soalsikapkerjamateri/viewEditsoalSkMateri/${data.soal_id}/${group_id}/${materi_id}/0" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>`;
                   } else {
                       return `
-                        <a href="<?= base_url() ?>/admin/soal/detailsoal/${data.soal_id}" type="button" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
                         <a href="<?= base_url() ?>/admin/soal/viewEditsoal/${data.soal_id}/${data.no_soal}/${data.group_id}/${data.materi}" type="button" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                         <button type="button" class="btn btn-sm btn-danger" onclick="hapussoal(${data.soal_id})"><i class="fas fa-trash"></i></button>`;
                   }
@@ -229,7 +240,7 @@
             $("#loader-wrapper").addClass("d-none");
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
         });
   }
@@ -241,7 +252,7 @@
     for (i = 0; i < char.length; i++) {
       for (j = i + 1; j < char.length; j++) {
           if (char[i] == char[j]) {
-            alert("Karakter tidak boleh sama !");
+            Swal.fire({ title: "Perhatian", text: "Karakter tidak boleh sama !", icon: "warning", confirmButtonText: "OK" });
             var val = char.substr(0, char.length - 1);
             document.getElementById(kolom).value = val;
           }
@@ -257,7 +268,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -287,61 +298,61 @@
       // alert(materi_id);
 
       if (kolom1.length < 5 && kolom1.length > 0) {
-        alert("Jumlah karakter pada KOLOM 1 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 1 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom1").focus();
         return;
       } 
       
       if (kolom2.length < 5 && kolom2.length > 0) {
-        alert("Jumlah karakter pada KOLOM 2 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 2 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom2").focus();
         return;
       }
 
       if (kolom3.length < 5 && kolom3.length > 0) {
-        alert("Jumlah karakter pada KOLOM 3 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 3 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom3").focus();
         return;
       }
 
       if (kolom4.length < 5 && kolom4.length > 0) {
-        alert("Jumlah karakter pada KOLOM 4 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 4 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom4").focus();
         return;
       }
 
       if (kolom5.length < 5 && kolom5.length > 0) {
-        alert("Jumlah karakter pada KOLOM 5 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 5 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom5").focus();
         return;
       }
 
       if (kolom6.length < 5 && kolom6.length > 0) {
-        alert("Jumlah karakter pada KOLOM 6 kurang dari 5");
-        kdocument.getElementById("kolom6").focus();
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 6 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
+        document.getElementById("kolom6").focus();
         return;
       }
 
       if (kolom7.length < 5 && kolom7.length > 0) {
-        alert("Jumlah karakter pada KOLOM 7 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 7 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom7").focus();
         return;
       }
 
       if (kolom8.length < 5 && kolom8.length > 0) {
-        alert("Jumlah karakter pada KOLOM 8 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 8 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom8").focus();
         return;
       }
 
       if (kolom9.length < 5 && kolom9.length > 0) {
-        alert("Jumlah karakter pada KOLOM 9 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 9 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom9").focus();
         return;
       }
 
       if (kolom10.length < 5 && kolom10.length > 0) {
-        alert("Jumlah karakter pada KOLOM 10 kurang dari 5");
+        Swal.fire({ title: "Perhatian", text: "Jumlah karakter pada KOLOM 10 kurang dari 5", icon: "warning", confirmButtonText: "OK" });
         document.getElementById("kolom10").focus();
         return;
       }  
@@ -369,16 +380,16 @@
         success: function(data) {
           $("#loader-wrapper").addClass("d-none");
           $('#modal-lg').modal("hide");
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
           
         },
         error: function() {
           $("#loader-wrapper").addClass("d-none");
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
     } else {
-      alert("pilih materi dahulu");
+      Swal.fire({ title: "Perhatian", text: "pilih materi dahulu", icon: "warning", confirmButtonText: "OK" });
     }
 }
 
@@ -390,7 +401,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -408,7 +419,7 @@
 
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -437,10 +448,10 @@
         processData: false,
         success: function(data) {
           $('#modal-lg').modal("hide");
-          alert("Sukses");
+          Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -472,7 +483,7 @@ function hapussoal(soal_id) {
                   tampilkansoal();
               },
               error: function() {
-                alert("error");
+                Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
               }
           });
         }
@@ -497,7 +508,7 @@ function showjawaban(soal_id) {
           $('#tr_data_'+soal_id).html(data);
         },
         error: function() {
-          alert("error");
+          Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
         }
       });
   }
@@ -557,42 +568,49 @@ function checkbtn(soal_id) {
           processData: false,
           
           success: function(data) {
-            alert("Sukses");
+            Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
             showjawaban(soal_id);
           },
           error: function() {
-            alert("error");
+            Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
           }
       });
 }
 
 function deletebtn(soal_id,jawaban_id) {
-  let text = "Apakah anda yakin menghapus data ini ?";
-  if (confirm(text) == true) {
-    $.ajax({
-          url: "<?= base_url('soal/deletejawaban') ?>",
-          type: "post",
-          dataType: "json",
-          data: {
-            "jawaban_id": jawaban_id
-          },
-          success: function(data) {
-            if (data == "sukses") {
-              alert("Sukses");
-            } else {
-              alert("Gagal");
+  Swal.fire({
+    title: "Hapus Jawaban?",
+    text: "Apakah anda yakin menghapus data ini ?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+            url: "<?= base_url('soal/deletejawaban') ?>",
+            type: "post",
+            dataType: "json",
+            data: {
+              "jawaban_id": jawaban_id
+            },
+            success: function(data) {
+              if (data == "sukses") {
+                Swal.fire({ title: "Berhasil", text: "Sukses", icon: "success", confirmButtonText: "OK" });
+              } else {
+                Swal.fire({ title: "Error", text: "Gagal", icon: "error", confirmButtonText: "OK" });
+              }
+              document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
+              showjawaban(soal_id);
+            },
+            error: function() {
+              Swal.fire({ title: "Error", text: "error", icon: "error", confirmButtonText: "OK" });
             }
-            document.getElementById("tr_form_"+soal_id+"_"+jawaban_id).outerHTML="";
-            showjawaban(soal_id);
-          },
-          error: function() {
-            alert("error");
-          }
-      });
-  } else {
-
-  }
-  
+        });
+    }
+  });
 }
 
 function timesbtn(soal_id,jawaban_id) {
