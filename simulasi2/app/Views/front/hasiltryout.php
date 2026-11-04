@@ -7,7 +7,7 @@ $isMS = ($total_skor >= 61);
     <div class="wrapper min-vh-100 d-flex flex-column">
         <?= $this->include('front/navbar') ?>
 
-        <div class="content-wrapper flex-grow-1 d-flex flex-column justify-content-start pt-2 pb-2">
+        <div class="content-wrapper flex-grow-1 d-flex flex-column justify-content-center align-items-center pt-2 pb-2">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
