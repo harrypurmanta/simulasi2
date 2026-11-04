@@ -215,3 +215,6 @@ if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
 
 $routes->get('latihan/mulai_kecerdasan/(:any)', '\App\Controllers\Latihan::mulai_kecerdasan/$1');
 $routes->get('latihan/mulai_tryout/(:any)', '\App\Controllers\Latihan::mulai_tryout/$1');
+
+$routes->get('latihan/pembahasan_kecerdasan/(:any)', '\App\Controllers\Latihan::pembahasan_kecerdasan/$1');
+$routes->post('latihan/startujianpembahasan_kecerdasan', '\App\Controllers\Latihan::startujianpembahasan_kecerdasan');

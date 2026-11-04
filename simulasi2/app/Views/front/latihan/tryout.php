@@ -269,6 +269,23 @@ $title = 'Latihan Soal Mandiri - Bintang Timur Prestasi';
         startujian("prev");
     }
 
+    function konfirmasiSelesai() {
+        Swal.fire({
+            title: "Konfirmasi Selesai",
+            text: "Apakah Anda yakin ingin menyelesaikan latihan soal ini?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#00a65a",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Selesai!",
+            cancelButtonText: "Batal"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                startujian("selesai");
+            }
+        });
+    }
+
     function startujian(proc) {
         let soal_id = $("#inp_soal_id").val();
         let jawaban_id = $("#inp_jawaban_id").val();

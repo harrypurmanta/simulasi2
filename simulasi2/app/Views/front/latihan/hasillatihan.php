@@ -3,6 +3,27 @@ $request = \Config\Services::request();
 $title = 'Hasil Latihan - Bintang Timur Prestasi';
 $total = ($benar ?? 0) + ($salah ?? 0);
 $persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
+
+$materiVal   = $materi   ?? $request->getUri()->getSegment(3) ?? 99;
+$jenisIdVal  = $jenis_id ?? $request->getUri()->getSegment(4);
+$levelIdVal  = $level_id ?? $request->getUri()->getSegment(5);
+$usedVal     = $used     ?? $request->getUri()->getSegment(6);
+
+$isKecerdasan = (!empty($level_id) || ($request->getUri()->getSegment(2) == 'hasillatihan_kecerdasan'));
+
+if ($isKecerdasan) {
+    $pembahasanUrl = base_url('latihan/pembahasan_kecerdasan/' . $materiVal . '/' . $jenisIdVal . '/' . $levelIdVal . '/' . $usedVal);
+    $kembaliUrl    = base_url('latihan/jenis/2');
+    $kembaliText   = 'Kembali ke Level';
+} else {
+    $materiSeg = $materiVal;
+    $jenisSeg  = $jenisIdVal;
+    $usedSeg   = $used ?? $request->getUri()->getSegment(5) ?? 1;
+    $groupSeg  = $group_id ?? $request->getUri()->getSegment(6) ?? 1;
+    $pembahasanUrl = base_url('latihan/pembahasan_latihan/' . $materiSeg . '/' . $jenisSeg . '/' . $usedSeg . '/' . $groupSeg);
+    $kembaliUrl    = base_url('latihan');
+    $kembaliText   = 'Kembali ke Menu Latihan';
+}
 ?>
 <?= $this->include('front/template/head') ?>
 <body class="layout-top-nav">
@@ -12,7 +33,7 @@ $persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
         <div class="content-wrapper flex-grow-1 d-flex align-items-center justify-content-center py-2" style="background-color: #f4f6f9;">
             <div class="container px-3">
                 <div class="row justify-content-center">
-                    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+                    <div class="col-12 col-sm-11 col-md-9 col-lg-7 col-xl-6">
                         <div class="card border-0 shadow-sm rounded-4 overflow-hidden text-center">
                             <div class="card-header text-white py-2 px-3" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);">
                                 <h4 class="fw-bold mb-0">Selamat! Latihan Selesai</h4>
@@ -22,12 +43,12 @@ $persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
                                     </small>
                                 <?php endif; ?>
                             </div>
-                            <div class="card-body p-3 bg-white">
+                            <div class="card-body p-3 p-md-4 bg-white">
                                 <div class="mb-2">
-                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2 border border-3 border-primary shadow-xs" style="width: 76px; height: 76px; background-color: rgba(30, 60, 114, 0.05);">
-                                        <div>
-                                            <span class="fs-3 fw-bold text-primary d-block lh-1"><?= $persen ?>%</span>
-                                            <small class="text-muted" style="font-size: 10px;">Akurasi</small>
+                                    <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2 border border-3 border-primary shadow-xs" style="width: 92px; height: 92px; background-color: rgba(30, 60, 114, 0.05);">
+                                        <div class="px-1 text-center">
+                                            <span class="fw-bold text-primary d-block lh-1" style="font-size: 1.45rem; letter-spacing: -0.5px; white-space: nowrap;"><?= $persen ?>%</span>
+                                            <small class="text-muted fw-semibold mt-1 d-block" style="font-size: 10px; letter-spacing: 0.5px;">AKURASI</small>
                                         </div>
                                     </div>
                                     <h5 class="fw-bold text-dark mb-0">Ringkasan Nilai Anda</h5>
@@ -36,28 +57,28 @@ $persen = $total > 0 ? round((($benar ?? 0) / $total) * 100, 1) : 0;
 
                                 <div class="row g-2 my-2">
                                     <div class="col-6">
-                                        <div class="p-2 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3">
+                                        <div class="p-2 p-md-3 bg-success bg-opacity-10 border border-success border-opacity-25 rounded-3">
                                             <div class="fw-bold text-success mb-0" style="font-size: 13px;">
                                                 <i class="fas fa-check-circle me-1"></i> Jawaban Benar
                                             </div>
-                                            <div class="fs-3 fw-bold text-success lh-1 mt-1"><?= $benar ?></div>
+                                            <div class="fs-2 fw-bold text-success lh-1 mt-1"><?= $benar ?></div>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="p-2 bg-danger bg-opacity-10 border border-danger border-opacity-25 rounded-3">
+                                        <div class="p-2 p-md-3 bg-danger bg-opacity-10 border border-danger border-opacity-25 rounded-3">
                                             <div class="fw-bold text-danger mb-0" style="font-size: 13px;">
                                                 <i class="fas fa-times-circle me-1"></i> Jawaban Salah
                                             </div>
-                                            <div class="fs-3 fw-bold text-danger lh-1 mt-1"><?= $salah ?></div>
+                                            <div class="fs-2 fw-bold text-danger lh-1 mt-1"><?= $salah ?></div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-center gap-2 mt-3">
-                                    <a href="<?= base_url('latihan/jenis/2') ?>" class="btn btn-outline-secondary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                                        <i class="fas fa-arrow-left me-1"></i> Kembali ke Level
+                                    <a href="<?= $kembaliUrl ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2 btn-sm fw-semibold">
+                                        <i class="fas fa-arrow-left me-1"></i> <?= $kembaliText ?>
                                     </a>
-                                    <a href="<?= base_url() ?>/latihan/pembahasan_latihan/<?= $request->getUri()->getSegment(3) ?>/<?= $request->getUri()->getSegment(4) ?>/<?= $request->getUri()->getSegment(5) ?>/<?= $request->getUri()->getSegment(6) ?>" class="btn btn-primary rounded-pill px-4 py-1 btn-sm fw-bold shadow-sm">
+                                    <a href="<?= $pembahasanUrl ?>" class="btn btn-primary rounded-pill px-4 py-2 btn-sm fw-bold shadow-sm">
                                         Lihat Pembahasan <i class="fas fa-search ms-1"></i>
                                     </a>
                                 </div>

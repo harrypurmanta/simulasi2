@@ -131,7 +131,7 @@ $title = 'Pembahasan Latihan Soal - Bintang Timur Prestasi';
         let pilihan_nm = $("#inp_pilihan_nm").val();
         let group_id = <?= $group_id ?>;
         let materi = 99;
-        let waktu = document.getElementById('countdown').textContent;
+        let waktu = document.getElementById('countdown') ? document.getElementById('countdown').textContent : '00:00';
         let used =  <?= $request->getUri()->getSegment(5) ?>;
         $.ajax({
             url: "<?= base_url('latihan/startujianpembahasan') ?>",
