@@ -95,20 +95,37 @@ $session = \Config\Services::session();
         .jawaban_dv img:hover {
             transform: scale(1.02);
         }
-        /* 5 Baris Kebawah (10 Kolom per Baris) */
+        /* 5 Kolom Kebawah (5 kotak kesamping: 1, 2, 3, 4, 5 lalu berulang kebawah) */
         #dv_boxnosoal, .box-no-soal-grid {
             display: grid !important;
-            grid-template-columns: repeat(10, 1fr) !important;
-            gap: 5px !important;
+            grid-template-columns: repeat(5, 1fr) !important;
+            gap: 6px !important;
             padding: 4px !important;
+            max-height: 480px !important;
+            overflow-y: auto !important;
+            scrollbar-width: thin;
+        }
+        #dv_boxnosoal::-webkit-scrollbar, .box-no-soal-grid::-webkit-scrollbar {
+            width: 5px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-track, .box-no-soal-grid::-webkit-scrollbar-track {
+            background: #f8fafc;
+            border-radius: 4px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-thumb, .box-no-soal-grid::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        #dv_boxnosoal::-webkit-scrollbar-thumb:hover, .box-no-soal-grid::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
         .box-no-item {
-            height: 36px !important;
+            height: 38px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            border-radius: 6px !important;
-            font-size: 12px !important;
+            border-radius: 8px !important;
+            font-size: 13px !important;
             font-weight: 700 !important;
             cursor: pointer !important;
             transition: all 0.15s ease !important;
@@ -116,17 +133,18 @@ $session = \Config\Services::session();
             box-sizing: border-box !important;
         }
         .box-no-item:hover {
-            transform: translateY(-1px) !important;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
         }
         @media (max-width: 991.98px) {
             #dv_boxnosoal, .box-no-soal-grid {
-                grid-template-columns: repeat(10, 1fr) !important;
-                gap: 4px !important;
+                grid-template-columns: repeat(5, 1fr) !important;
+                gap: 5px !important;
+                max-height: 280px !important;
             }
             .box-no-item {
-                height: 32px !important;
-                font-size: 11px !important;
+                height: 34px !important;
+                font-size: 12px !important;
             }
         }
     </style>
@@ -136,11 +154,11 @@ $session = \Config\Services::session();
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
 
-        <div class="content-wrapper" style="padding-top: 10px !important; padding-bottom: 24px !important; background-color: #f1f5f9;">
+        <div class="content-wrapper" style="padding-top: 10px !important; padding-bottom: 24px !important; background-color: #f8fafc;">
             <div class="container" style="max-width: 1280px;">
                 <!-- Top Bar Info & Timer -->
                 <div class="row g-2 mb-2">
-                    <div class="col-12 col-lg-7">
+                    <div class="col-12 col-lg-8">
                         <div class="card exam-card p-3 h-100">
                             <div class="d-flex align-items-center justify-content-between mb-2">
                                 <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill fw-bold">
@@ -162,7 +180,7 @@ $session = \Config\Services::session();
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-5">
+                    <div class="col-12 col-lg-4">
                         <div class="card exam-card p-2 px-3 text-center h-100 d-flex flex-column justify-content-center">
                             <span class="text-muted small fw-semibold mb-1">
                                 <i class="fas fa-clock text-danger me-1"></i> Sisa Waktu Pengerjaan
@@ -174,8 +192,8 @@ $session = \Config\Services::session();
 
                 <!-- Main Exam Area -->
                 <div class="row g-2">
-                    <!-- Left Area: Question & Choices (col-12 col-lg-7) -->
-                    <div class="col-12 col-lg-7">
+                    <!-- Left Area: Question & Choices (col-12 col-lg-8) -->
+                    <div class="col-12 col-lg-8">
                         <div class="card exam-card p-3 p-md-4">
                             <!-- Question Box -->
                             <div class="p-3 mb-3 soal-box-container">
@@ -206,19 +224,19 @@ $session = \Config\Services::session();
                         </div>
                     </div>
 
-                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-5) -->
-                    <div class="col-12 col-lg-5">
+                    <!-- Right Area: Box Nomor Soal (col-12 col-lg-4) -->
+                    <div class="col-12 col-lg-4">
                         <div class="card exam-card p-3 sticky-lg-top" style="top: 15px; z-index: 10;">
                             <div class="d-flex align-items-center justify-content-between pb-2 mb-2 border-bottom">
                                 <h6 class="fw-bold text-dark mb-0">
                                     <i class="fas fa-th me-2 text-primary"></i> Navigasi Nomor Soal
                                 </h6>
-                                <span class="badge bg-light text-primary border small fw-semibold">5 Baris</span>
+                                <span class="badge bg-light text-primary border small fw-semibold">5 Kolom</span>
                             </div>
 
                             <div>
                                 <div id="dv_boxnosoal" class="box-no-soal-grid mb-3">
-                                    <!-- 10 Box per baris x 5 baris kebawah injected via AJAX -->
+                                    <!-- 5 Kotak per baris kebawah (5 kolom) injected via AJAX -->
                                 </div>
                             </div>
 

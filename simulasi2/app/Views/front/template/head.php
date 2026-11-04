@@ -295,9 +295,9 @@
         /* Responsive Exam Layout & Component System */
         #dv_boxnosoal, .box-no-soal-grid {
             display: grid !important;
-            grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)) !important;
+            grid-template-columns: repeat(5, 1fr) !important;
             gap: 6px !important;
-            max-height: 222px !important;
+            max-height: 480px !important;
             overflow-y: auto;
             padding: 4px;
             scrollbar-width: thin;
@@ -361,7 +361,7 @@
         }
         @media (max-width: 768px) {
             #dv_boxnosoal, .box-no-soal-grid {
-                grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)) !important;
+                grid-template-columns: repeat(5, 1fr) !important;
                 max-height: 320px;
             }
             #dv_boxnosoal div, .box-no-soal-grid div {
