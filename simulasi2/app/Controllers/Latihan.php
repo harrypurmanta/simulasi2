@@ -120,6 +120,77 @@ class Latihan extends BaseController
         }
     }
 
+    public function mulai_kecerdasan($jenis_id = null, $level_id = null)
+    {
+        if ($this->session->get("user_nm") == "") {
+            return redirect('/');
+        }
+
+        $request = \Config\Services::request();
+        $jenis_id = $jenis_id ?? $request->getUri()->getSegment(3);
+        $level_id = $level_id ?? $request->getUri()->getSegment(4);
+
+        if (empty($jenis_id) || $jenis_id == 2) {
+            $jenis_id = $request->getUri()->getSegment(4);
+        }
+        if (empty($level_id)) {
+            $level_id = $request->getUri()->getSegment(5);
+        }
+
+        $notes = $this->latihanmodel->getLastUsedKecerdasan($this->session->user_id, $jenis_id, $level_id);
+        if ($notes) {
+            $used = $notes->used + 1;
+        } else {
+            $used = 1;
+        }
+
+        $dataexam = [
+            "jenis_id"  => $jenis_id,
+            "group_id"  => 2,
+            "materi_id" => 99,
+            "user_id"   => $this->session->user_id,
+            "used"      => $used,
+        ];
+        $this->latihanmodel->insertexam($dataexam);
+
+        return redirect()->to(base_url('latihan/tryout_kecerdasan/' . $jenis_id . (!empty($level_id) ? '/' . $level_id : '')));
+    }
+
+    public function mulai_tryout($group_id = null, $jenis_id = null, $level_id = null)
+    {
+        if ($this->session->get("user_nm") == "") {
+            return redirect('/');
+        }
+
+        $request = \Config\Services::request();
+        $group_id = $group_id ?? $request->getUri()->getSegment(3);
+        $jenis_id = $jenis_id ?? $request->getUri()->getSegment(4);
+        $level_id = $level_id ?? $request->getUri()->getSegment(5);
+
+        if ($group_id == 2) {
+            return $this->mulai_kecerdasan($jenis_id, $level_id);
+        }
+
+        $materi = 99;
+        $notes = $this->latihanmodel->getLastUsed($this->session->user_id, $jenis_id, $group_id, $materi);
+        if ($notes) {
+            $used = $notes->used + 1;
+        } else {
+            $used = 1;
+        }
+
+        $dataexam = [
+            "jenis_id"  => $jenis_id,
+            "group_id"  => $group_id,
+            "materi_id" => $materi,
+            "user_id"   => $this->session->user_id,
+            "used"      => $used,
+        ];
+        $this->latihanmodel->insertexam($dataexam);
+
+        return redirect()->to(base_url('latihan/tryout/' . $group_id . '/' . $jenis_id . (!empty($level_id) ? '/' . $level_id : '')));
+    }
+
     public function tryout_kecerdasan($jenis_id = null, $level_id = null)
     {
         $request = \Config\Services::request();
@@ -146,12 +217,27 @@ class Latihan extends BaseController
             }
         }
 
+        $notes = $this->latihanmodel->getLastUsedKecerdasan($this->session->user_id, $jenis_id, $level_id);
+        if ($notes) {
+            $used = $notes->used;
+        } else {
+            $used = 1;
+            $this->latihanmodel->insertexam([
+                "jenis_id"  => $jenis_id,
+                "group_id"  => 2,
+                "materi_id" => 99,
+                "user_id"   => $this->session->user_id,
+                "used"      => 1,
+            ]);
+        }
+
         $data = [
             'group_id' => 2,
             'jenis_id' => $jenis_id,
             'level_id' => $level_id,
             'jenis_nm' => $jenis_nm,
             'level_nm' => $level_nm,
+            'used'     => $used,
         ];
         return view('front/latihan/tryout_kecerdasan', $data);
     }
@@ -176,32 +262,21 @@ class Latihan extends BaseController
 
         // 1. Inisialisasi ujian (proc == 'start')
         if ($proc == "start") {
-            $notes = $this->latihanmodel->getLastUsedKecerdasan($this->session->user_id, $jenis_id, $level_id);
-            if ($notes) {
-                $respon = $this->latihanmodel->getResponByUser($this->session->user_id, $jenis_id, $group_id, $materi, $notes->used)->getResult();
-                if (count($respon) > 0) {
-                    $used = $notes->used + 1;
+            if (empty($used)) {
+                $notes = $this->latihanmodel->getLastUsedKecerdasan($this->session->user_id, $jenis_id, $level_id);
+                if ($notes) {
+                    $used = $notes->used;
+                } else {
+                    $used = 1;
                     $dataexam = [
-                        "jenis_id" => $jenis_id,
-                        "group_id" => $group_id,
+                        "jenis_id"  => $jenis_id,
+                        "group_id"  => $group_id,
                         "materi_id" => $materi,
-                        "user_id" => $this->session->user_id,
-                        "used" => $used,
+                        "user_id"   => $this->session->user_id,
+                        "used"      => 1,
                     ];
                     $this->latihanmodel->insertexam($dataexam);
-                } else {
-                    $used = $notes->used;
                 }
-            } else {
-                $used = 1;
-                $dataexam = [
-                    "jenis_id" => $jenis_id,
-                    "group_id" => $group_id,
-                    "materi_id" => $materi,
-                    "user_id" => $this->session->user_id,
-                    "used" => $used,
-                ];
-                $this->latihanmodel->insertexam($dataexam);
             }
         }
 
@@ -470,37 +545,22 @@ class Latihan extends BaseController
         $sisawaktu = "";
        
             if ($proc == "start") {
-                $notes = $this->latihanmodel->getLastUsed($this->session->user_id, $jenis_id, $group_id, $materi);
-                if ($notes) {
-                    $respon = $this->latihanmodel->getResponByUser($this->session->user_id,$jenis_id, $group_id, $materi, $notes->used)->getResult();
-                
-                    if (count($respon)>0) {
-                        $used = $notes->used + 1;
-                        $dataexam = [
-                            "jenis_id" => $jenis_id,
-                            "group_id" => $group_id,
-                            "materi_id" => $materi,
-                            "user_id" => $this->session->user_id,
-                            "used" => $used,
-                        ];
-                        $insertexam = $this->latihanmodel->insertexam($dataexam);
-                        
-                    } else {
+                if (empty($used)) {
+                    $notes = $this->latihanmodel->getLastUsed($this->session->user_id, $jenis_id, $group_id, $materi);
+                    if ($notes) {
                         $used = $notes->used;
+                    } else {
+                        $used = 1;
+                        $dataexam = [
+                            "jenis_id"  => $jenis_id,
+                            "group_id"  => $group_id,
+                            "materi_id" => $materi,
+                            "user_id"   => $this->session->user_id,
+                            "used"      => 1,
+                        ];
+                        $this->latihanmodel->insertexam($dataexam);
                     }
-                } else {
-                    $used = 1;
-                    $dataexam = [
-                        "jenis_id" => $jenis_id,
-                        "group_id" => $group_id,
-                        "materi_id" => $materi,
-                        "user_id" => $this->session->user_id,
-                        "used" => $used,
-                    ];
-                    $insertexam = $this->latihanmodel->insertexam($dataexam);
                 }
-               
-                
             }
             
         if ($jawaban_id == "null") {

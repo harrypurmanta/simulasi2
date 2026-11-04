@@ -211,3 +211,7 @@ $routes->get('tryout/hasiltryout/(:segment)', '\App\Controllers\Tryout::hasiltry
 if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
     require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
+
+
+$routes->get('latihan/mulai_kecerdasan/(:any)', '\App\Controllers\Latihan::mulai_kecerdasan/$1');
+$routes->get('latihan/mulai_tryout/(:any)', '\App\Controllers\Latihan::mulai_tryout/$1');

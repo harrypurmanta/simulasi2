@@ -207,7 +207,7 @@ $session = \Config\Services::session();
                                 <div id="dv_img_soal" class="text-center my-2"></div>
                                 <input type="hidden" id="inp_soal_id">
                                 <input type="hidden" value="1" id="inp_no_soal">
-                                <input type="hidden" id="used" value="">
+                                <input type="hidden" id="used" value="<?= esc($used ?? '') ?>">
                             </div>
 
                             <!-- Choices Container -->
@@ -304,7 +304,8 @@ $session = \Config\Services::session();
     var level_id = <?= (int)$level_id ?>;
     var total_soal_count = 0;
     var currentUserId = "<?= esc($session->user_id ?? 'guest') ?>";
-    var timerStorageKey = "latihan_timer_kecerdasan_" + currentUserId + "_" + jenis_id + "_" + level_id;
+    var activeUsed = "<?= esc($used ?? '') ?>";
+    var timerStorageKey = "latihan_timer_kecerdasan_" + currentUserId + "_" + jenis_id + "_" + level_id + (activeUsed ? "_" + activeUsed : "");
 
     function getSavedRemainingSeconds(defaultDetik) {
         try {
@@ -419,7 +420,13 @@ $session = \Config\Services::session();
                 $("#progress_text").text(data.jumlah_jawab + " dari " + data.total_soal + " terjawab");
                 $("#answered_stat").html("<i class='fa fa-check-circle text-success'></i> Terjawab: " + data.jumlah_jawab + "/" + data.total_soal);
                 $("#inp_no_soal").val(data.no_soal);
-                $("#used").val(data.used);
+                if (data.used) {
+                    if (!activeUsed || activeUsed !== data.used) {
+                        activeUsed = data.used;
+                        timerStorageKey = "latihan_timer_kecerdasan_" + currentUserId + "_" + jenis_id + "_" + level_id + "_" + data.used;
+                    }
+                    $("#used").val(data.used);
+                }
                 $("#dv_main_jawaban").html(data.jawaban_nm);
                 $("#dv_boxnosoal").html(data.boxnomorsoal);
                 $("#dv_button").html(data.button);
