@@ -4,15 +4,17 @@
 # === Environment ===
 .env
 
-# === Composer ===
-simulasi2/vendor/
-
 # === Cache & Logs ===
 simulasi2/writable/cache/*
+!simulasi2/writable/cache/.gitkeep
 simulasi2/writable/logs/*
+!simulasi2/writable/logs/.gitkeep
 simulasi2/writable/debugbar/*
+!simulasi2/writable/debugbar/.gitkeep
 simulasi2/writable/session/*
+!simulasi2/writable/session/.gitkeep
 simulasi2/writable/uploads/*
+!simulasi2/writable/uploads/.gitkeep
 
 # === Images & User Uploads ===
 images/

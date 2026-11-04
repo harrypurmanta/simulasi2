@@ -31,7 +31,12 @@ class App extends BaseConfig
      *
      * @var list<string>
      */
-    public array $allowedHostnames = [];
+    public array $allowedHostnames = [
+        'testing.bintangtimurprestasi.com',
+        'bintangtimurprestasi.com',
+        'simulasi2.test',
+        'localhost',
+    ];
 
     /**
      * --------------------------------------------------------------------------

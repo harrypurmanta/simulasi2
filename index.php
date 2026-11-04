@@ -42,6 +42,13 @@ require FCPATH . 'simulasi2/app/Config/Paths.php';
 
 $paths = new Paths();
 
+// Check system directory exists
+if (!file_exists($paths->systemDirectory . '/Boot.php')) {
+    header('HTTP/1.1 500 Internal Server Error', true, 500);
+    echo 'CodeIgniter system directory not found at: ' . htmlspecialchars($paths->systemDirectory);
+    exit(1);
+}
+
 // LOAD THE FRAMEWORK BOOTSTRAP FILE
 require $paths->systemDirectory . '/Boot.php';
 
