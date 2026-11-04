@@ -49,6 +49,22 @@ if (!file_exists($paths->systemDirectory . '/Boot.php')) {
     exit(1);
 }
 
+// Polyfill Locale class if PHP intl extension is not yet enabled
+if (!class_exists('Locale')) {
+    class Locale
+    {
+        public static function getDefault(): string
+        {
+            return 'en';
+        }
+
+        public static function setDefault(string $locale): bool
+        {
+            return true;
+        }
+    }
+}
+
 // LOAD THE FRAMEWORK BOOTSTRAP FILE
 require $paths->systemDirectory . '/Boot.php';
 
