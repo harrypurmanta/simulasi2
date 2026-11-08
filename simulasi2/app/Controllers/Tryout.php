@@ -368,37 +368,29 @@ class Tryout extends BaseController
                         </tbody>
                     </table>
                 </div>
-                <div class='col-md-12' style='width:100%; margin-top:30px;'>
-                    <label style='font-size:20px;' for='Pertanyaan'>Pertanyaan ".$no_soal."</label>
-                    <div class='col-md-12 row' style='display:flex; justify-content:center; flex-wrap:wrap;'>";
+                <div class='sk-soal-jawaban-wrapper' style='width: 100%; max-width: 650px; margin: 30px auto 0;'>
+                    <div style='font-size: 20px; font-weight: 600; margin-bottom: 10px; color: #1e293b; text-align: center;'>Pertanyaan ".$no_soal."</div>
+                    <div class='sk-soal-boxes' style='display: flex; width: 100%; gap: 14px; margin-bottom: 15px;'>";
 
                     if ($res[0]->typesoal == "gambar") {
                         foreach ($res as $keySoal) {
                             $soal_nm = explode('|', $keySoal->soal_nm);
                             foreach ($soal_nm as $jwb_nm) {
                                 $src = base_url("images/soalskmateri/materi/$materi/kolom/$kolom_id/$jwb_nm");
-                                $ret .= "<img src='$src' style='height: 100px; width: 100px; margin: 5px;'>";
+                                $ret .= "<div style='flex: 1; height: 100px; display: flex; align-items: center; justify-content: center; background-color: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;'><img src='$src' style='max-height: 90px; max-width: 90px; object-fit: contain;'></div>";
                             }
                         }
                     } else {
                         foreach ($res as $keySoal) {
                             $soal_nm = str_split($keySoal->soal_nm,1);
                             foreach ($soal_nm as $jwb_nm) {
-                                $ret .= "<div class='col-md-2' style='background-color:grey;min-height:70px;font-size:65px;font-weight:bold;text-align:center;margin:10px;display: inline-block;'>
-                        ".$jwb_nm."</div>";
+                                $ret .= "<div style='flex: 1; background-color: grey; height: 90px; font-size: 65px; font-weight: bold; text-align: center; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #212529;'>".$jwb_nm."</div>";
                             }
                         }
                     }
-                        // foreach ($res as $keySoal) {
-                        //     $soal_nm = str_split($keySoal->soal_nm,1);
-                        //     foreach ($soal_nm as $jwb_nm) {
-                        //         $ret .= "<div style='background-color:grey;min-width:70px;min-height:70px;font-size:65px;font-weight:bold;text-align:center;margin:10px;'>
-                        // ".$jwb_nm."</div>";
-                        //     }
-                        // }
                         
                 $ret .= "</div>
-                    <div class='sk-pilihan-container' style='display:flex; justify-content:center; width:100%; max-width:460px; margin:15px auto 0; gap:8px;'>";
+                    <div class='sk-pilihan-container' style='display: flex; width: 100%; gap: 8px;'>";
                     foreach ($getjawaban as $k) {
                         $jawaban_id = $k->jawaban_id;
                         $ret .= "<button onclick='startujian(\"next\",\"A\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'

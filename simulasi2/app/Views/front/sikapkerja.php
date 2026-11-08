@@ -110,13 +110,24 @@ $session = \Config\Services::session();
         }
     }
 
+    .sk-soal-jawaban-wrapper {
+        width: 100% !important;
+        max-width: 650px !important;
+        margin: 30px auto 0 !important;
+    }
+    .sk-soal-boxes {
+        display: flex !important;
+        width: 100% !important;
+        gap: 14px !important;
+        margin-bottom: 15px !important;
+        justify-content: center !important;
+    }
     .sk-pilihan-container {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         width: 100% !important;
-        max-width: 460px !important;
-        margin: 15px auto 0 !important;
+        margin: 0 !important;
         gap: 8px !important;
     }
     .sk-pilihan-container .btn {
