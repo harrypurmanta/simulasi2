@@ -8,13 +8,13 @@ $title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
 .sk-soal-jawaban-wrapper {
     width: 100% !important;
     max-width: 560px !important;
-    margin: 25px auto 0 !important;
+    margin: 12px auto 0 !important;
 }
 .sk-soal-boxes {
     display: flex !important;
     width: 100% !important;
     gap: 16px !important;
-    margin-bottom: 15px !important;
+    margin-bottom: 12px !important;
     justify-content: center !important;
 }
 .sk-pilihan-container {
@@ -28,8 +28,8 @@ $title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
 .sk-pilihan-container .btn {
     flex: 1 1 0 !important;
     margin: 0 !important;
-    height: 52px !important;
-    font-size: 22px !important;
+    height: 48px !important;
+    font-size: 20px !important;
     font-weight: bold !important;
     border-radius: 8px !important;
     display: flex !important;
@@ -45,29 +45,27 @@ $title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
 <body class="layout-top-nav">
     <div class="wrapper">
         <?= $this->include('front/navbar') ?>
-        <div class="content-wrapper" style="padding-top: 8px !important; padding-bottom: 20px !important;">
-            <div class="container pt-0 pb-3">
+        <div class="content-wrapper" style="padding-top: 6px !important; padding-bottom: 12px !important;">
+            <div class="container pt-0 pb-2">
                 <!-- Tahapan Ujian & Waktu Timer -->
                 <div class="row g-2 mb-2">
                     <div class="col-12 col-lg-8">
-                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 bg-white h-100">
-                            <div class="d-flex align-items-center justify-content-between mb-1">
-                                <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-1 rounded-pill fw-bold">
-                                    <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
-                                </span>
-                            </div>
+                        <div class="card border-0 shadow-sm rounded-4 py-2 px-3 bg-white h-100 d-flex flex-row align-items-center justify-content-between">
+                            <span class="badge bg-warning bg-opacity-25 text-dark px-3 py-1.5 rounded-pill fw-bold" style="font-size: 0.85rem;">
+                                <i class="fas fa-layer-group me-1"></i> TAHAPAN UJIAN
+                            </span>
                             <input type="hidden" id="inp_group_id">
-                            <div class="card bg-success text-white border-0 py-1 px-2 rounded-3 text-center shadow-sm" style="max-width: 250px;">
-                                <div class="fw-bold small">Sikap Kerja (Kecermatan)</div>
+                            <div class="badge bg-success text-white py-1.5 px-3 rounded-pill fw-semibold" style="font-size: 0.85rem;">
+                                Sikap Kerja (Kecermatan)
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card border-0 shadow-sm rounded-4 p-2 px-3 text-center bg-white h-100 d-flex flex-column justify-content-center">
-                            <span class="text-muted small fw-semibold mb-1">
+                        <div class="card border-0 shadow-sm rounded-4 py-2 px-3 bg-white h-100 d-flex flex-row align-items-center justify-content-between">
+                            <span class="text-muted small fw-semibold">
                                 <i class="fas fa-clock text-danger me-1"></i> Waktu Kolom
                             </span>
-                            <label class="display-6 fw-bold text-danger mb-0" id="countdown">00:00</label>
+                            <label class="fw-bold text-danger mb-0" id="countdown" style="font-size: 1.6rem; line-height: 1;">00:00</label>
                         </div>
                     </div>
                 </div>
@@ -75,14 +73,14 @@ $title = 'Ujian Sikap Kerja - Bintang Timur Prestasi';
                 <!-- Soal Sikap Kerja & Kolom -->
                 <div class="row g-2 justify-content-center">
                     <div class="col-12 col-lg-10">
-                        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white text-center">
-                            <div class="mb-2">
-                                <span class="badge bg-primary px-4 py-2 fs-6 rounded-pill" id="lb_kolom">Kolom</span>
+                        <div class="card border-0 shadow-sm rounded-4 p-2 p-md-3 bg-white text-center">
+                            <div class="mb-1">
+                                <span class="badge bg-primary px-3 py-1 rounded-pill" id="lb_kolom" style="font-size: 0.85rem;">Kolom</span>
                             </div>
-                            <div id="dv_soal" class="col-12 mb-2" style="min-height: 380px;">
+                            <div id="dv_soal" class="col-12 mb-1">
                                 <!-- Soal sikap kerja dimuat via AJAX -->
                             </div>
-                            <div id="dv_button" class="mt-2">
+                            <div id="dv_button" class="mt-1">
                                 <!-- Tombol aksi jika ada -->
                             </div>
                         </div>
