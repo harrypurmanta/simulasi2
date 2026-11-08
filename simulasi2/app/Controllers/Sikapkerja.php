@@ -124,18 +124,18 @@ class Sikapkerja extends BaseController
                             
                         $ret .= "</tr>
                             <tr style='font-size: 28px; font-weight: 600; text-align: center; line-height: 1; color: #475569;'>
-                                <td style='padding-top: 4px; padding-bottom: 2px; line-height: 1;'>A</td>
-                                <td style='padding-top: 4px; padding-bottom: 2px; line-height: 1;'>B</td>
-                                <td style='padding-top: 4px; padding-bottom: 2px; line-height: 1;'>C</td>
-                                <td style='padding-top: 4px; padding-bottom: 2px; line-height: 1;'>D</td>
-                                <td style='padding-top: 4px; padding-bottom: 2px; line-height: 1;'>E</td>
+                                <td style='padding-top: 4px; padding-bottom: 4px; line-height: 1;'>A</td>
+                                <td style='padding-top: 4px; padding-bottom: 4px; line-height: 1;'>B</td>
+                                <td style='padding-top: 4px; padding-bottom: 4px; line-height: 1;'>C</td>
+                                <td style='padding-top: 4px; padding-bottom: 4px; line-height: 1;'>D</td>
+                                <td style='padding-top: 4px; padding-bottom: 4px; line-height: 1;'>E</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class='sk-soal-jawaban-wrapper' style='width: 100%; max-width: 560px; margin: 12px auto 0;'>
-                    <div style='text-align: center; margin-bottom: 10px;'>
-                        <span class='badge' style='background-color: #f1f5f9; color: #1e293b; border: 1.5px solid #cbd5e1; font-size: 15px; font-weight: 700; padding: 5px 22px; border-radius: 50px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                <div class='sk-soal-jawaban-wrapper' style='width: 100%; max-width: 560px; margin: 22px auto 0;'>
+                    <div style='text-align: center; margin-bottom: 18px;'>
+                        <span class='badge' style='background-color: #f1f5f9; color: #1e293b; border: 1.5px solid #cbd5e1; font-size: 15px; font-weight: 700; padding: 6px 24px; border-radius: 50px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
                             Pertanyaan ".$no_soal."
                         </span>
                     </div>
