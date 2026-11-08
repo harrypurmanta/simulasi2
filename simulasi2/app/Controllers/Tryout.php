@@ -368,23 +368,23 @@ class Tryout extends BaseController
                         </tbody>
                     </table>
                 </div>
-                <div class='sk-soal-jawaban-wrapper' style='width: 100%; max-width: 650px; margin: 30px auto 0;'>
+                <div class='sk-soal-jawaban-wrapper' style='width: 100%; max-width: 560px; margin: 25px auto 0;'>
                     <div style='font-size: 20px; font-weight: 600; margin-bottom: 10px; color: #1e293b; text-align: center;'>Pertanyaan ".$no_soal."</div>
-                    <div class='sk-soal-boxes' style='display: flex; width: 100%; gap: 14px; margin-bottom: 15px;'>";
+                    <div class='sk-soal-boxes' style='display: flex; width: 100%; gap: 16px; margin-bottom: 15px;'>";
 
                     if ($res[0]->typesoal == "gambar") {
                         foreach ($res as $keySoal) {
                             $soal_nm = explode('|', $keySoal->soal_nm);
                             foreach ($soal_nm as $jwb_nm) {
                                 $src = base_url("images/soalskmateri/materi/$materi/kolom/$kolom_id/$jwb_nm");
-                                $ret .= "<div style='flex: 1; height: 100px; display: flex; align-items: center; justify-content: center; background-color: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;'><img src='$src' style='max-height: 90px; max-width: 90px; object-fit: contain;'></div>";
+                                $ret .= "<div style='flex: 1; height: 90px; display: flex; align-items: center; justify-content: center; background-color: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;'><img src='$src' style='max-height: 80px; max-width: 80px; object-fit: contain;'></div>";
                             }
                         }
                     } else {
                         foreach ($res as $keySoal) {
                             $soal_nm = str_split($keySoal->soal_nm,1);
                             foreach ($soal_nm as $jwb_nm) {
-                                $ret .= "<div style='flex: 1; background-color: grey; height: 90px; font-size: 65px; font-weight: bold; text-align: center; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #212529;'>".$jwb_nm."</div>";
+                                $ret .= "<div style='flex: 1; background-color: grey; height: 85px; font-size: 60px; font-weight: bold; text-align: center; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #212529;'>".$jwb_nm."</div>";
                             }
                         }
                     }
@@ -393,15 +393,15 @@ class Tryout extends BaseController
                     <div class='sk-pilihan-container' style='display: flex; width: 100%; gap: 8px;'>";
                     foreach ($getjawaban as $k) {
                         $jawaban_id = $k->jawaban_id;
-                        $ret .= "<button onclick='startujian(\"next\",\"A\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        $ret .= "<button onclick='startujian(\"next\",\"A\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:20px; height:50px; border-radius:8px;'
                         class='btn btn-outline-success'>A</button>
-                    <button onclick='startujian(\"next\",\"B\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                    <button onclick='startujian(\"next\",\"B\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:20px; height:50px; border-radius:8px;'
                         class='btn btn-outline-success'>B</button>
-                    <button onclick='startujian(\"next\",\"C\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                    <button onclick='startujian(\"next\",\"C\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:20px; height:50px; border-radius:8px;'
                         class='btn btn-outline-success'>C</button>
-                    <button onclick='startujian(\"next\",\"D\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                    <button onclick='startujian(\"next\",\"D\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:20px; height:50px; border-radius:8px;'
                         class='btn btn-outline-success'>D</button>
-                    <button onclick='startujian(\"next\",\"E\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                    <button onclick='startujian(\"next\",\"E\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:20px; height:50px; border-radius:8px;'
                         class='btn btn-outline-success'>E</button>";
                     }
                         

@@ -112,13 +112,13 @@ $session = \Config\Services::session();
 
     .sk-soal-jawaban-wrapper {
         width: 100% !important;
-        max-width: 650px !important;
-        margin: 30px auto 0 !important;
+        max-width: 560px !important;
+        margin: 25px auto 0 !important;
     }
     .sk-soal-boxes {
         display: flex !important;
         width: 100% !important;
-        gap: 14px !important;
+        gap: 16px !important;
         margin-bottom: 15px !important;
         justify-content: center !important;
     }
