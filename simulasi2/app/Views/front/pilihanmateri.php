@@ -38,10 +38,7 @@ $title = 'Petunjuk Pengerjaan Soal - Bintang Timur Prestasi';
                                     </p>
                                 </div>
 
-                                <div class="d-flex justify-content-center gap-3">
-                                    <a href="<?= base_url('materi') ?>" class="btn btn-outline-secondary rounded-pill px-4 py-2">
-                                        <i class="fas fa-arrow-left me-1"></i> Kembali
-                                    </a>
+                                <div class="d-flex justify-content-center">
                                     <?php
                                         if ($group[0]->group_soal_id == 4) {
                                             $url = base_url('tryout/sikapkerja/' . $materi_id . '/' . $group[0]->group_soal_id);

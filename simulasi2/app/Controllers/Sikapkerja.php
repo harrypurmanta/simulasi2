@@ -156,19 +156,19 @@ class Sikapkerja extends BaseController
                         
                         
                 $ret .= "</div>
-                    <div class='col-md-12' style='display:flex;'>";
+                    <div class='sk-pilihan-container' style='display:flex; justify-content:center; width:100%; max-width:460px; margin:15px auto 0; gap:8px;'>";
                     foreach ($getjawaban as $k) {
                         $jawaban_id = $k->jawaban_id;
-                        $ret .= "<button onclick='startujian(\"next\",\"A\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='margin:5px;font-weight:bold;font-size: 20px;'
-                        class='btn btn-block btn-outline-success'>A</button>
-                    <button onclick='startujian(\"next\",\"B\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='margin:5px;font-weight:bold;font-size: 20px;'
-                        class='btn btn-block btn-outline-success'>B</button>
-                    <button onclick='startujian(\"next\",\"C\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='margin:5px;font-weight:bold;font-size: 20px;'
-                        class='btn btn-block btn-outline-success'>C</button>
-                    <button onclick='startujian(\"next\",\"D\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='margin:5px;font-weight:bold;font-size: 20px;'
-                        class='btn btn-block btn-outline-success'>D</button>
-                    <button onclick='startujian(\"next\",\"E\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='margin:5px; margin-right: 10px; font-weight:bold;font-size: 20px;'
-                        class='btn btn-block btn-outline-success'>E</button>";
+                        $ret .= "<button onclick='startujian(\"next\",\"A\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        class='btn btn-outline-success'>A</button>
+                    <button onclick='startujian(\"next\",\"B\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        class='btn btn-outline-success'>B</button>
+                    <button onclick='startujian(\"next\",\"C\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        class='btn btn-outline-success'>C</button>
+                    <button onclick='startujian(\"next\",\"D\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        class='btn btn-outline-success'>D</button>
+                    <button onclick='startujian(\"next\",\"E\",".$jawaban_id.",".$res[0]->soal_id.",$group_id,$no_soal,$kolom_id,$materi)' style='flex:1; margin:0; font-weight:bold; font-size:22px; height:52px; border-radius:8px;'
+                        class='btn btn-outline-success'>E</button>";
                     }
                         
                 $ret .= "</div>

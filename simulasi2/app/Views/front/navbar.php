@@ -46,7 +46,7 @@ $secondSegment = $segments[1] ?? '';
                         </a>
                     </li>
                 </ul>
-            <?php elseif ($secondSegment !== "hasiltryout"): ?>
+            <?php elseif ($secondSegment !== "hasiltryout" && $secondSegment !== "pilihanMateri"): ?>
                 <ul class="navbar-nav mx-auto mb-0" style="font-size: 13.5px; padding-top: 3px;">
                     <li class="nav-item">
                         <a href="<?= base_url('materi') ?>" class="nav-link py-1 px-2">

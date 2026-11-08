@@ -109,6 +109,32 @@ $session = \Config\Services::session();
             transform: rotate(360deg);
         }
     }
+
+    .sk-pilihan-container {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 460px !important;
+        margin: 15px auto 0 !important;
+        gap: 8px !important;
+    }
+    .sk-pilihan-container .btn {
+        flex: 1 1 0 !important;
+        margin: 0 !important;
+        height: 52px !important;
+        font-size: 22px !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.15s ease-in-out !important;
+    }
+    .sk-pilihan-container .btn:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 10px rgba(40, 167, 69, 0.25) !important;
+    }
     </style>
 </head>
 
